@@ -6,9 +6,7 @@ cd gemini-comp
 git remote add origin https://github.com/masonlanger/gemini-comp.git
 git pull --set-upstream origin main
 ```
-Then, follow the steps below to run the Vue project locally
-
-This template should help get you started developing with Vue 3 in Vite.
+Before running the lines in the next section, make sure you have [NodeJS and npm](https://nodejs.org/en/download/package-manager) installed on your machine 
 
 ## Recommended IDE Setup
 
