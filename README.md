@@ -2,6 +2,7 @@
 Run the following in a directory where you want to keep your project files:
 ```sh
 git clone https://github.com/masonlanger/gemini-comp.git
+cd gemini-comp
 git remote add origin https://github.com/masonlanger/gemini-comp.git
 git pull --set-upstream origin main
 ```
