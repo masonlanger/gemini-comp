@@ -28,7 +28,7 @@
 @media screen and (max-width: 779px) {
     .btn {
         @apply block text-start text-xl object-scale-down p-2 bg-gray-800 text-white m-2 w-32 rounded;
-        transition: box-shadow opacity 0.4s ease;
+        transition: box-shadow opacity 0.3s ease;
     }
     .btn:hover {
         @apply bg-gray-800;
@@ -51,12 +51,17 @@
     main {display: flex; flex-direction: row;}
 }
 
-.home {
-    @apply p-6;
-}
+.home {@apply px-16 py-8 flex flex-col;}
+.row {@apply flex flex-row space-x-12; width: 100%;}
+.column {@apply text-center;}
 .tpw {width:75%; text-wrap: wrap; float: left;}
+.callout {font-size: 24pt; @apply text-start mt-1 text-gray-700; font-weight: 500;}
+
 .tpw--title {font-size: 64pt; font-weight: bold; @apply mb-0 text-gray-800; text-decoration: underline; text-decoration-thickness: 0.35rem;}
-.tpw--paragraph {font-size: 24pt; @apply mt-0 font-light text-gray-800;}
+.tpw--subtitle {font-size: 32pt; @apply mt-0 mb-0 text-gray-700;}
+.tpw--paragraph {font-size: 24pt; @apply mt-0 font-light text-gray-700;}
 .html {
     font-family: Arial, Helvetica, sans-serif
 }
+.three-col {@apply text-center;}
+svg {@apply text-gray-800;}
