@@ -3,6 +3,10 @@ import NavigationBarItem from './NavigationBarItem.vue'
 import { faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
 function toggleNav() {
     var nav = document.getElementsByClassName("navbar")[0];
+    var navitems = document.querySelectorAll(".navbar__items");
+    navitems.forEach((item) => {
+        item.classList.toggle("isHidden");
+    });
     nav.classList.toggle("isHidden");
 }
 
