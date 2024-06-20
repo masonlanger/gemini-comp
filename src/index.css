@@ -2,4 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Main stylesheet, code goes here */
+/* NAV BAR */
+@media screen and (min-width: 780px) {
+    .btn {
+        @apply block text-center text-xl object-scale-down p-2 bg-gray-800 text-white m-2 w-32 rounded;
+        transition: box-shadow opacity 0.3s ease;
+    }
+    .btn:hover {
+        @apply bg-gray-800;
+        box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2);
+        opacity: 90%;
+    }
+    .navbar {
+        @apply bg-gray-800 text-white p-2 w-dvw h-fit shadow-sm;
+        transition: transform 300ms ease-in;
+    }
+    .isHidden {}   
+    .navbar__items{
+        @apply flex flex-row;
+    }
+    .collapse {display: none; height: 0;}
+    main {display: block;}
+}
+
+@media screen and (max-width: 779px) {
+    .btn {
+        @apply block text-start text-xl object-scale-down p-2 bg-gray-800 text-white m-2 w-32 rounded;
+        transition: box-shadow opacity 0.4s ease;
+    }
+    .btn:hover {
+        @apply bg-gray-800;
+        box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+    }
+    .navbar {
+        @apply bg-gray-800 text-white p-2 w-fit h-dvh rounded-br-lg;
+        transition: transform 300ms ease-in;
+    }
+    .isHidden {
+        transform: translateX(-12rem);
+        transition: transform 300ms ease-out;
+        width: 0;
+    }   
+    .navbar__items{
+        margin-top: 1.75rem;
+    }
+    .collapse {@apply inline-block float-right p-2 mt-0;}
+    main {display: flex; flex-direction: row;}
+}
+
+.home {
+    @apply p-6;
+}
+.tpw {width:75%; text-wrap: wrap; float: left;}
+.tpw--title {font-size: 64pt; font-weight: bold; @apply mb-0 text-gray-800; text-decoration: underline; text-decoration-thickness: 0.35rem;}
+.tpw--paragraph {font-size: 24pt; @apply mt-0 font-light text-gray-800;}
+.html {
+    font-family: Arial, Helvetica, sans-serif
+}
