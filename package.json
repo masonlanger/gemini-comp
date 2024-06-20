@@ -11,9 +11,12 @@
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
     "test:unit": "cypress run --component",
     "test:unit:dev": "cypress open --component",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "start": "node server.js"
   },
   "dependencies": {
+    "express": "^4.19.2",
+    "firebase": "^10.12.2",
     "vue": "^3.4.21"
   },
   "devDependencies": {
