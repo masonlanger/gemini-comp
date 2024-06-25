@@ -9,7 +9,7 @@
 
 <template>
     <div class="home">
-        <TitleParagraphWidget title="Welcome to WritingThing" subtitle="AI-powered writing feedback based around you." />
+        <TitleParagraphWidget title="Welcome to Fellow" subtitle="AI-powered writing feedback based around you." />
         <br />
         <LogInWidget />
         <br />
