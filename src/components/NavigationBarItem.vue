@@ -13,9 +13,9 @@ defineProps({
 
 <template>
         <div class="btn">
-                <a :href="`/${route}`">
+            <RouterLink :to="route">
                     <h1>{{ name }}</h1>
-                </a>
+            </RouterLink>
         </div>
 </template>
     
