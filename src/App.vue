@@ -1,12 +1,16 @@
 <script setup>
+import { ref } from 'vue'
 import NavigationBar from './components/NavigationBar.vue'
-import HomePage from './components/HomePage.vue'
+
+const isLoggedIn = ref(false);
+isLoggedIn.value = false;
 </script>
 
 <template>
   <main>
-    <NavigationBar />
+    <NavigationBar loggedIn="isLoggedIn"/>
     <!-- TODO: add router-view logic? for now, keep static view -->
-    <HomePage />
+    <RouterView />
+    <!-- <HomePage loggedIn="isLoggedIn"/> -->
   </main>
 </template>

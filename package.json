@@ -20,11 +20,14 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
+    "express": "^4.19.2",
+    "firebase": "^10.12.2",
     "@google/generative-ai": "^0.13.0",
     "express": "^4.19.2",
     "firebase": "^10.12.2",
     "fortawesome": "^0.0.1-security",
-    "vue": "^3.4.21"
+    "vue": "^3.4.21",
+    "vue-router": "^4.4.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",

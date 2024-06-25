@@ -14,7 +14,7 @@
         opacity: 90%;
     }
     .navbar {
-        @apply bg-gray-800 text-white p-2 w-dvw h-fit shadow-sm;
+        @apply bg-gray-800 text-white p-2 w-dvw h-fit shadow-sm text-end;
         transition: transform 300ms ease-in;
     }
     .isHidden {}   
@@ -23,12 +23,13 @@
     }
     .collapse {display: none; height: 0;}
     main {display: block;}
+    .home {@apply px-16 py-8 flex flex-col;}
 }
 
 @media screen and (max-width: 779px) {
     .btn {
         @apply block text-start text-xl object-scale-down p-2 bg-gray-800 text-white m-2 w-32 rounded;
-        transition: box-shadow opacity 0.4s ease;
+        transition: box-shadow opacity 0.3s ease;
     }
     .btn:hover {
         @apply bg-gray-800;
@@ -36,7 +37,7 @@
         opacity: 80%;
     }
     .navbar {
-        @apply bg-gray-800 text-white p-2 w-fit h-dvh rounded-br-lg;
+        @apply bg-gray-800 text-white p-2 w-fit h-auto rounded-br-lg;
         transition: transform 300ms ease-in;
     }
     .isHidden {
@@ -46,17 +47,33 @@
     }   
     .navbar__items{
         margin-top: 1.75rem;
+        @apply flex flex-col space-y-8;
     }
     .collapse {@apply inline-block float-right p-2 mt-0;}
+    .home {}
     main {display: flex; flex-direction: row;}
 }
 
-.home {
-    @apply p-6;
-}
+form {display: flex; flex-direction: column; align-items: start}
+.row {@apply flex flex-row space-x-12; width: 100%;}
+.column {@apply text-center text-wrap;}
 .tpw {width:75%; text-wrap: wrap; float: left;}
-.tpw--title {font-size: 64pt; font-weight: bold; @apply mb-0 text-gray-800; text-decoration: underline; text-decoration-thickness: 0.35rem;}
-.tpw--paragraph {font-size: 24pt; @apply mt-0 font-light text-gray-800;}
+
+.title {font-size: 64pt; font-weight: bold; @apply mb-0 text-gray-800; text-decoration: underline; text-decoration-thickness: 0.35rem;}
+.subtitle {font-size: 40pt; font-weight: bold; @apply mb-0 text-gray-800;}
+.tpw--subtitle {font-size: 32pt; @apply mt-0 mb-0 text-gray-700;}
+.tpw--paragraph {font-size: 24pt; @apply mt-0 font-light text-gray-700;}
 .html {
     font-family: Arial, Helvetica, sans-serif
 }
+.three-col {@apply text-center mt-10 bg-gray-100 p-8 rounded;}
+.three-col > .column {width: 33.33%;}
+.three-col--callout {font-size: 24pt; @apply text-start mt-1 text-gray-700; font-weight: 500;}
+.three-col--desc {font-size: 16pt; @apply text-start mt-1 text-gray-700; font-weight: 400;}
+
+.login--input {font-size: 14pt; @apply w-64 p-2 mx-2 rounded border border-gray-300;}
+.login--label {font-size: 14pt; @apply mx-2 mt-2 text-gray-800; font-weight: 500;}
+.login--btn-container {display: flex; flex-direction: row; justify-content: start;}
+.login--btn {@apply bg-gray-800 text-white mt-4 mx-2 p-1 w-32 rounded-full; font-size: 14pt; transition: box-shadow opacity 0.4s ease;}
+.login--btn:hover {@apply bg-gray-800; box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2); opacity: 90%;}
+three-col.svg {@apply text-gray-800;}
