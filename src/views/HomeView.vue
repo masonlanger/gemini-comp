@@ -11,7 +11,6 @@
     <div class="home">
         <TitleParagraphWidget title="Welcome to Fellow" subtitle="AI-powered writing feedback based around you." />
         <br />
-        <LogInWidget />
         <br />
         <ThreeColumnCallout
             callout1="Emphasize Your Voice"
