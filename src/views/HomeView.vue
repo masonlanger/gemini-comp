@@ -1,17 +1,16 @@
 <script setup>
     import TitleParagraphWidget  from '../components/TitleWidget.vue'
     import ThreeColumnCallout from '../components/ThreeColumnCallout.vue'
-    import LogInWidget from '../components/LogInWidget.vue'
+
     defineProps({
         loggedIn: Boolean
     })
 </script>
 
+
 <template>
     <div class="home">
         <TitleParagraphWidget title="Welcome to Fellow" subtitle="AI-powered writing feedback based around you." />
-        <br />
-        <LogInWidget />
         <br />
         <ThreeColumnCallout
             callout1="Emphasize Your Voice"

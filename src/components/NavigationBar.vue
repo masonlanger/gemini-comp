@@ -1,19 +1,14 @@
 <script setup>
 import NavigationBarItem from './NavigationBarItem.vue'
 import { faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 defineProps({
     loggedIn: Boolean
 })
 
-function toggleNav() {
-    var nav = document.getElementsByClassName("navbar")[0];
-    var navitems = document.querySelectorAll(".navbar__items");
-    navitems.forEach((item) => {
-        item.classList.toggle("isHidden");
-    });
-    nav.classList.toggle("isHidden");
-}
 
 </script>
 
@@ -27,7 +22,11 @@ function toggleNav() {
         <div class="navbar__items">
             <NavigationBarItem name="Dashboard" route="dashboard" />
             <NavigationBarItem name="Library" route="lib" />
-            <NavigationBarItem name="Profile" route="profile" />
+            <NavigationBarItem name="Profile" route="profile" /> 
+            <button @click="handleSignOut"> Logout </button> 
+            <NavigationBarItem name="Login" route="login" />
+            <NavigationBarItem name="Register" route="register" />
+            </span>
         </div>
     </nav>
     <!-- <nav class="navbar">
