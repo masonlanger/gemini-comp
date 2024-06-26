@@ -6,7 +6,6 @@ defineProps({
     loggedIn: Boolean
 })
 
-
 function toggleNav() {
     var nav = document.getElementsByClassName("navbar")[0];
     var navitems = document.querySelectorAll(".navbar__items");
@@ -15,7 +14,6 @@ function toggleNav() {
     });
     nav.classList.toggle("isHidden");
 }
-
 
 </script>
 

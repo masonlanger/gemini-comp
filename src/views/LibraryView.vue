@@ -1,5 +1,5 @@
 <script setup>
-    import { usersRef } from '@/firebaseConfig'
+    import { usersRef } from '@/main'
     import { useCollection } from 'vuefire'
     import TitleWidget from '../components/TitleWidget.vue'
     import AddNewNotebook from '../components/AddNewNotebook.vue'

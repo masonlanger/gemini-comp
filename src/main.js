@@ -1,5 +1,4 @@
 import './index.css'
-
 import { createApp } from 'vue'
 import App from './App.vue'
 import routes from './router'
@@ -18,8 +17,26 @@ const router = createRouter({
   routes
 })
 
+//libraries
 library.add(fas)
 
+//firebaseConfig
+const firebaseConfig = {
+  apiKey: "AIzaSyDJVdA_3RrXlVhYBe2BTS8VltoZsKwbMi8",
+  authDomain: "writing-fellow.firebaseapp.com",
+  projectId: "writing-fellow",
+  storageBucket: "writing-fellow.appspot.com",
+  messagingSenderId: "93130071094",
+  appId: "1:93130071094:web:137a6a6d4defd98e898c97",
+  measurementId: "G-C45TTXCC59"
+};
+
+// Initialize Firebase
+export const firebaseApp = initializeApp(firebaseConfig);
+export const db = getFirestore(firebaseApp);
+export const usersRef = collection(db, 'users');
+
+//web app set up and mount
 createApp(App)
     .use(router)
     .use(VueFire, {
