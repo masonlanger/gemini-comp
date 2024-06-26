@@ -7,11 +7,11 @@ defineProps({
     commentRate: {
         type: String,
         required: true
-    }
+    },
     outputLength: {
         type: String,
         required: true
-    }
+    },
     inputText: {
         type: String,
         required: true
