@@ -3,6 +3,13 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import routes from './router'
 
+import { createMemoryHistory, createRouter } from 'vue-router'
+
+const router = createRouter({
+  history: createMemoryHistory(),
+  routes
+})
+
 import { VueFire, VueFireAuth } from 'vuefire'
 import { firebaseApp } from './firebaseConfig'
 

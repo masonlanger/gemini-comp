@@ -28,8 +28,6 @@ function toggleNav() {
             <NavigationBarItem name="Dashboard" route="dashboard" />
             <NavigationBarItem name="Library" route="lib" />
             <NavigationBarItem name="Profile" route="profile" />
-            <NavigationBarItem name="Login" route="login" />
-            <NavigationBarItem name="Register" route="register" />
         </div>
     </nav>
     <!-- <nav class="navbar">
