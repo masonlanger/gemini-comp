@@ -10,7 +10,7 @@ defineProps({
 <template>
     <div class="notebook-thumbnail">
         <div>
-            <h2 class="notebook-thumbnail--title">{{ notebook.title }}</h2>
+            <h2 class="notebook-thumbnail--title">{{ notebook.Title }}</h2>
         </div>
     </div>
 </template>
