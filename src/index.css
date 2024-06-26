@@ -54,7 +54,7 @@
     main {display: flex; flex-direction: row;}
 }
 
-form {display: flex; flex-direction: column; align-items: start}
+.form {display: flex; flex-direction: column; align-items: start}
 .row {@apply flex flex-row space-x-12; width: 100%;}
 .column {@apply text-center text-wrap;}
 .tpw {width:75%; text-wrap: wrap; float: left;}
