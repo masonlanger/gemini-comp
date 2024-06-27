@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper-center login-view">
-      <form>
+      <div class="form">
         <div class="wrapper-start">
           <h3 class="login-view--title">Think it. Write it.</h3>
           <h3 class="login-view--subtitle">Log into your Fellow account</h3>
@@ -22,7 +22,7 @@
                 </div>
           </button>
           <span style="align-self:center; margin-top: 0.5rem;">or</span>
-          <label class="login--label" for="username">Email</label>
+          <label class="login--label" for="email">Email</label>
           <input class="login--input" type="text" name="email" placeholder="Email" v-model="email">
           <label class="login--label" for="password">Password</label>
           <input class="login--input" type="password" name="password" placeholder="Password" v-model="password">
@@ -30,7 +30,7 @@
           <div class="login--btn-container">
               <button class="login--btn" @click="login">Continue</button>
           </div>
-      </form>
+      </div>
     </div>
 </template>
 
@@ -46,6 +46,7 @@ const errMsg = ref() // ERROR MESSAGE
 const router = useRouter() // get a reference to our vue router
 
 const login = () => { // we also renamed this method 
+  console.log("Logging in")
   signInWithEmailAndPassword(getAuth(),email.value, password.value) // THIS LINE CHANGED
     .then((data) => {
       console.log('Successfully logged in!');
