@@ -1,9 +1,7 @@
 <script setup>
 import NavigationBarItem from './NavigationBarItem.vue'
 import { faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
 
 defineProps({
     loggedIn: Boolean
@@ -26,7 +24,6 @@ defineProps({
             <button @click="handleSignOut"> Logout </button> 
             <NavigationBarItem name="Login" route="login" />
             <NavigationBarItem name="Register" route="register" />
-            </span>
         </div>
     </nav>
     <!-- <nav class="navbar">
