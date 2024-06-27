@@ -24,19 +24,23 @@
         // clear up listener
         authListener()
     })
+
+
 </script>
 
 <template>
-    <TitleWidget title="Library" />
-    <div class="row">
+    <div class="home">
+        <TitleWidget title="Library" />
+        <div class="row">
             <!-- <NotebookThumbnail v-for="notebook in notebooks" :notebook="notebook" :key="notebook.id" /> -->
             <Suspense>
-                <NotebookContainer userID="xR1hwZsxzs75nIzLSlEj"/>
+                <NotebookContainer />
                 <template #fallback>
                     <!--Code for skeleton rendering goes here-->
                     <!-- Dummy notebook thumbnail -->
                     Loading...
                 </template>
             </Suspense>
+        </div>
     </div>
 </template>

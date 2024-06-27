@@ -10,7 +10,9 @@ defineProps({
 <template>
     <div class="notebook-thumbnail">
         <div>
-            <h2 class="notebook-thumbnail--title">{{ notebook.Title }}</h2>
+            <font-awesome-icon class="fa-2x" :icon="['fas', 'book-open']" />
+            <br/>
+            <h2 class="notebook-thumbnail--title">{{ notebook.name }}</h2>
         </div>
     </div>
 </template>

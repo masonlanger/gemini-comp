@@ -136,6 +136,8 @@ three-col.svg {@apply text-gray-800;}
     cursor: pointer;
 }
 
+.notebook-logo {display: flex; flex-direction: column; align-items: start; text-align: center; width:min-content; @apply mx-2}
+
 .gsi-material-button {
     -moz-user-select: none;
     -webkit-user-select: none;

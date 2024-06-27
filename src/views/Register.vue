@@ -3,7 +3,7 @@
     <div class="form">
       <div class="wrapper-start">
         <h3 class="login-view--title">Think it. Write it.</h3>
-        <h3 class="login-view--subtitle">Log into your Fellow account</h3>
+        <h3 class="login-view--subtitle">Join the Fellow community</h3>
       </div>
       <button class="gsi-material-button" style="width:16rem; margin-top: 1rem;" @click="regGoogle">
               <div class="gsi-material-button-state"></div>

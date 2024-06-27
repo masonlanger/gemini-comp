@@ -4,17 +4,14 @@
     import NotebookThumbnail from '../components/NotebookThumbnail.vue'
     import { db } from '@/firebaseConfig';
     import { doc, getDoc, collection, query, getDocs } from 'firebase/firestore';
-    const props = defineProps({
-        userID: {
-            type: String,
-            required: true
-        }
-    })
+    import { getAuth } from 'firebase/auth';
+    
+    const currUid = getAuth().currentUser.uid;
 
-    const docRef = doc(db, 'users', props.userID)
+    const docRef = doc(db, 'users', currUid)
     const user = await getDoc(docRef).then(docSnap => docSnap.data())
 
-    const retrieveNotebooks = query(collection(db, `users/${props.userID}/Notebooks`));
+    const retrieveNotebooks = query(collection(db, `users/${currUid}/notebooks`));
     const notebooks = await getDocs(retrieveNotebooks).then(
         querySnapshot => querySnapshot.docs.map(doc => {
             console.log(doc.data());
