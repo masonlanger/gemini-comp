@@ -22,8 +22,8 @@
                 </div>
           </button>
           <span style="align-self:center; margin-top: 0.5rem;">or</span>
-          <label class="login--label" for="username">Username or Email</label>
-          <input class="login--input" type="text" name="username" placeholder="Username or Email" v-model="email">
+          <label class="login--label" for="username">Email</label>
+          <input class="login--input" type="text" name="email" placeholder="Email" v-model="email">
           <label class="login--label" for="password">Password</label>
           <input class="login--input" type="password" name="password" placeholder="Password" v-model="password">
           <div v-if="errMsg">{{ errMsg }}</div>
@@ -52,6 +52,8 @@ const login = () => { // we also renamed this method
       router.push('/lib') // redirect to the feed
     })
     .catch(error => {
+      console.log(error.code)
+      console.log(email.value)
       switch (error.code) {
         case 'auth/invalid-email':
             errMsg.value = 'Invalid email'
