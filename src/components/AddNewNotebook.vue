@@ -20,7 +20,7 @@ function postNewNotebook() {
                 score: 0,
                 summary: "",
             },
-            creativtty: {
+            creativity: {
                 score: 0,
                 summary: "",
             },

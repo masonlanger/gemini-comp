@@ -38,7 +38,7 @@
 import { ref } from 'vue'
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { useRouter } from 'vue-router' // import router
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc, collection } from "firebase/firestore"; 
 import { db } from '../firebaseConfig'
 
 const email = ref('')
@@ -48,10 +48,21 @@ const router = useRouter() // get a reference to our vue router
 const register = () => {
     createUserWithEmailAndPassword(getAuth(),email.value, password.value) // need .value because ref()
     .then((data) => {
-      setDoc(doc(db, "users", getAuth().currentUser.uid), {
+      const docRef = doc(db, "users", getAuth().currentUser.uid);
+      setDoc(docRef, {
+        username: "",
         userType: "free",
-        email: email.value
+        email: getAuth().currentUser.email,
+        userSettings: {
+          theme: "",
+          fontSize: "",
+          defaultPublishStatus: 0
+        },
+        userFocuses: [],
+        registeredDate: new Date(),
+        lastLogin: new Date(),
       });
+      
       console.log('Successfully registered!');
       router.push('/lib') // redirect to the feed
     })
@@ -65,10 +76,21 @@ const regGoogle = () => {
   const provider = new GoogleAuthProvider();
   signInWithPopup(getAuth(), provider)
     .then((result) => {
-      setDoc(doc(db, "users", getAuth().currentUser.uid), {
+      const docRef = doc(db, "users", getAuth().currentUser.uid);
+      setDoc(docRef, {
+        username: "",
         userType: "free",
-        email: getAuth().currentUser.email
+        email: getAuth().currentUser.email,
+        userSettings: {
+          theme: "",
+          fontSize: "",
+          defaultPublishStatus: 0
+        },
+        userFocuses: [],
+        registeredDate: new Date(),
+        lastLogin: new Date(),
       });
+
       console.log('Successfully registered!');
       router.push('/lib') // redirect to the feed
     })

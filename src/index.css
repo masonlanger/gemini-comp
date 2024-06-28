@@ -57,6 +57,7 @@
 }
 
 .form {display: flex; flex-direction: column; align-items: start; text-align: center; width:min-content; @apply mx-2}
+.hover-appear {}
 .row {@apply flex flex-row space-x-12; width: 100%;}
 .column {@apply text-center text-wrap;}
 .wrapper-center {@apply flex flex-col items-center;}
@@ -65,6 +66,16 @@
 
 .title {font-size: 64pt; font-weight: bold; @apply mb-0 text-gray-800; text-decoration: underline; text-decoration-thickness: 0.35rem;}
 .subtitle {font-size: 40pt; font-weight: bold; @apply mb-0 text-gray-800;}
+.trash-icon {
+    position: relative;
+    top: 0;
+    right: 0;
+    opacity: 0%;
+}
+.trash-icon:hover {
+    opacity: 70%;
+    cursor: pointer;
+}
 .tpw--subtitle {font-size: 32pt; @apply mt-0 mb-0 text-gray-700;}
 .tpw--paragraph {font-size: 24pt; @apply mt-0 font-light text-gray-700;}
 .html {
@@ -115,12 +126,17 @@ three-col.svg {@apply text-gray-800;}
 }
 
 .notebook-thumbnail {
-    @apply bg-gray-100 p-4 flex flex-col;
+    @apply bg-gray-100 p-4;
     width: 14rem;
     aspect-ratio: 1/1;
+    transition: box-shadow opacity 0.3s ease;
+}
+
+.notebook-thumbnail--flex {
+    @apply flex flex-col;
     justify-content: end;
     align-items: center;
-    transition: box-shadow opacity 0.3s ease;
+    height: 90%;
 }
 
 .notebook-thumbnail--title {
@@ -134,6 +150,9 @@ three-col.svg {@apply text-gray-800;}
     opacity: 80%;
     box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2);
     cursor: pointer;
+    .trash-icon {
+        opacity: 100%;
+    }
 }
 
 .notebook-logo {display: flex; flex-direction: column; align-items: start; text-align: center; width:min-content; @apply mx-2}
