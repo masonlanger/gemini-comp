@@ -38,6 +38,8 @@
 import { ref } from 'vue'
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup} from 'firebase/auth'
 import { useRouter } from 'vue-router' // import router
+import { doc, setDoc } from "firebase/firestore"; 
+import { db } from '../firebaseConfig'
 
 const email = ref('')
 const password = ref('')
@@ -76,6 +78,10 @@ const regGoogle = () => {
   const provider = new GoogleAuthProvider();
   signInWithPopup(getAuth(), provider)
     .then((result) => {
+      setDoc(doc(db, "users", getAuth().currentUser.uid), {
+        userType: "free",
+        email: getAuth().currentUser.email
+      });
       console.log('Successfully registered!');
       router.push('/lib') // redirect to the feed
     })
