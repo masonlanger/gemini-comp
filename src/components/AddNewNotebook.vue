@@ -45,8 +45,7 @@ function postNewNotebook() {
     });
 
     const router = useRouter();
-    const routeData = router.resolve({path: '/editor', query: {data: doc.id}});
-    window.open(routeData.href, '_blank');
+    router.push('/');
 }
 </script>
 

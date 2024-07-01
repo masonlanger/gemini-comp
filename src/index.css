@@ -261,3 +261,6 @@ three-col.svg {@apply text-gray-800;}
     opacity: 8%;
   }
   
+  .comment {
+    @apply rounded-md;
+  }

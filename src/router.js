@@ -7,11 +7,11 @@ import EditorView from './views/EditorView.vue'
 
 const routes = [
     { path: '/', component: HomeView },
-    { path: '/dashboard', component: DashboardView },
-    { path: '/lib', component: LibraryView },
+    { path: '/dashboard', component: DashboardView, meta: {requiresAuth: true} },
+    { path: '/lib', component: LibraryView, meta: {requiresAuth: true} },
     { path: '/login', component: LoginView },
     { path: '/register', component: Register },
-    { path: '/editor', component: EditorView }
+    { path: '/editor', component: EditorView, meta: {requiresAuth: true} }
 
 ]
 export default routes;
