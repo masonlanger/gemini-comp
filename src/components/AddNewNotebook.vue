@@ -2,12 +2,13 @@
 import { db } from '@/firebaseConfig';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth'
+import { useRouter } from 'vue-router'
     
 const currUid = getAuth().currentUser.uid;
 
 
 function postNewNotebook() {
-    addDoc(collection(db, "users", currUid, "notebooks"), {
+    const doc = addDoc(collection(db, "users", currUid, "notebooks"), {
         name: "Untitled",
         text: "",
         timestamp: serverTimestamp(),
@@ -42,6 +43,10 @@ function postNewNotebook() {
             },
         },
     });
+
+    const router = useRouter();
+    const routeData = router.resolve({path: '/editor', query: {data: doc.id}});
+    window.open(routeData.href, '_blank');
 }
 </script>
 
