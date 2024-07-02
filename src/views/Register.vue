@@ -87,8 +87,6 @@ const regGoogle = () => {
           defaultPublishStatus: 0
         },
         userFocuses: [],
-        registeredDate: new Date(),
-        lastLogin: new Date(),
       });
 
       console.log('Successfully registered!');

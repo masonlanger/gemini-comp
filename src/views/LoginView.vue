@@ -38,7 +38,7 @@
 import { ref } from 'vue'
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup} from 'firebase/auth'
 import { useRouter } from 'vue-router' // import router
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore"; 
 import { db } from '../firebaseConfig'
 
 const email = ref('')
@@ -78,15 +78,32 @@ const regGoogle = () => {
   const provider = new GoogleAuthProvider();
   signInWithPopup(getAuth(), provider)
     .then((result) => {
-      setDoc(doc(db, "users", getAuth().currentUser.uid), {
-        userType: "free",
-        email: getAuth().currentUser.email
-      });
-      console.log('Successfully registered!');
-      router.push('/lib') // redirect to the feed
+      const docRef = doc(db, "users", getAuth().currentUser.uid);
+      getDoc(docRef).then(docSnap => {
+        if (docSnap.exists()) {
+          console.log('Successfully logged in!');
+          router.push('/lib') // redirect to the feed
+        } else {
+          setDoc(docRef, {
+          username: "",
+          userType: "free",
+          email: getAuth().currentUser.email,
+          userSettings: {
+            theme: "",
+            fontSize: "",
+            defaultPublishStatus: 0
+          },
+          userFocuses: [],
+          });
+          console.log('Successfully logged in!');
+          router.push('/lib') // redirect to the feed
+        }
+      })
     })
     .catch((error) => {
       console.log(error.code)
+      alert(error.message);
     })
 };
+
 </script>
