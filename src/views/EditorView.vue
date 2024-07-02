@@ -20,6 +20,5 @@
 </script>
 
 <template>
-    <TitleWidget title="Editor" />
     <textEditor />
 </template>

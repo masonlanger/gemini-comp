@@ -25,29 +25,6 @@ const handleSignOut = () => {
 }
 </script>
 
-<!-- <template>
-  <main>
-    <span v-if="isLoggedIn">
-      <nav class="navbar">
-        <div class="navbar__items">
-          <NavigationBarItem name="Home" route="/" />
-          <NavigationBarItem name="Dashboard" route="dashboard" />
-          <NavigationBarItem name="Library" route="lib" />
-          <NavigationBarItem name="Profile" route="profile" />
-          <NavigationBarItem @click="handleSignOut" name="Logout" route="/" />
-        </div>
-      </nav>
-    </span>
-    <span v-else>
-      <nav class="navbar">
-        <div class="navbar__items">
-          <NavigationBarItem name="Home" route="/" />
-          <NavigationBarItem name="Login" route="login" />
-          <NavigationBarItem name="Register" route="register" />
-        </div>
-      </nav>
-    </span> -->
-
 <template>
     <nav v-if="isLoggedIn" class="navbar">
         <div class="collapse">
@@ -56,9 +33,9 @@ const handleSignOut = () => {
             </button>
         </div>
         <div class="navbar__items">
-            <NavigationBarItem name="Dashboard" route="dashboard" />
-            <NavigationBarItem name="Library" route="lib" />
-            <NavigationBarItem name="Profile" route="profile" /> 
+            <NavigationBarItem name="Dashboard" route="/dashboard" />
+            <NavigationBarItem name="Library" route="/lib" />
+            <NavigationBarItem name="Profile" route="/profile" /> 
             <NavigationBarItem name="Sign Out" :action=handleSignOut route="/" />
         </div>
     </nav>

@@ -62,9 +62,9 @@
 .column {@apply text-center text-wrap;}
 .wrapper-center {@apply flex flex-col items-center;}
 .wrapper-start {@apply flex flex-col items-start;}
-.tpw {width:75%; text-wrap: wrap; float: left;}
+.tpw {width:100%; text-wrap: wrap; float: left;}
 
-.title {font-size: 64pt; font-weight: bold; @apply mb-0 text-gray-800; text-decoration: underline; text-decoration-thickness: 0.35rem;}
+.title {font-size: 64pt; font-weight: bold; @apply mb-0 text-gray-800;}
 .subtitle {font-size: 40pt; font-weight: bold; @apply mb-0 text-gray-800;}
 .trash-icon {
     position: relative;
@@ -263,4 +263,10 @@ three-col.svg {@apply text-gray-800;}
   
   .comment {
     @apply rounded-md;
+  }
+
+  .ql-toolbar{
+    display: flex;
+    justify-content: end;
+    border: none !important;
   }

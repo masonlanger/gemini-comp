@@ -1,9 +1,10 @@
 <script setup>
     import TitleWidget from '@/components/TitleWidget.vue';
     import { db } from '@/firebaseConfig';
-    import { useRouter, onBeforeRouteUpdate, useRoute } from 'vue-router'
-    import { ref, onMounted } from 'vue'
+    import { useRouter, useRoute } from 'vue-router'
+    import { ref } from 'vue'
     import { getAuth, onAuthStateChanged } from 'firebase/auth';
+    import EditorView from '@/views/EditorView.vue';
     import { doc, getDoc } from 'firebase/firestore';
     const router = useRouter();
 
@@ -35,5 +36,6 @@
 </script>
 
 <template>
-    <TitleWidget :title=notebookData.name />
+    <TitleWidget editable :title=notebookData.name :uid=currUid />
+    <EditorView />
 </template>
