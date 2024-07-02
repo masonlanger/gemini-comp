@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-import { getDoc } from 'firebase/firestore';
+import { db } from '@/firebaseConfig';
+import { updateDoc, doc } from 'firebase/firestore';
 const props = defineProps({
     title: {
         type: String,
@@ -18,6 +19,10 @@ const props = defineProps({
         type: String,
         required: false
     },
+    notebookId: {
+        type: String,
+        required: false
+    },
     editable: {
         fast: Boolean
     }
@@ -25,10 +30,13 @@ const props = defineProps({
 
 const notebookTitle = ref(props.title);
 console.log(props.uid);
+console.log(props.notebookId);
 
 const submitTitle = () => {
-    console.log(notebookTitle.value);
-
+    const docRef = doc(db, "users", props.uid, "notebooks", props.notebookId);
+    updateDoc(docRef, {
+        name: notebookTitle.value
+    });
 }
 </script>
 
@@ -36,7 +44,6 @@ const submitTitle = () => {
     <div v-if=props.editable class="tpw">
         <div class="flex flex-row items-center space-x-4">
             <form @submit.prevent="submitTitle"><input type="text" :value='notebookTitle' @input="notebookTitle = $event.target.value" class="title" /></form>
-            <font-awesome-icon class="fa-2x hover-appear" :icon="['fas', 'pencil']" />
         </div>
         <h3 v-if="subtitle" class="tpw--subtitle">{{ subtitle }}</h3>
         <p v-if="paragraph" class="tpw--paragraph">{{ paragraph }}</p>

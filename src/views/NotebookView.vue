@@ -18,9 +18,10 @@
     const notebookData = ref(null);
         const currUid = getAuth().currentUser.uid;
         const route = useRoute();
+        const notebookId = route.params.id;
         console.log("Params: " + route.params.id);
-        console.log("Path: users/" + currUid + "/notebooks/" + route.params.id);
-        const docRef = doc(db, "users", currUid, "notebooks", route.params.id);
+        console.log("Path: users/" + currUid + "/notebooks/" + notebookId);
+        const docRef = doc(db, "users", currUid, "notebooks", notebookId);
         console.log(docRef)
         notebookData.value = await getDoc(docRef).then((doc) => {
             if (doc.exists()) {
@@ -36,6 +37,6 @@
 </script>
 
 <template>
-    <TitleWidget editable :title=notebookData.name :uid=currUid />
+    <TitleWidget :editable="true" :title=notebookData.name :uid=currUid :notebookId=notebookId />
     <EditorView />
 </template>
