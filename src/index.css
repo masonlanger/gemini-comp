@@ -21,7 +21,7 @@
     }
     .isHidden {}   
     .navbar__items{
-        @apply flex flex-row;
+        @apply flex flex-row justify-end;
     }
     .collapse {display: none; height: 0;}
     main {display: block;}

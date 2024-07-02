@@ -9,7 +9,9 @@ import NavigationBar from './components/NavigationBar.vue';
     <main>
       <NavigationBar />
     <!-- TODO: add router-view logic? for now, keep static view -->
-      <RouterView />
+      <Suspense>
+        <RouterView />
+      </Suspense>
     <!-- <HomePage loggedIn="isLoggedIn"/> -->
   </main>
 </template>

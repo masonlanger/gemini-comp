@@ -1,11 +1,4 @@
 <script setup>
-    defineProps({
-    userID: {
-        type: Object,
-        required: true
-    },
-    })
-
     import TitleWidget from '../components/TitleWidget.vue'
     import NotebookContainer from '../components/NotebookContainer.vue'
     import { getAuth,onAuthStateChanged } from 'firebase/auth'
