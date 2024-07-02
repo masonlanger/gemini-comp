@@ -14,12 +14,10 @@ const props = defineProps({
 const router = useRouter();
 
 function deleteNotebook() {
-    console.log(props.notebook.id);
     deleteDoc(doc(db, "users", currUid, "notebooks", props.notebook.id));
 }
 
 function onThumbnailClick() {
-    console.log("thumbnail clicked");
     router.push(`/notebook/${props.notebook.id}`);
 }
 

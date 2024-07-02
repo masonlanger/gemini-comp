@@ -29,8 +29,6 @@ const props = defineProps({
 })
 
 const notebookTitle = ref(props.title);
-console.log(props.uid);
-console.log(props.notebookId);
 
 const submitTitle = () => {
     const docRef = doc(db, "users", props.uid, "notebooks", props.notebookId);
