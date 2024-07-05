@@ -51,6 +51,11 @@ const login = () => { // we also renamed this method
   console.log("Logging in")
   signInWithEmailAndPassword(getAuth(),email.value, password.value) // THIS LINE CHANGED
     .then((data) => {
+      const uid = getAuth().currentUser.uid;
+      const docRef = doc(db, "users", uid);
+      updateDoc(docRef, {
+        lastLogin: new Date()
+      });
       console.log('Successfully logged in!');
       router.push('/lib') // redirect to the feed
     })
@@ -81,6 +86,9 @@ const regGoogle = () => {
       const docRef = doc(db, "users", getAuth().currentUser.uid);
       getDoc(docRef).then(docSnap => {
         if (docSnap.exists()) {
+        updateDoc(docRef, {
+          lastLogin: new Date()
+        });
           console.log('Successfully logged in!');
           router.push('/lib') // redirect to the feed
         } else {

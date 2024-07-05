@@ -64,7 +64,7 @@
 .wrapper-start {@apply flex flex-col items-start;}
 .tpw {width:100%; text-wrap: wrap; float: left;}
 
-.title {font-size: 64pt; font-weight: bold; @apply mb-0 text-gray-800;}
+.title {font-size: 40pt; font-weight: bold; @apply mb-0 text-gray-800;}
 .subtitle {font-size: 40pt; font-weight: bold; @apply mb-0 text-gray-800;}
 .trash-icon {
     position: relative;
@@ -76,8 +76,8 @@
     opacity: 70%;
     cursor: pointer;
 }
-.tpw--subtitle {font-size: 32pt; @apply mt-0 mb-0 text-gray-700;}
-.tpw--paragraph {font-size: 24pt; @apply mt-0 font-light text-gray-700;}
+.tpw--subtitle {font-size: 24pt; @apply mt-0 mb-0 text-gray-700;}
+.tpw--paragraph {font-size: 20pt; @apply mt-0 font-light text-gray-700;}
 .html {
     font-family: Arial, Helvetica, sans-serif
 }
@@ -279,4 +279,8 @@ three-col.svg {@apply text-gray-800;}
     margin: 1rem;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
     background-color: white;
+  }
+
+  .prof-username {
+    font-size: 18pt;
   }
