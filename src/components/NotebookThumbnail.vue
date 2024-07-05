@@ -18,7 +18,7 @@ function deleteNotebook() {
 }
 
 function onThumbnailClick() {
-    router.push(`/notebook/${props.notebook.id}`);
+    window.open('https://localhost:8080/?u=' + currUid + '&nb=' + props.notebook.id, "_blank");
 }
 
 </script>

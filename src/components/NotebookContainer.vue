@@ -6,7 +6,6 @@
     import { db } from '@/firebaseConfig';
     import { collection } from 'firebase/firestore';
     import { getAuth } from 'firebase/auth';
-    import textEditor from './textEditor.vue';
     
     const currUid = getAuth().currentUser.uid;
     const notebooks = useCollection(collection(db, "users", currUid, "notebooks" ));

@@ -1,24 +1,18 @@
 <script setup>
     import TitleWidget from '../components/TitleWidget.vue'
     import NotebookContainer from '../components/NotebookContainer.vue'
+    import { ref } from 'vue';
     import { getAuth,onAuthStateChanged } from 'firebase/auth'
     import { useRouter } from 'vue-router'
     import { onBeforeUnmount } from 'vue'
+    import { useCollection } from 'vuefire'
+    import { db } from '@/firebaseConfig';
+    import { collection } from 'firebase/firestore';
 
-    /*const router = useRouter()
-    const authListener = onAuthStateChanged(getAuth(),function(user) {
-        if (!user) { // not logged in
-            alert('you must be logged in to view this. redirecting to the home page')
-            router.push('/')
-        }
-    });
+    const working = ref(false)
 
-    onBeforeUnmount(() => {
-        // clear up listener
-        authListener()
-    })*/
-
-
+    const currUid = getAuth().currentUser.uid;
+    const notebooks = useCollection(collection(db, "users", currUid, "notebooks" ));
 </script>
 
 <template>
