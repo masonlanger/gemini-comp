@@ -281,6 +281,9 @@ three-col.svg {@apply text-gray-800;}
     background-color: white;
   }
 
-  .prof-username {
-    font-size: 18pt;
-  }
+  .prof-username {font-size: 18pt;}
+  .prof-tagline { font-size: 14pt;}
+  .prof-focus {@apply bg-gray-100 text-gray-600 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
+  .prof-focus:hover {font-weight: 400; cursor: pointer; @apply bg-gray-200}
+  .prof-add {@apply bg-gray-600 text-gray-100 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
+  .prof-add:hover {font-weight: 400; cursor: pointer; @apply bg-gray-700} 
