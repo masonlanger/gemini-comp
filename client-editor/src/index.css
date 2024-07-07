@@ -28,9 +28,9 @@ body {
   position: sticky;
   top: 0;
   z-index: 1;
-  background-color: #F3F3F3;
+  background-color: #e1e1e1;
   border: none;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
+  box-shadow: 0 5px 5px -5px rgba(0, 0, 0, .5);
 }
 
 @page {
@@ -54,4 +54,17 @@ body {
   .container .ql-toolbar.ql-snow {
     display: none;
   }
+}
+
+.titlebar .ql-container {
+  background-color: #e1e1e1;
+  font-size: 20px;
+  font-weight: 550;
+  display: flex;
+  justify-content: left;
+}
+
+.titlebar .ql-editor {
+  min-width: 100px;
+  height: 50px;
 }

@@ -1,10 +1,14 @@
 import TextEditor from './TextEditor'
-import React, { useRef, useState } from 'react';
+import TitleBar from './TitleBar'
+import React from 'react';
 
 
 function App() {
-
-  return <TextEditor />
-}
+  return (
+  <div>
+    <TitleBar />
+    <TextEditor />
+  </div>
+)}
 
 export default App;
