@@ -93,15 +93,17 @@ const regGoogle = () => {
           router.push('/lib') // redirect to the feed
         } else {
           setDoc(docRef, {
-          username: "",
-          userType: "free",
-          email: getAuth().currentUser.email,
-          userSettings: {
-            theme: "",
-            fontSize: "",
-            defaultPublishStatus: 0
-          },
-          userFocuses: [],
+            username: "",
+            userType: "free",
+            email: getAuth().currentUser.email,
+            userSettings: {
+              theme: "",
+              fontSize: "",
+              defaultPublishStatus: 0
+            },
+            userFocuses: [],
+            registeredDate: new Date(),
+            lastLogin: new Date(),
           });
           console.log('Successfully logged in!');
           router.push('/lib') // redirect to the feed
