@@ -23,6 +23,7 @@ function deleteNotebook() {
 }
 
 function onThumbnailClick() {
+    if(!props.edittable) return;
     window.open('http://localhost:3000/?u=' + currUid + '&nb=' + props.notebook.id, "_blank");
 }
 
