@@ -15,6 +15,6 @@
 <template>
     <div class="row">
             <AddNewNotebook />
-            <NotebookThumbnail v-for="notebook in notebooks" :notebook="notebook" :key="notebook.id" />
+            <NotebookThumbnail v-for="notebook in notebooks" :notebook="notebook" :key="notebook.id" edittable/>
     </div>
 </template>

@@ -9,6 +9,9 @@ const props = defineProps({
     notebook: {
         type: Object,
         required: true
+    },
+    edittable: {
+        fast: Boolean
     }
 })
 const router = useRouter();

@@ -23,9 +23,9 @@
           </button>
           <span style="align-self:center; margin-top: 0.5rem;">or</span>
           <label class="login--label" for="email">Email</label>
-          <input class="login--input" type="text" name="email" placeholder="Email" v-model="email">
+          <input class="login--input" type="text" name="email" placeholder="Email" v-model="email" @keyup.enter="login">
           <label class="login--label" for="password">Password</label>
-          <input class="login--input" type="password" name="password" placeholder="Password" v-model="password">
+          <input class="login--input" type="password" name="password" placeholder="Password" v-model="password" @keyup.enter="login">
           <div v-if="errMsg">{{ errMsg }}</div>
           <div class="login--btn-container">
               <button class="login--btn" @click="login">Continue</button>

@@ -284,8 +284,13 @@ three-col.svg {@apply text-gray-800;}
 
   .prof-username {font-size: 18pt;}
   .prof-tagline { font-size: 14pt;}
-  .prof-focus {@apply bg-gray-100 text-gray-600 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
-  .prof-focus:hover {font-weight: 400; cursor: pointer; @apply bg-gray-200}
+  .prof-focus-removable {@apply bg-gray-100 text-gray-600 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
+  .prof-focus-removable:hover {font-weight: 400; cursor: pointer; @apply bg-rose-100}
+  .prof-focus-add {@apply bg-gray-100 text-gray-600 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
+  .prof-focus-add:hover {font-weight: 400; cursor: pointer; @apply bg-blue-100}
+  .prof-focus-included {@apply bg-blue-950 text-gray-100 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
+  .prof-focus-included:hover {font-weight: 400; cursor: pointer; @apply bg-gray-700} 
   .prof-add {@apply bg-gray-600 text-gray-100 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
   .prof-add:hover {font-weight: 400; cursor: pointer; @apply bg-gray-700} 
   .prof-img {@apply bg-gray-200 rounded; width: 14rem; aspect-ratio: 1/1;}
+  .prof-img:hover {@apply bg-gray-300; opacity: 80%; box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2); cursor: pointer;}
