@@ -11,11 +11,13 @@ const props = defineProps({
         required: true
     },
     edittable: {
-        fast: Boolean
+        type: Boolean,
+        default: false,
+        required: true
     }
 })
 const router = useRouter();
-
+console.log(props.edittable);
 function deleteNotebook() {
     deleteDoc(doc(db, "users", currUid, "notebooks", props.notebook.id));
 }
@@ -28,7 +30,7 @@ function onThumbnailClick() {
 
 <template>
     <div class="notebook-thumbnail">
-        <font-awesome-icon class="fa-1x trash-icon hover-appear" :icon="['fas', 'trash']" @click="deleteNotebook"/>
+        <font-awesome-icon v-if=props.edittable class="fa-1x trash-icon hover-appear" :icon="['fas', 'trash']" @click="deleteNotebook"/>
         <div class="notebook-thumbnail--flex" @click="onThumbnailClick">
             <div class="flex items-center space-x-1 text-gray-700">
                 <font-awesome-icon class="fa-1x" :icon="['fas', 'book-open']" />

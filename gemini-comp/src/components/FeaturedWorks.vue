@@ -21,6 +21,6 @@
 
 <template>
     <div class="row">
-            <NotebookThumbnail v-for="notebook in featuredNotebooks" :notebook="notebook" :key="notebook.id"/>
+            <NotebookThumbnail :edittable=false v-for="notebook in featuredNotebooks" :notebook="notebook" :key="notebook.id"/>
     </div>
 </template>
