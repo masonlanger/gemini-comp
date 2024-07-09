@@ -11,7 +11,6 @@ const docRef = doc(db, "users", user, "notebooks", nb);
 
 
 
-
 export default function TitleBar() {
     const wrapperRef = useCallback((wrapper) => {
         if (wrapper == null) return
@@ -41,7 +40,6 @@ export default function TitleBar() {
                 name: q.getText()
             })
         })
-
     }, [])
     return (
     <div>

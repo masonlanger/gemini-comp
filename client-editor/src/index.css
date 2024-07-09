@@ -62,9 +62,22 @@ body {
   font-weight: 550;
   display: flex;
   justify-content: left;
-}
-
-.titlebar .ql-editor {
   min-width: 100px;
   height: 50px;
+  
+}
+
+.suggestion {
+  z-index: 1;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 3.2in;
+  min-height: 1in;
+  background-color: rgba(96, 79, 178, 0.648);
+  border: rgb(84, 66, 175);
+  border-radius: 10px;
+  inline-size: 3.1in;
+  padding: 10px;
+  overflow-wrap: break-word;
 }
