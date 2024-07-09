@@ -27,4 +27,4 @@ coverage
 *.sw?
 
 *.tsbuildinf
-*.client-editor/.env
+*.env
