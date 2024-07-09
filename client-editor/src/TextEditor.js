@@ -6,8 +6,9 @@ import "quill/dist/quill.snow.css"
 import { db } from './firebaseConfig';
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import axios from 'axios'
-var Delta = Quill.import('delta');
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
+var Delta = Quill.import('delta');
+
 
 //get url params to access user and notebook data
 const searchParams = new URLSearchParams(window.location.search);
@@ -16,7 +17,7 @@ const nb = searchParams.get('nb');
 const docRef = doc(db, "users", user, "notebooks", nb);
 
 //gemini setup
-const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
+const apiKey = "";
 const genAI = new GoogleGenerativeAI(apiKey);
 const model = genAI.getGenerativeModel({
     model: "gemini-1.5-pro",
