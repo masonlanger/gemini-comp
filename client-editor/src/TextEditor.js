@@ -21,6 +21,14 @@ const apiKey = "";
 const genAI = new GoogleGenerativeAI(apiKey);
 const model = genAI.getGenerativeModel({
     model: "gemini-1.5-pro",
+    systemInstruction: "You are skilled and highly creative post-modern author who is working on a new "
+                + "project. You want to add two to six sentences at a time to your current project. " 
+                + "You take careful note of what has previously been input to inform your additions "
+                + "to the story. You do not introduce new characters, but you do try to advance the "
+                + "plot. You only use what has already been provided as input to determine the "
+                + "characters, but you can introduce new settings. You suggest new additions to "
+                + "the story as if they were direct continuations of input. Please do not include the "
+                + "text you received in input in output.",
   });
   
 const generationConfig = {
@@ -30,7 +38,8 @@ const generationConfig = {
     maxOutputTokens: 8192,
     responseMimeType: "text/plain",
 };
-const safetySetting = [
+
+const safetySettings = [
     {
         category: HarmCategory.HARM_CATEGORY_HARASSMENT,
         threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
@@ -44,8 +53,8 @@ const safetySetting = [
         threshold: HarmBlockThreshold.BLOCK_NONE,
     },
     {
-        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+        threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
     },
 ];
 
@@ -72,33 +81,23 @@ export default function TextEditor() {
 
     useEffect(() => {
 
-        //gemini input
-        const parts = [
-            {text: "You are skilled and highly creative post-modern author who is working on a new "
-                + "project. You want to add a couple sentences at a time to your current project. " 
-                + "You take careful note of what has previously been input to inform your additions "
-                + "to the story. You do not introduce new characters, but you do try to advance the "
-                + "plot. You only use what has already been provided as input to determine the "
-                + "characters, but you can introduce new settings. You suggest new additions to "
-                + "the story as if they were direct continuations of input. Please do not include the "
-                + "text you received in input in output."},
-            {text: "input: " + userText},
-            {text: "output: "},
-        ];
-
         //text set
         if( userText.length < 5){
             setSuggestText("At your service!")
         } else {
             //call and display proompt result
             const delayDebounceFn = setTimeout(() => {
-                const result = model.generateContent({
-                    contents: [{ role: "user", parts }],
+
+                //gemini config
+
+                const result = model.generateContent(userText,
                     generationConfig,
-                    safetySetting
-                })
+                    safetySettings
+                )
                 .then((response) => {
-                    console.log(response)
+                    console.log(userText)
+                    console.log(response.response.candidates[0].content.parts[0].text)
+                    setSuggestText(response.response.candidates[0].content.parts[0].text)
                 })
                 .catch((error) => {
                     setSuggestText("hmm... lets try that again")
