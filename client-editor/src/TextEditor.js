@@ -96,9 +96,15 @@ export default function TextEditor() {
                     contents: [{ role: "user", parts }],
                     generationConfig,
                     safetySetting
-                });
-                console.log(result)
-            }, 1000);
+                })
+                .then((response) => {
+                    console.log(response)
+                })
+                .catch((error) => {
+                    setSuggestText("hmm... lets try that again")
+                    console.log(error)
+                })
+            }, 2000);
             return () => clearTimeout(delayDebounceFn);
         }
     }, [userText])
