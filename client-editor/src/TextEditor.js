@@ -28,8 +28,7 @@ const model = genAI.getGenerativeModel({
                 + "to the story. You do not introduce new characters, but you do try to advance the "
                 + "plot. You only use what has already been provided as input to determine the "
                 + "characters, but you can introduce new settings. You suggest new additions to "
-                + "the story as if they were direct continuations of input. Please do not include the "
-                + "text you received in input in output.",
+                + "the story as if they were direct continuations of input without retyping what you've already wrote.",
   });
   
 const generationConfig = {
@@ -73,12 +72,21 @@ const TOOLBAR = [
     ["clean"],
   ]
 
+
 //authors view - writing (quill) + suggestion effect
 export default function TextEditor() {
     
     //suggestion generation
     const [suggest, setSuggestText] = useState(null);
-    const [userText, setUserText] = useState(true);
+    const [userText, setUserText] = useState(false);
+
+    const editor = document.createElement("div")
+    const q = new Quill(editor, {
+        theme: "snow",
+        modules: {
+            toolbar: TOOLBAR
+        }
+    })
 
     useEffect(() => {
         //text set
@@ -96,7 +104,7 @@ export default function TextEditor() {
                 )
                 .then((response) => {
                     console.log(userText)
-                    console.log(response.response.candidates[0].content.parts[0].text)
+                    console.log(response)
                     setSuggestText(response.response.candidates[0].content.parts[0].text)
                 })
                 .catch((error) => {
@@ -108,17 +116,11 @@ export default function TextEditor() {
         }
     }, [userText])
 
-    function addSuggestion(){
-        q.setText(userText+suggest)
-    }
-
-    const editor = document.createElement("div")
-    const q = new Quill(editor, {
-        theme: "snow",
-        modules: {
-            toolbar: TOOLBAR
-        },
+    
+    $('.sug-input').on('click', () => {
+        q.setText(userText + suggest)
     })
+
 
     //quill editor mount
     const wrapperRef = useCallback((wrapper) => {
@@ -151,14 +153,12 @@ export default function TextEditor() {
                 text: q.getContents().ops
             })
         })
-
     }, [])
-
     //view
     return (
         <div>
             <div className="suggestion">{suggest}</div>
-            <button className='sug-input' onClick={addSuggestion()}>+</button>
+            <button className='sug-input'>+</button>
             <div className="container" ref={wrapperRef}></div>
         </div>
 
