@@ -79,6 +79,7 @@ export default function TextEditor() {
     //suggestion generation
     const [suggest, setSuggestText] = useState(null);
     const [userText, setUserText] = useState(false);
+    const [addSuggestions, setAddSuggestions] = useState(false);
 
     const editor = document.createElement("div")
     const q = new Quill(editor, {
@@ -119,6 +120,10 @@ export default function TextEditor() {
     
     $('.sug-input').on('click', () => {
         q.setText(userText + suggest)
+        updateDoc(docRef, {
+            text: q.getContents().ops
+        })
+        setAddSuggestions(true)
     })
 
 
@@ -153,7 +158,10 @@ export default function TextEditor() {
                 text: q.getContents().ops
             })
         })
-    }, [])
+        
+        console.log("Finished in callback")
+        setAddSuggestions(false)
+    }, [addSuggestions])
     //view
     return (
         <div>
