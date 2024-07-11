@@ -7,6 +7,7 @@ import { db } from './firebaseConfig';
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import axios from 'axios'
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
+import $ from 'jquery'; 
 var Delta = Quill.import('delta');
 
 
@@ -80,7 +81,6 @@ export default function TextEditor() {
     const [userText, setUserText] = useState(true);
 
     useEffect(() => {
-
         //text set
         if( userText.length < 5){
             setSuggestText("At your service!")
@@ -108,20 +108,25 @@ export default function TextEditor() {
         }
     }, [userText])
 
+    function addSuggestion(){
+        q.setText(userText+suggest)
+    }
+
+    const editor = document.createElement("div")
+    const q = new Quill(editor, {
+        theme: "snow",
+        modules: {
+            toolbar: TOOLBAR
+        },
+    })
+
     //quill editor mount
     const wrapperRef = useCallback((wrapper) => {
         if (wrapper == null) return
 
         //quill attach to wrapper
         wrapper.innerHTML = ''
-        const editor = document.createElement("div")
         wrapper.append(editor)
-        const q = new Quill(editor, {
-            theme: "snow",
-            modules: {
-                toolbar: TOOLBAR
-            },
-        })
 
         //access document text on load
         getDoc(docRef)
@@ -153,6 +158,7 @@ export default function TextEditor() {
     return (
         <div>
             <div className="suggestion">{suggest}</div>
+            <button className='sug-input' onClick={addSuggestion()}>+</button>
             <div className="container" ref={wrapperRef}></div>
         </div>
 

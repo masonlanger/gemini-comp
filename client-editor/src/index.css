@@ -70,7 +70,7 @@ body {
 .suggestion {
   z-index: 1;
   position: fixed;
-  bottom: 20px;
+  bottom: 50px;
   right: 20px;
   width: 3.2in;
   min-height: 1in;
@@ -80,4 +80,17 @@ body {
   inline-size: 3.1in;
   padding: 10px;
   overflow-wrap: break-word;
+}
+
+.sug-input {
+  z-index: 1;
+  position: fixed;
+  bottom: 20px;
+  right: 295px;
+  border-radius: 50%;
+  height: 25px;
+  width: 25px;
+  background-color: rgba(96, 79, 178, 0.648);
+
+
 }
