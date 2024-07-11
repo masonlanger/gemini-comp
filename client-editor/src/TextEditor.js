@@ -28,7 +28,8 @@ const model = genAI.getGenerativeModel({
                 + "to the story. You do not introduce new characters, but you do try to advance the "
                 + "plot. You only use what has already been provided as input to determine the "
                 + "characters, but you can introduce new settings. You suggest new additions to "
-                + "the story as if they were direct continuations of input without retyping what you've already wrote.",
+                + "the story as if they were direct continuations of input without retyping what " 
+                + "you've already wrote. Do not add any newlines after your output",
   });
   
 const generationConfig = {
@@ -72,6 +73,13 @@ const TOOLBAR = [
     ["clean"],
   ]
 
+  document.onkeydown = (KeyboardEvent) => {
+    if( KeyboardEvent.key == "ArrowRight"){
+        
+    }
+  }
+
+
 
 //authors view - writing (quill) + suggestion effect
 export default function TextEditor() {
@@ -79,15 +87,7 @@ export default function TextEditor() {
     //suggestion generation
     const [suggest, setSuggestText] = useState(null);
     const [userText, setUserText] = useState(false);
-    const [addSuggestions, setAddSuggestions] = useState(false);
-
-    const editor = document.createElement("div")
-    const q = new Quill(editor, {
-        theme: "snow",
-        modules: {
-            toolbar: TOOLBAR
-        }
-    })
+    const [insert, setInsert] = useState(false);
 
     useEffect(() => {
         //text set
@@ -106,26 +106,27 @@ export default function TextEditor() {
                 .then((response) => {
                     console.log(userText)
                     console.log(response)
-                    setSuggestText(response.response.candidates[0].content.parts[0].text)
+                    try{
+                        setSuggestText(response.response.candidates[0].content.parts[0].text)
+                    } catch {
+                        console.log(response)
+                    }
+                    setInsert(true)
                 })
                 .catch((error) => {
                     setSuggestText("hmm... lets try that again")
-                    console.log(error)
                 })
             }, 2000);
             return () => clearTimeout(delayDebounceFn);
         }
     }, [userText])
 
-    
-    $('.sug-input').on('click', () => {
-        q.setText(userText + suggest)
-        updateDoc(docRef, {
-            text: q.getContents().ops
-        })
-        setAddSuggestions(true)
-    })
-
+    useEffect(() => {
+        if(insert) {
+            navigator.clipboard.writeText(suggest)
+            setInsert(false)
+        }
+    }, [insert])
 
     //quill editor mount
     const wrapperRef = useCallback((wrapper) => {
@@ -133,7 +134,14 @@ export default function TextEditor() {
 
         //quill attach to wrapper
         wrapper.innerHTML = ''
+        const editor = document.createElement("div")
         wrapper.append(editor)
+        const q = new Quill(editor, {
+            theme: "snow",
+            modules: {
+                toolbar: TOOLBAR
+            }
+        })
 
         //access document text on load
         getDoc(docRef)
@@ -160,13 +168,12 @@ export default function TextEditor() {
         })
         
         console.log("Finished in callback")
-        setAddSuggestions(false)
-    }, [addSuggestions])
+    }, [])
     //view
     return (
         <div>
             <div className="suggestion">{suggest}</div>
-            <button className='sug-input'>+</button>
+            <div className='sug-input' >cmd-v to add to text</div>
             <div className="container" ref={wrapperRef}></div>
         </div>
 

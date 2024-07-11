@@ -86,11 +86,10 @@ body {
   z-index: 1;
   position: fixed;
   bottom: 20px;
-  right: 295px;
-  border-radius: 50%;
-  height: 25px;
-  width: 25px;
-  background-color: rgba(96, 79, 178, 0.648);
+  right: 215px;
+  border-radius: 25%;
+  height: 30px;
+  font-size: 12px;
 
 
 }
