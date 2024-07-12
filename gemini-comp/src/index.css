@@ -7,7 +7,7 @@
 /* NAV BAR */
 @media screen and (min-width: 780px) {
     .btn {
-        @apply block text-center text-xl object-scale-down p-2 bg-gray-800 text-white m-2 w-32 rounded;
+        @apply block text-start object-scale-down p-2 bg-gray-800 text-white my-2 w-32 rounded;
         transition: box-shadow opacity 0.3s ease;
     }
     .btn:hover {
@@ -60,13 +60,28 @@
 .pill {@apply bg-gray-100 text-gray-600 rounded px-2 py-1; font-weight: 600; transition: font-weight background-color ease 0.3s;}
 .pill:hover {cursor: pointer; @apply bg-gray-200}
 .row {@apply flex flex-row space-x-12; width: 100%;}
+.col {@apply flex flex-col;}
 .column {@apply text-center text-wrap;}
+.modal {@apply fixed inset-0 w-full h-screen flex items-start justify-start py-8 pr-8 text-gray-200; background-color: rgba(1, 0, 33, 0.75); margin-left: 0!important;}
+.modal-content {@apply mt-14;}
+.close-modal {font-size: 18pt; font-weight: 600; transition: opacity 0.3s ease; padding-left: 4rem;}
+.close-modal:hover {cursor: pointer; opacity: 75%;}
+.save-btn {
+  @apply w-fit p-2 bg-gray-800 text-white rounded; transition: box-shadow opacity 0.3s ease;
+  .saved {
+    @apply bg-gray-500;
+  }
+}
+.save-btn.saved {
+  @apply w-fit p-2 bg-gray-800 text-white rounded; transition: box-shadow opacity 0.3s ease;
+  opacity: 70%;
+}
 .wrapper-center {@apply flex flex-col items-center;}
 .wrapper-start {@apply flex flex-col items-start;}
 .tpw {width:100%; text-wrap: wrap; float: left;}
 
-.title {font-size: 40pt; font-weight: bold; @apply mb-0 text-gray-800;}
-.subtitle {font-size: 40pt; font-weight: bold; @apply mb-0 text-gray-800;}
+.title {font-size: 40pt; font-weight: bold; @apply mb-0;}
+.subtitle {font-size: 32pt; font-weight: 400; @apply mb-0;}
 .trash-icon {
     position: relative;
     top: 0;
@@ -77,6 +92,7 @@
     opacity: 70%;
     cursor: pointer;
 }
+.fixed-text-container {width: 100%; height: min-content;}
 .tpw--subtitle {font-size: 24pt; @apply mt-0 mb-0 text-gray-700;}
 .tpw--paragraph {font-size: 20pt; @apply mt-0 font-light text-gray-700;}
 .html {
@@ -107,7 +123,7 @@ three-col.svg {@apply text-gray-800;}
 .ann-block {
     @apply bg-gray-100 p-4 flex;
     width: 14rem;
-    aspect-ratio: 1/1;
+    height:14rem;
     justify-content: center;
     align-items: center;
     transition: box-shadow opacity 0.3s ease;
@@ -133,11 +149,34 @@ three-col.svg {@apply text-gray-800;}
     transition: box-shadow opacity 0.3s ease;
 }
 
+.inspo-thumbnail {
+  @apply bg-gray-100 p-4;
+  width: 16rem;
+  aspect-ratio: 8/11;
+  transition: box-shadow opacity 0.3s ease;
+}
+
+.inspo-thumbnail:hover {
+  @apply bg-gray-100;
+  opacity: 80%;
+  box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  .trash-icon {
+      opacity: 100%;
+  }
+}
+
 .notebook-thumbnail--flex {
     @apply flex flex-col;
     justify-content: end;
     align-items: center;
     height: 90%;
+}
+.inspo-thumbnail--flex {
+  @apply flex flex-col;
+  justify-content: end;
+  align-items: center;
+  height: min-content;
 }
 
 .notebook-thumbnail--title {
