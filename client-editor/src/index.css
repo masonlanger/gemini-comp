@@ -27,7 +27,7 @@ body {
   justify-content: center;
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 3;
   background-color: #e1e1e1;
   border: none;
   box-shadow: 0 5px 5px -5px rgba(0, 0, 0, .5);
@@ -67,10 +67,14 @@ body {
   
 }
 
+.titlebar {
+  z-index: 2;
+}
+
 .suggestion {
-  z-index: 1;
+  z-index: 2;
   position: fixed;
-  bottom: 50px;
+  bottom: 30px;
   right: 20px;
   width: 3.2in;
   min-height: 1in;
@@ -83,13 +87,21 @@ body {
 }
 
 .sug-input {
-  z-index: 1;
+  z-index: 2;
   position: fixed;
-  bottom: 20px;
+  bottom: 0px;
   right: 215px;
   border-radius: 25%;
   height: 30px;
   font-size: 12px;
+}
 
-
+.comment-box {
+  position: absolute;
+  z-index: 1;
+  width: 3.3in;
+  min-height: 1in;
+  right: 15px;
+  top:106px;
+  background-color: blue;
 }

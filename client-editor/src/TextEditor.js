@@ -18,7 +18,7 @@ const nb = searchParams.get('nb');
 const docRef = doc(db, "users", user, "notebooks", nb);
 
 //gemini setup
-const apiKey = "";
+const apiKey = "AIzaSyB7dxK35XJ8ssFVczqyu_QtptHTzA1YgtQ";
 const genAI = new GoogleGenerativeAI(apiKey);
 const model = genAI.getGenerativeModel({
     model: "gemini-1.5-pro",
@@ -62,14 +62,15 @@ const safetySettings = [
 
 //quill toolbar setup
 const TOOLBAR = [
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
     [{ font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
     ["bold", "italic", "underline"],
+    [{ indent: "-1" }, { indent: "+1" }],
+    [{ list: "ordered" }, { list: "bullet" }],
     [{ color: [] }, { background: [] }],
     [{ script: "sub" }, { script: "super" }],
     [{ align: [] }],
-    ["image", "blockquote", "code-block"],
+    [ "blockquote", "code-block"],
     ["clean"],
   ]
 
@@ -91,14 +92,13 @@ export default function TextEditor() {
 
     useEffect(() => {
         //text set
-        if( userText.length < 5){
+        if( userText == null || userText.length < 5){
             setSuggestText("At your service!")
         } else {
             //call and display proompt result
             const delayDebounceFn = setTimeout(() => {
 
                 //gemini config
-
                 const result = model.generateContent(userText,
                     generationConfig,
                     safetySettings
@@ -116,7 +116,7 @@ export default function TextEditor() {
                 .catch((error) => {
                     setSuggestText("hmm... lets try that again")
                 })
-            }, 2000);
+            }, 1000);
             return () => clearTimeout(delayDebounceFn);
         }
     }, [userText])
@@ -139,7 +139,12 @@ export default function TextEditor() {
         const q = new Quill(editor, {
             theme: "snow",
             modules: {
-                toolbar: TOOLBAR
+                toolbar: TOOLBAR,
+                history: {
+                    delay: 2000,
+                    maxStack: 500,
+                    userOnly: true
+                  },
             }
         })
 
@@ -173,6 +178,7 @@ export default function TextEditor() {
     return (
         <div>
             <div className="suggestion">{suggest}</div>
+            <div className='comment-box'></div>
             <div className='sug-input' >cmd-v to add to text</div>
             <div className="container" ref={wrapperRef}></div>
         </div>
