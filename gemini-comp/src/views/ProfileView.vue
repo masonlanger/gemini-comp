@@ -20,7 +20,7 @@
                 </div>
                 <div class="w-full flex flex-row mt-1">
                     <div v-if="userFocusesLength > 0" class="flex flex-row">
-                        <div v-for="focus in userData.userFocuses" :key="focus" @click="removeFocus(focus)" class="prof-focus-removable mr-1">
+                        <div v-for="focus in userInfo.userFocuses" :key="focus" @click="removeFocus(focus)" class="prof-focus-removable mr-1">
                             {{ focus[0].toUpperCase() + focus.slice(1)}}
                         </div>
                     </div>
@@ -61,7 +61,7 @@ import { getAuth } from 'firebase/auth';
 import { db, storage } from '@/firebaseConfig';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getDoc, updateDoc, doc } from 'firebase/firestore';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const getUserImg = () => {
     const imageRef = storageRef(storage, `users/${currUid}/profile.jpg`);
@@ -75,12 +75,16 @@ const getUserImg = () => {
 const currUid = getAuth().currentUser.uid;
 const docRef = doc(db, "users", currUid);
 const userData = await getDoc(docRef).then(doc => doc.data());
+const userInfo = ref(userData);
 const img = userData.userImg != null && userData.userImg.length > 0 ? await getUserImg() : null;
 const tagline = userData.tagline != null && userData.tagline.length > 0 ? ref(userData.tagline) : ref('');
 const taglineEmpty = tagline.value.length == 0;
 const userFocusesLength = userData.userFocuses.length;
 const focusOptions = await getDoc(doc(db, "assets", "focus-options")).then(doc => doc.data().options);
 
+watch(() => userData, (newVal) => {
+    userInfo.value = newVal;
+});
 const submitTagline = () => {
     const docRef = doc(db, "users", currUid);
     updateDoc(docRef, {

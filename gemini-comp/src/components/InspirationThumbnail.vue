@@ -33,11 +33,11 @@ function onThumbnailClick() {
 <template>
     <div class="inspo-thumbnail">
         <font-awesome-icon v-if=props.edittable class="fa-1x trash-icon hover-appear" :icon="['fas', 'trash']" @click="deleteInspo"/>
-        <div class="col">
+        <div class="col" @click="onThumbnailClick">
             <div class="fixed-text-container">
                 <p class="text-gray-700" style="font-size: 13pt; font-weight: 300;">{{ inspo.text.split(/\s+/).length > 45 ? inspo.text.split(/\s+/).slice(0, 45).join(" ")+"..." : inspo.text }}</p>
             </div>
-            <div class="inspo-thumbnail--flex mt-4" @click="onThumbnailClick">
+            <div class="inspo-thumbnail--flex mt-4">
                 <h2 class="notebook-thumbnail--title">{{ inspo.title }}</h2>
                 <h2 class="notebook-thumbnail--title">{{ inspo.author }}</h2>
             </div>

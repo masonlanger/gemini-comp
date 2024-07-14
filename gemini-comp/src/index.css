@@ -61,6 +61,8 @@
 .pill:hover {cursor: pointer; @apply bg-gray-200}
 .row {@apply flex flex-row space-x-12; width: 100%;}
 .col {@apply flex flex-col;}
+.hoverable {transition: opacity 0.3s ease;}
+.hoverable:hover {cursor: pointer; opacity: 70%;}
 .column {@apply text-center text-wrap;}
 .modal {@apply fixed inset-0 w-full h-screen flex items-start justify-start py-8 pr-8 text-gray-200; background-color: rgba(1, 0, 33, 0.75); margin-left: 0!important;}
 .modal-content {@apply mt-14;}
@@ -333,3 +335,5 @@ three-col.svg {@apply text-gray-800;}
   .prof-add:hover {font-weight: 400; cursor: pointer; @apply bg-gray-700} 
   .prof-img {@apply bg-gray-200 rounded; width: 14rem; aspect-ratio: 1/1;}
   .prof-img:hover {@apply bg-gray-300; opacity: 80%; box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2); cursor: pointer;}
+
+  .inspo-input {@apply rounded; background-color: rgba(1, 0, 33, 0.75); width: fit-content;}
