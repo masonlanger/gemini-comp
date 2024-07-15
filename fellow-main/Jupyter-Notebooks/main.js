@@ -1,0 +1,57 @@
+import './index.css'
+
+import { createApp } from 'vue'
+import App from './App.vue'
+import routes from './router'
+
+import { VueFire, VueFireAuth } from 'vuefire'
+import { firebaseApp } from './firebaseConfig'
+import {getAuth, onAuthStateChanged } from 'firebase/auth';
+
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import {library} from "@fortawesome/fontawesome-svg-core";
+import {fas} from "@fortawesome/free-solid-svg-icons";
+
+import { createWebHistory, createRouter } from 'vue-router'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+})
+
+const getCurrentUser = () => {
+  return new promise((resolve, reject) => {
+    const removeListener = onAuthStateChanged(
+      getAuth(),
+      (user) => {
+        removeListener();
+      },
+      reject
+    );
+  });
+};
+
+router.beforeEach(async(to, from, next) =>{
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if(await getCurrentUser()) {
+      next();
+    } else {
+      next("/");
+    }
+  } else {
+    next();
+  }
+});
+
+library.add(fas)
+
+createApp(App)
+    .use(router)
+    .use(VueFire, {
+        firebaseApp,
+        modules: [
+            VueFireAuth(),
+        ],
+    })
+    .component('font-awesome-icon', FontAwesomeIcon)
+    .mount('#app')
