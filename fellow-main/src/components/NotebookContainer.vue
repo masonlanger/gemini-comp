@@ -13,7 +13,7 @@
 </script>
 
 <template>
-    <div class="row">
+    <div class="grid-box">
             <AddNewNotebook />
             <div v-if="notebooks.length > 0">
                 <NotebookThumbnail :edittable=true v-for="notebook in notebooks" :notebook="notebook" :key="notebook.id"/>

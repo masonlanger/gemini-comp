@@ -8,6 +8,7 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import axios from 'axios'
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
 import $ from 'jquery'; 
+import { Children } from 'react';
 var Delta = Quill.import('delta');
 
 
@@ -18,46 +19,8 @@ const nb = searchParams.get('nb');
 const docRef = doc(db, "users", user, "notebooks", nb);
 
 //gemini setup
-const apiKey = "AIzaSyB7dxK35XJ8ssFVczqyu_QtptHTzA1YgtQ";
+const apiKey = "";
 const genAI = new GoogleGenerativeAI(apiKey);
-const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-pro",
-    systemInstruction: "You are skilled and highly creative post-modern author who is working on a new "
-                + "project. You want to add two to six sentences at a time to your current project. " 
-                + "You take careful note of what has previously been input to inform your additions "
-                + "to the story. You do not introduce new characters, but you do try to advance the "
-                + "plot. You only use what has already been provided as input to determine the "
-                + "characters, but you can introduce new settings. You suggest new additions to "
-                + "the story as if they were direct continuations of input without retyping what " 
-                + "you've already wrote. Do not add any newlines after your output",
-  });
-  
-const generationConfig = {
-    temperature: 1,
-    topP: 0.95,
-    topK: 64,
-    maxOutputTokens: 8192,
-    responseMimeType: "text/plain",
-};
-
-const safetySettings = [
-    {
-        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-        threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-    },
-    {
-        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-        threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-    },
-    {
-        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-        threshold: HarmBlockThreshold.BLOCK_NONE,
-    },
-    {
-        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-        threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
-    },
-];
 
 
 //quill toolbar setup
@@ -89,6 +52,8 @@ export default function TextEditor() {
     const [suggest, setSuggestText] = useState(null);
     const [userText, setUserText] = useState(false);
     const [insert, setInsert] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [readyForCom, setReadyForCom] =  useState(false);
 
     useEffect(() => {
         //text set
@@ -97,6 +62,45 @@ export default function TextEditor() {
         } else {
             //call and display proompt result
             const delayDebounceFn = setTimeout(() => {
+                
+                const model = genAI.getGenerativeModel({
+                    model: "gemini-1.5-pro",
+                    systemInstruction: "You are skilled and highly creative post-modern author who is working on a new "
+                                + "project. You want to add two to six sentences at a time to your current project. " 
+                                + "You take careful note of what has previously been input to inform your additions "
+                                + "to the story. You do not introduce new characters, but you do try to advance the "
+                                + "plot. You only use what has already been provided as input to determine the "
+                                + "characters, but you can introduce new settings. You suggest new additions to "
+                                + "the story as if they were direct continuations of input without retyping what " 
+                                + "you've already wrote. Do not add any newlines after your output",
+                  });
+                  
+                const generationConfig = {
+                    temperature: 1,
+                    topP: 0.95,
+                    topK: 64,
+                    maxOutputTokens: 8192,
+                    responseMimeType: "text/plain",
+                };
+                
+                const safetySettings = [
+                    {
+                        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+                        threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+                    },
+                    {
+                        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                        threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+                    },
+                    {
+                        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                        threshold: HarmBlockThreshold.BLOCK_NONE,
+                    },
+                    {
+                        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                        threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+                    },
+                ];
 
                 //gemini config
                 const result = model.generateContent(userText,
@@ -104,8 +108,6 @@ export default function TextEditor() {
                     safetySettings
                 )
                 .then((response) => {
-                    console.log(userText)
-                    console.log(response)
                     try{
                         setSuggestText(response.response.candidates[0].content.parts[0].text)
                     } catch {
@@ -123,10 +125,61 @@ export default function TextEditor() {
 
     useEffect(() => {
         if(insert) {
-            navigator.clipboard.writeText(suggest)
+            try{
+                navigator.clipboard.writeText(suggest)
+            } catch {
+                setSuggestText("Hmm... lets try that again")
+            }
             setInsert(false)
         }
     }, [insert])
+
+    useEffect(() => {
+        if(userText.length >= 100 ){
+            setReadyForCom(true)
+        }
+    },[userText])
+
+    function commentGeneration() {
+        if( !readyForCom ){
+            console.log("starting suggestions")
+        } else {
+            const model = genAI.getGenerativeModel({
+                model: "gemini-1.5-pro",
+                systemInstruction: "You are a literary professor providing feedback through comments on students' essays. " 
+                                + "You provide robust and thorough comments and a concluding statement to help them continue "
+                                + "with their writing. You do not comment on every sentence though, instead keeping your "
+                                + "comments to about 1 comment for every 500 characters, and make sure there is atleast a 200 "
+                                + "char buffer between your comments. "
+                                + "grammatical mistakes, but they are not your priority. \n\n\nDo this using this JSON "
+                                + "schema:\n{'Comment' = {\n'Range': [(index of the character you want to start your comment on, "
+                                + "index of the character you want to end your comment on)],\n'Text': str (replance all quotation "
+                                + "marks with * in this part of the response)}\nReturn: array(Comment)"
+            });
+            
+            const generationConfig = {
+                temperature: 1,
+                topP: 0.95,
+                topK: 64,
+                maxOutputTokens: 8192,
+                responseMimeType: "text/plain",
+            };
+
+            const result = model.generateContent(userText,
+                generationConfig,
+            )
+            .then((response) => {
+                let text = response.response.candidates[0].content.parts[0].text
+                console.log(text)
+                console.log("------")
+                setComments(JSON.parse(text.substring(8, text.length - 3)))
+                console.log(JSON.parse(text.substring(8, text.length - 3)))
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        }
+    }
 
     //quill editor mount
     const wrapperRef = useCallback((wrapper) => {
@@ -171,14 +224,32 @@ export default function TextEditor() {
                 text: q.getContents().ops
             })
         })
-        
-        console.log("Finished in callback")
-    }, [])
+
+        //set comments
+        comments.forEach((element, index) => {
+            if( element.Range[0] > userText.length || element.Range[1] > userText.length) {
+                return;
+            }
+            const startIndex = element.Range[0]
+            const rangeLength = element.Range[1] - element.Range[0]
+            console.log(startIndex)
+            console.log(rangeLength)
+            q.formatText(startIndex, rangeLength, {
+                'color': "#fff72b"
+              });
+        })
+
+    }, [comments])
     //view
     return (
         <div>
             <div className="suggestion">{suggest}</div>
-            <div className='comment-box'></div>
+            <button className='comment-button' onClick={commentGeneration}>Generate Comments</button>
+            <div className='comment-box'>
+                {comments.map((comment) => 
+                    <div className='comment' key={comment.Text}>{comment.Text}</div>
+                )}
+            </div>
             <div className='sug-input' >cmd-v to add to text</div>
             <div className="container" ref={wrapperRef}></div>
         </div>

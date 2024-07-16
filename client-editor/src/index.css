@@ -78,7 +78,7 @@ body {
   right: 20px;
   width: 3.2in;
   min-height: 1in;
-  background-color: rgba(96, 79, 178, 0.648);
+  background-image: linear-gradient(to bottom right, rgb(87, 87, 232), rgb(126, 72, 185));
   border: rgb(84, 66, 175);
   border-radius: 10px;
   inline-size: 3.1in;
@@ -102,6 +102,29 @@ body {
   width: 3.3in;
   min-height: 1in;
   right: 15px;
+  top:150px;
+}
+
+.comment-button {
+  z-index: 3;
+  position: absolute;
+  right: 165px;
   top:106px;
-  background-color: blue;
+  background-image: linear-gradient(to bottom right, rgb(87, 87, 232), rgb(126, 72, 185));
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  border-radius: 16px;
+}
+
+.comment-button:hover {
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.comment-button:active {
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.5);
 }
