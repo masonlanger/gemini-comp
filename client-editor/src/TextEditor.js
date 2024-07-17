@@ -39,7 +39,7 @@ const TOOLBAR = [
 
   document.onkeydown = (KeyboardEvent) => {
     if( KeyboardEvent.key == "ArrowRight"){
-        
+
     }
   }
 
@@ -55,7 +55,8 @@ export default function TextEditor() {
     const [comments, setComments] = useState([]);
     const [readyForCom, setReadyForCom] =  useState(false);
 
-    useEffect(() => {
+    //text generation
+    /*useEffect(() => {
         //text set
         if( userText == null || userText.length < 5){
             setSuggestText("At your service!")
@@ -132,7 +133,7 @@ export default function TextEditor() {
             }
             setInsert(false)
         }
-    }, [insert])
+    }, [insert])*/
 
     useEffect(() => {
         if(userText.length >= 100 ){
@@ -149,9 +150,9 @@ export default function TextEditor() {
                 systemInstruction: "You are a literary professor providing feedback through comments on students' essays. " 
                                 + "You provide robust and thorough comments and a concluding statement to help them continue "
                                 + "with their writing. You do not comment on every sentence though, instead keeping your "
-                                + "comments to about 1 comment for every 500 characters, and make sure there is atleast a 200 "
-                                + "char buffer between your comments. "
-                                + "grammatical mistakes, but they are not your priority. \n\n\nDo this using this JSON "
+                                + "comments to about 1 comment for every 1000 characters, and make sure there is atleast a 200 "
+                                + "char buffer between your comments. you also adress grammatical mistakes, but they are not your "
+                                + "priority. Try and keey your comments under 75 words.  \n\n\nDo this using this JSON "
                                 + "schema:\n{'Comment' = {\n'Range': [(index of the character you want to start your comment on, "
                                 + "index of the character you want to end your comment on)],\n'Text': str (replance all quotation "
                                 + "marks with * in this part of the response)}\nReturn: array(Comment)"
@@ -170,8 +171,6 @@ export default function TextEditor() {
             )
             .then((response) => {
                 let text = response.response.candidates[0].content.parts[0].text
-                console.log(text)
-                console.log("------")
                 setComments(JSON.parse(text.substring(8, text.length - 3)))
                 console.log(JSON.parse(text.substring(8, text.length - 3)))
             })
@@ -224,22 +223,7 @@ export default function TextEditor() {
                 text: q.getContents().ops
             })
         })
-
-        //set comments
-        comments.forEach((element, index) => {
-            if( element.Range[0] > userText.length || element.Range[1] > userText.length) {
-                return;
-            }
-            const startIndex = element.Range[0]
-            const rangeLength = element.Range[1] - element.Range[0]
-            console.log(startIndex)
-            console.log(rangeLength)
-            q.formatText(startIndex, rangeLength, {
-                'color': "#fff72b"
-              });
-        })
-
-    }, [comments])
+    }, [])
     //view
     return (
         <div>
@@ -247,7 +231,11 @@ export default function TextEditor() {
             <button className='comment-button' onClick={commentGeneration}>Generate Comments</button>
             <div className='comment-box'>
                 {comments.map((comment) => 
-                    <div className='comment' key={comment.Text}>{comment.Text}</div>
+                    <button className='comment' onClick={() => {
+                        const start = comment.Range[0]
+                        const end = comment.Range[1]
+                        const editor = document.getElementsByClassName("ql-editor")[1]
+                        }} key={comment.Text}>{comment.Text}</button>
                 )}
             </div>
             <div className='sug-input' >cmd-v to add to text</div>

@@ -128,3 +128,21 @@ body {
 .comment-button:active {
   box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.5);
 }
+
+.comment {
+  background-image: linear-gradient(to bottom right, rgb(169, 169, 173), rgb(210, 207, 214));
+  border-radius: 16px;
+  min-width: 3.2in;
+  padding: 15px;
+  margin-top: 20px;
+  border: none;
+  text-align: left;
+}
+
+.comment:hover {
+  box-shadow: 2px 0px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.comment:active {
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.5);
+}
