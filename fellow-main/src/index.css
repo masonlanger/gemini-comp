@@ -7,16 +7,16 @@
 /* NAV BAR */
 @media screen and (min-width: 780px) {
     .btn {
-        @apply block text-start object-scale-down p-2 bg-gray-800 text-white my-2 w-32 rounded;
+        @apply block text-center object-scale-down p-2 bg-white text-gray-800 my-2 w-32 rounded;
         transition: box-shadow opacity 0.3s ease;
     }
     .btn:hover {
-        @apply bg-gray-800;
-        box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2);
+        @apply bg-gray-100;
+        box-shadow: 0 0.05rem 0.05rem rgba(0, 0, 0, 0.2);
         opacity: 90%;
     }
     .navbar {
-        @apply bg-gray-800 text-white p-2 w-dvw h-fit shadow-sm text-end;
+        @apply bg-white text-gray-800 p-2 w-dvw h-fit shadow-sm text-end;
         transition: transform 300ms ease-in;
     }
     .isHidden {}   
@@ -28,7 +28,7 @@
     .home {@apply px-16 py-8 flex flex-col;}
 }
 
-@media screen and (max-width: 779px) {
+/* @media screen and (max-width: 779px) {
     .btn {
         @apply block text-start text-xl object-scale-down p-2 bg-gray-800 text-white m-2 w-32 rounded;
         transition: box-shadow opacity 0.3s ease;
@@ -54,7 +54,7 @@
     .collapse {@apply inline-block float-right p-2 mt-0;}
     .home {}
     main {display: flex; flex-direction: row;}
-}
+} */
 
 .form {display: flex; flex-direction: column; align-items: start; text-align: center; width:min-content; @apply mx-2}
 .pill {@apply bg-gray-100 text-gray-600 rounded px-2 py-1; font-weight: 600; transition: font-weight background-color ease 0.3s;}
