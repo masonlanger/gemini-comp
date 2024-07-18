@@ -9,7 +9,7 @@ import axios from 'axios'
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
 import $ from 'jquery'; 
 import { Children } from 'react';
-var Delta = Quill.import('delta');
+import { Delta } from 'quill';
 
 
 //get url params to access user and notebook data
@@ -51,12 +51,14 @@ export default function TextEditor() {
     //suggestion generation
     const [suggest, setSuggestText] = useState(null);
     const [userText, setUserText] = useState(false);
-    const [insert, setInsert] = useState(false);
     const [comments, setComments] = useState([]);
     const [readyForCom, setReadyForCom] =  useState(false);
+    const [loading, setLoading] = useState(false);
+    const [altStruct, setAltStruct] = useState(false);
+    const [insert, setInsert] = useState(false);
 
     //text generation
-    /*useEffect(() => {
+    useEffect(() => {
         //text set
         if( userText == null || userText.length < 5){
             setSuggestText("At your service!")
@@ -133,28 +135,35 @@ export default function TextEditor() {
             }
             setInsert(false)
         }
-    }, [insert])*/
+    }, [insert])
 
     useEffect(() => {
         if(userText.length >= 100 ){
             setReadyForCom(true)
+        } else {
+            setReadyForCom(false)
         }
     },[userText])
 
+    //generate comments
     function commentGeneration() {
         if( !readyForCom ){
-            console.log("starting suggestions")
+            setComments([{
+                'Range': [0,1],
+                'Text':'100 or more words required for quality commenting'
+            }])
         } else {
+            setLoading(true)
             const model = genAI.getGenerativeModel({
                 model: "gemini-1.5-pro",
                 systemInstruction: "You are a literary professor providing feedback through comments on students' essays. " 
                                 + "You provide robust and thorough comments and a concluding statement to help them continue "
                                 + "with their writing. You do not comment on every sentence though, instead keeping your "
-                                + "comments to about 1 comment for every 1000 characters, and make sure there is atleast a 200 "
-                                + "char buffer between your comments. you also adress grammatical mistakes, but they are not your "
+                                + "comments to about 1 comment for every 250 words, and make sure there is atleast a 20 "
+                                + "word buffer between your comments. you also adress grammatical mistakes, but they are not your "
                                 + "priority. Try and keey your comments under 75 words.  \n\n\nDo this using this JSON "
-                                + "schema:\n{'Comment' = {\n'Range': [(index of the character you want to start your comment on, "
-                                + "index of the character you want to end your comment on)],\n'Text': str (replance all quotation "
+                                + "schema:\n{{\n'Range': [(index of the word you want to start your comment on, "
+                                + "index of the word you want to end your comment on)],\n'Text': str (replance all quotation "
                                 + "marks with * in this part of the response)}\nReturn: array(Comment)"
             });
             
@@ -171,8 +180,25 @@ export default function TextEditor() {
             )
             .then((response) => {
                 let text = response.response.candidates[0].content.parts[0].text
-                setComments(JSON.parse(text.substring(8, text.length - 3)))
-                console.log(JSON.parse(text.substring(8, text.length - 3)))
+                try {
+                    setComments(JSON.parse(text.substring(8, text.length - 3)))
+                } catch {
+                    const result = model.generateContent(userText,
+                        generationConfig,
+                    )
+                    .then((response) => {
+                        let text = response.response.candidates[0].content.parts[0].text
+                        try {
+                        setComments(JSON.parse(text.substring(8, text.length - 3)))
+                        } catch {
+                            setComments([{'Text':'error loading comments'}])
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                }
+                setLoading(false)
             })
             .catch((error) => {
                 console.log(error)
@@ -224,20 +250,42 @@ export default function TextEditor() {
             })
         })
     }, [])
+
+    useEffect(() => {
+        try{
+            const text = comments[0].Text
+        } catch {
+             comments.forEach((comment) => {
+                comment = comment.Comment
+             })
+        }
+    },[comments])
     //view
     return (
         <div>
             <div className="suggestion">{suggest}</div>
             <button className='comment-button' onClick={commentGeneration}>Generate Comments</button>
-            <div className='comment-box'>
-                {comments.map((comment) => 
-                    <button className='comment' onClick={() => {
-                        const start = comment.Range[0]
-                        const end = comment.Range[1]
-                        const editor = document.getElementsByClassName("ql-editor")[1]
-                        }} key={comment.Text}>{comment.Text}</button>
-                )}
-            </div>
+            {(comments.length > 0 && loading == false) &&
+                <div className='comment-box'>
+                    {comments.map((comment, idx) => 
+                        <div key={idx}>
+                            {Array.from({length: (((comment.Range[0] + comment.Range[1]) / 2) / 17)}).map((_, id) => (
+                                <br key={id} />
+                            ))}
+                            <div className='comment'>{comment.Text}</div>
+                        </div>
+                    )}
+                </div> }
+            {loading == true &&
+                <div className='loading'>
+                    <div className="loadingio-spinner-double-ring-nq4q5u6dq7r"><div className="ldio-x2uulkbinbj">
+                    <div></div>
+                    <div></div>
+                    <div><div></div></div>
+                    <div><div></div></div>
+                    </div></div>
+                </div>
+            }
             <div className='sug-input' >cmd-v to add to text</div>
             <div className="container" ref={wrapperRef}></div>
         </div>
