@@ -3,7 +3,7 @@
         <button @click="closeModal" class="close-modal">Close</button>
         <div class="modal-content w-3/4">
             <div class="modal-header">
-                <h2 class="title underline">{{ title }}</h2>
+                <h2 v-if=title class="title">{{ title }}</h2>
             </div>
             <div class="modal-body">
                 <slot name="body">
@@ -18,6 +18,7 @@
 </template>
 
 <script setup>
+import TitleWidget from './TitleWidget.vue';
 import { defineEmits, defineProps } from 'vue'
 
 const emit = defineEmits(['close']);
@@ -28,13 +29,15 @@ defineProps({
     },
     title: {
         type: String,
-        default: "Default Title",
+        required: false
+    },
+    icon: {
+        type: String,
         required: false
     }
 })
 
 function closeModal() {
-    console.log("Closing modal")
     emit('close');
 }
 </script>

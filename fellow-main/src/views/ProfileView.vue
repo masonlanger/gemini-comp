@@ -9,13 +9,14 @@
             <div v-else @click="$refs.file.click()" class="prof-img flex justify-center items-center">
                 <font-awesome-icon :icon="['fas', 'user']" class="fa-3x text-gray-500" />
             </div>
-            <div>
+            <div class="ml-6">
                 <div class="w-full">
                     <div class="flex flex-row items-center space-x-2">
                         <h4 class="prof-username text-gray-800">{{ userData.username.length > 0 ? userData.username : "Set your display name"}}</h4>
                         <div v-if="userData.userType" class="pill">{{ userData.userType }}</div>
+                        <font-awesome-icon class="fa-lg hoverable ml-8" :icon="['fas', 'gear']" @click="openModal"/>
                     </div>
-                    <form v-if="taglineEmpty" @submit.prevent="submitTagline"><input class="prof-tagline w-full text-gray-800" type="text" placeholder="Add a placeholder" :value='tagline' @input="tagline = $event.target.value" /></form>
+                    <form v-if="taglineEmpty" @submit.prevent="submitTagline"><input class="prof-tagline w-full text-gray-800" type="text" placeholder="Add your tagline" :value='tagline' @input="tagline = $event.target.value" /></form>
                     <form v-else @submit.prevent="submitTagline"><input class="prof-tagline w-full text-gray-800" type="text" :value='tagline' @input="tagline = $event.target.value" /></form>
                 </div>
                 <div class="w-full flex flex-row mt-1">
@@ -50,13 +51,14 @@
             <FeaturedWorks />
         </div>
     </div>
-    
+    <AccountSettingsModal :modalVisible=modalVisible title="User Settings" :initial=userData @close="modalVisible = false"/>
 </template>
 
 <script setup>
 import TitleWidget from '@/components/TitleWidget.vue';
 import SubtitleIconWidget from '@/components/SubtitleIconWidget.vue';
 import FeaturedWorks from '@/components/FeaturedWorks.vue';
+import AccountSettingsModal from '@/components/AccountSettingsModal.vue';
 import { getAuth } from 'firebase/auth';
 import { db, storage } from '@/firebaseConfig';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -66,7 +68,6 @@ import { ref, watch } from 'vue';
 const getUserImg = () => {
     const imageRef = storageRef(storage, `users/${currUid}/profile.jpg`);
     return getDownloadURL(imageRef).then((url) => {
-        console.log(url);
         return url;
     });
 }
@@ -81,6 +82,7 @@ const tagline = userData.tagline != null && userData.tagline.length > 0 ? ref(us
 const taglineEmpty = tagline.value.length == 0;
 const userFocusesLength = userData.userFocuses.length;
 const focusOptions = await getDoc(doc(db, "assets", "focus-options")).then(doc => doc.data().options);
+const modalVisible = ref(false);
 
 watch(() => userData, (newVal) => {
     userInfo.value = newVal;
@@ -94,7 +96,6 @@ const submitTagline = () => {
 
 const showFocusOptions = ref(false);
 const toggleFocusOptions = () => {
-    console.log("Clicked");
     showFocusOptions.value = !showFocusOptions.value;
 }
 
@@ -128,5 +129,10 @@ const uploadUserImg = (event) => {
         });
     });
 }
+
+function openModal(){
+    modalVisible.value = true;
+}
+
 
 </script>

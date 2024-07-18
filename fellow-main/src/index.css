@@ -59,12 +59,12 @@
 .form {display: flex; flex-direction: column; align-items: start; text-align: center; width:min-content; @apply mx-2}
 .pill {@apply bg-gray-100 text-gray-600 rounded px-2 py-1; font-weight: 600; transition: font-weight background-color ease 0.3s;}
 .pill:hover {cursor: pointer; @apply bg-gray-200}
-.row {@apply flex flex-row space-x-12; width: 100%;}
+.row {@apply flex flex-row; width: 100%;}
 .col {@apply flex flex-col;}
 .hoverable {transition: opacity 0.3s ease;}
 .hoverable:hover {cursor: pointer; opacity: 70%;}
 .column {@apply text-center text-wrap;}
-.modal {@apply fixed inset-0 w-full h-screen flex items-start justify-start py-8 pr-8 text-gray-200; background-color: rgba(1, 0, 33, 0.75); margin-left: 0!important;}
+.modal {@apply fixed inset-0 w-full h-screen flex items-start justify-start py-8 text-gray-200; background-color: rgba(0, 0, 0, 0.75); margin-left: 0!important; margin-right: 0!important;}
 .modal-content {@apply mt-14;}
 .close-modal {font-size: 18pt; font-weight: 600; transition: opacity 0.3s ease; padding-left: 4rem;}
 .close-modal:hover {cursor: pointer; opacity: 75%;}
@@ -93,6 +93,16 @@
 .trash-icon:hover {
     opacity: 70%;
     cursor: pointer;
+}
+.linkedin-icon {
+  width: 36px;
+  aspect-ratio: 1.2/1;
+  filter: grayscale(1) brightness(0.3);
+}
+.link-icon {
+  width: 36px;
+  aspect-ratio: 1/1;
+  filter: grayscale(1) brightness(0.3);
 }
 .fixed-text-container {width: 100%; height: min-content;}
 .tpw--subtitle {font-size: 24pt; @apply mt-0 mb-0 text-gray-700;}
@@ -336,10 +346,5 @@ three-col.svg {@apply text-gray-800;}
   .prof-img {@apply bg-gray-200 rounded; width: 14rem; aspect-ratio: 1/1;}
   .prof-img:hover {@apply bg-gray-300; opacity: 80%; box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2); cursor: pointer;}
 
-  .inspo-input {@apply rounded; background-color: rgba(1, 0, 33, 0.75); width: fit-content;}
-  .grid-box {
-    width: 100vw;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
+  .inspo-input {@apply rounded bg-gray-200;}
+  input[type="text"].inspo-input {width: 50%; padding: 0.5rem; margin: 0.5rem; padding: 0.1rem !important;}

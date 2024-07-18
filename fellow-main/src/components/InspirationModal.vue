@@ -1,5 +1,5 @@
 <script setup>
-import BasicModal from '@/components/BasicModal.vue'
+import CardModal from '@/components/CardModal.vue';
 import {defineProps, ref, watch} from 'vue'
 import { getAuth } from 'firebase/auth';
 import {doc, updateDoc, getDoc} from 'firebase/firestore';
@@ -53,11 +53,9 @@ function uploadInspo(){
 }
 
 function toggleHeaderEdit(){
-    console.log("Edit header");
     editHeader.value = !editHeader.value;
 }
 function updateHeaderInformation(){
-    console.log("Updating header information");
     const docRef = doc(db, "users", currUid, "inspos", props.inspo.id);
     updateDoc(docRef, {
         title: inspoTitle.value,
@@ -70,11 +68,11 @@ function updateHeaderInformation(){
 </script>
 
 <template>
-    <BasicModal :isVisible=modalVisible :title=title>
-        <template #body>
+    <CardModal :modalVisible=modalVisible size="md" :title=title>
+        <template #cardBody>
                 <div v-if="!editHeader" class="row">
                     <div class="col">
-                        <div class="row items-center space-x-4">
+                        <div class="row items-center">
                             <div class="col title">
                                 <span>From "{{ inspoTitle }}"</span>
                             </div>
@@ -93,7 +91,7 @@ function updateHeaderInformation(){
                 <div v-else class="row">
                     <div class="col">
                         <form @submit.prevent="updateHeaderInformation">
-                            <div class="row items-center space-x-4">
+                            <div class="row items-center">
                                 <div class="col title">
                                     <span>From "<input type="text" :value='inspoTitle' @input="inspoTitle = $event.target.value" class="title inspo-input px-1" />"</span>
                                 </div>
@@ -116,7 +114,7 @@ function updateHeaderInformation(){
                     </div>
                 </div>
                 <form @submit.prevent="uploadInspo">
-                    <textarea :value=inspoText @input="inspoText = $event.target.value" class="w-full h-56 bg-gray-900 rounded p-2 mt-4"/>
+                    <textarea :value=inspoText @input="inspoText = $event.target.value" class="w-full h-56 bg-gray-200 rounded p-2 mt-4 border-sm" placeholder="Write some inspiration..."/>
                     <button v-if="changedText" class="btn save-btn">Save Changes</button>
                     <span v-else class="btn save-btn saved">Saved</span>
                 </form>
@@ -124,8 +122,5 @@ function updateHeaderInformation(){
                     <span class="text-xl">Add citation information?</span>
                 </div>
         </template>
-        <template #footer>
-
-        </template>
-    </BasicModal>
+    </CardModal>
 </template>

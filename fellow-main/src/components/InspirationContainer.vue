@@ -2,6 +2,7 @@
     import AddNewInspiration from '../components/AddNewInspiration.vue'
     import InspirationThumbnail from '../components/InspirationThumbnail.vue'
     import InspirationModal from '../components/InspirationModal.vue'
+    import CardModal from '../components/CardModal.vue'
     import { useCollection } from 'vuefire'
     import { db } from '@/firebaseConfig';
     import { collection } from 'firebase/firestore';
@@ -15,7 +16,6 @@
     const inspoData = ref(null);
 
     function changeModal(inspo){
-        console.log(inspo);
         modalVisible.value = true;
         inspoData.value = inspo.inspo;
     }
@@ -26,7 +26,7 @@
 </script>
 
 <template>
-    <div class="row">
+    <div class="row space-x-2">
             <AddNewInspiration />
             <InspirationThumbnail @close="closeModal" @click="changeModal" :edittable=true v-for="inspo in inspos" :inspo="inspo" :key="inspo.id"/>
             <div class="flex flex-col content-center items-start p-2 text-gray-500" style="font-size: 20pt; font-weight: 250; width: 34rem; height: 100%;">
