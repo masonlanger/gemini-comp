@@ -48,7 +48,7 @@ defineProps({
 
 
 <template>
-    <div class="row three-col">
+    <div class="row three-col space-x-6">
         <div class="column w-1/3">
             <font-awesome-icon class="fa-5x" v-if="useIcons" :icon="['fas', image1]" />
             <img v-else :src="image1" alt="Image 1" />

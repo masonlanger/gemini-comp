@@ -66,7 +66,7 @@ function submitUpdates(){
 </script>
 
 <template>
-    <CardModal :modalVisible=modalVisible size="md" title="User Settings" titleIcon="gear">
+    <CardModal :modalVisible=modalVisible size="md" title="Account Settings" titleIcon="gear">
         <template #cardBody>
             <form @submit.prevent="submitUpdates">
                 <h3>Account Information</h3>
@@ -94,24 +94,24 @@ function submitUpdates(){
                         <td><img :src="linkedinIcon" class="linkedin-icon" alt="LinkedIn Icon"/></td>
                         <td><input type="checkbox" v-model="hasLinkedin"/></td>
                         <td>
-                            <input v-if="!hasLinkedin" type="text" readonly/>
-                            <input v-else type="text" v-model="linkedinLink"/>
+                            <input v-if="!hasLinkedin" type="text" class="bg-gray-300 rounded" readonly/>
+                            <input v-else type="text" class="rounded" v-model="linkedinLink"/>
                         </td>
                     </tr>
                     <tr>
                         <td><img :src="wattpadIcon" class="link-icon" alt="Wattpad Icon"/></td>
                         <td><input type="checkbox" v-model="hasWattpad"/></td>
                         <td>
-                            <input v-if="!hasWattpad" type="text" readonly/>
-                            <input v-else type="text" v-model="wattpadLink"/>
+                            <input v-if="!hasWattpad" type="text" class="bg-gray-300 rounded" readonly/>
+                            <input v-else type="text" class="rounded" v-model="wattpadLink"/>
                         </td>
                     </tr>
                     <tr>
                         <td><img :src="substackIcon" class="link-icon" alt="Substack Icon"/></td>
                         <td><input type="checkbox" v-model="hasSubstack" /></td>
                         <td>
-                            <input v-if="!hasSubstack" type="text" readonly/>
-                            <input v-else type="text" v-model="substackLink"/>
+                            <input v-if="!hasSubstack" type="text" class="bg-gray-300 rounded" readonly/>
+                            <input v-else type="text" class="rounded" v-model="substackLink"/>
                         </td>
                     </tr>
                 </table>

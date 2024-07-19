@@ -51,7 +51,7 @@
             <FeaturedWorks />
         </div>
     </div>
-    <AccountSettingsModal :modalVisible=modalVisible title="User Settings" :initial=userData @close="modalVisible = false"/>
+    <AccountSettingsModal :modalVisible=modalVisible :initial=userData @close="modalVisible = false"/>
 </template>
 
 <script setup>
