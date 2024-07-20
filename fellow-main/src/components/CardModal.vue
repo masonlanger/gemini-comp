@@ -29,7 +29,7 @@ defineProps({
         <template #body>
                 <div class="row justify-center w-full h-fit">
                     <div v-if='size == "sm"' class="rounded bg-gray-100 w-1/2 h-full text-gray-800 py-2 px-4">
-                        <div v-if="title" class="row items-center space-x-4">
+                        <div v-if="title" class="row items-center space-x-4 border-b-2">
                             <h2 class="title">{{ title }}</h2>
                             <font-awesome-icon v-if="titleIcon" class="fa-2x" :icon="['fas', titleIcon]"/>
                         </div>
@@ -37,7 +37,7 @@ defineProps({
                         </slot>
                     </div>
                     <div v-else class="rounded bg-gray-100 w-3/5 h-full text-gray-800 py-2 px-4">
-                        <div v-if="title" class="row items-center space-x-4">
+                        <div v-if="title" class="row items-center space-x-4 border-b-2">
                             <h2 class="title">{{ title }}</h2>
                             <font-awesome-icon v-if="titleIcon" class="fa-2x" :icon="['fas', titleIcon]"/>
                         </div>

@@ -83,7 +83,7 @@
 .wrapper-start {@apply flex flex-col items-start;}
 .tpw {width:100%; text-wrap: wrap; float: left;}
 
-.title {font-size: 40pt; font-weight: bold; @apply mb-0;}
+.title {font-size: 36pt; font-weight: bold; @apply mb-0;}
 .subtitle {font-size: 32pt; font-weight: 400; @apply mb-0;}
 .trash-icon {
     position: relative;
