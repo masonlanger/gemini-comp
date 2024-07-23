@@ -150,6 +150,11 @@ body {
   box-shadow: 2px 0px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
+.spacer {
+  min-width: 12px;
+  min-height: 17px;
+}
+
 @keyframes ldio-x2uulkbinbj {
   0% { transform: rotate(0) }
   100% { transform: rotate(360deg) }

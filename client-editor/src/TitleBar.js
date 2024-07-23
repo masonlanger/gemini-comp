@@ -12,6 +12,8 @@ const docRef = doc(db, "users", user, "notebooks", nb);
 
 
 export default function TitleBar() {
+    //title changes
+
     const wrapperRef = useCallback((wrapper) => {
         if (wrapper == null) return
         
@@ -26,13 +28,16 @@ export default function TitleBar() {
                     const data = docSnapshot.data();
                     // Access document fields here
                     q.setText(data.name)
+                    document.title = data.name;
                 } else {
                     // Document not found
                     console.log("No such document!");
+                    document.title = "Notebook";
                 }
             })
             .catch((error) => {
                 console.error("Error getting document:", error);
+                document.title = "Notebook";
         });
 
         q.on("text-change", () => {

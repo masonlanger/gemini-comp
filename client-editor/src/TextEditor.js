@@ -1,6 +1,6 @@
 //imports
 import react, { useRef } from 'react';
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState, componentDidMount } from "react"
 import Quill from "quill"
 import "quill/dist/quill.snow.css"
 import { db } from './firebaseConfig';
@@ -19,7 +19,7 @@ const nb = searchParams.get('nb');
 const docRef = doc(db, "users", user, "notebooks", nb);
 
 //gemini setup
-const apiKey = "";
+const apiKey = "AIzaSyD8u0cVaUvjbcFrjA70HeT6Yz-XDTuiS3E";
 const genAI = new GoogleGenerativeAI(apiKey);
 
 
@@ -48,19 +48,18 @@ const TOOLBAR = [
 //authors view - writing (quill) + suggestion effect
 export default function TextEditor() {
     
-    //suggestion generation
+    //constants
     const [suggest, setSuggestText] = useState(null);
-    const [userText, setUserText] = useState(false);
+    const [userText, setUserText] = useState("");
     const [comments, setComments] = useState([]);
     const [readyForCom, setReadyForCom] =  useState(false);
     const [loading, setLoading] = useState(false);
-    const [altStruct, setAltStruct] = useState(false);
     const [insert, setInsert] = useState(false);
 
     //text generation
     useEffect(() => {
         //text set
-        if( userText == null || userText.length < 5){
+        if( userText == null || userText.length < 5 || userText.trim() == "" || userText.trim() == " "){
             setSuggestText("At your service!")
         } else {
             //call and display proompt result
@@ -175,34 +174,22 @@ export default function TextEditor() {
                 responseMimeType: "text/plain",
             };
 
-            const result = model.generateContent(userText,
-                generationConfig,
-            )
-            .then((response) => {
-                let text = response.response.candidates[0].content.parts[0].text
-                try {
-                    setComments(JSON.parse(text.substring(8, text.length - 3)))
-                } catch {
-                    const result = model.generateContent(userText,
-                        generationConfig,
-                    )
-                    .then((response) => {
-                        let text = response.response.candidates[0].content.parts[0].text
-                        try {
+                const result = model.generateContent(userText,
+                    generationConfig,
+                )
+                .then((response) => {
+                    let text = response.response.candidates[0].content.parts[0].text
+                    try{
                         setComments(JSON.parse(text.substring(8, text.length - 3)))
-                        } catch {
-                            setComments([{'Text':'error loading comments'}])
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    })
-                }
-                setLoading(false)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+                    } catch {
+                        setComments({'Range': [0,1], 'Text': "Sorry about that, please try again"})
+                    }
+                    setLoading(false)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+
         }
     }
 
@@ -270,7 +257,7 @@ export default function TextEditor() {
                     {comments.map((comment, idx) => 
                         <div key={idx}>
                             {Array.from({length: (((comment.Range[0] + comment.Range[1]) / 2) / 17)}).map((_, id) => (
-                                <br key={id} />
+                                <div className='spacer' key={id} />
                             ))}
                             <div className='comment'>{comment.Text}</div>
                         </div>
