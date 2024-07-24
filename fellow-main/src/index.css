@@ -18,6 +18,9 @@
     .navbar {
         @apply bg-white text-gray-800 p-2 w-dvw h-fit shadow-sm text-end;
         transition: transform 300ms ease-in;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
     .isHidden {}   
     .navbar__items{
@@ -436,5 +439,9 @@ three-col.svg {@apply text-gray-800;}
 
   .fifty {
     height: 50px;
-    margin-left: 0;
+  }
+
+  .left-align {
+    @apply justify-start;
+    margin-left: 10px;
   }
