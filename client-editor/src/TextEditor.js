@@ -19,7 +19,7 @@ const nb = searchParams.get('nb');
 const docRef = doc(db, "users", user, "notebooks", nb);
 
 //gemini setup
-const apiKey = "AIzaSyCe_BbZtt5kRABtVlaQJcuNdernoECCv3o";
+const apiKey = "";
 const genAI = new GoogleGenerativeAI(apiKey);
 
 
