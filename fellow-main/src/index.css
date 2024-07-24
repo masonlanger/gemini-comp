@@ -433,3 +433,8 @@ three-col.svg {@apply text-gray-800;}
     font-weight: 800;
     font-style: italic;
   }
+
+  .fifty {
+    height: 50px;
+    margin-left: 0;
+  }

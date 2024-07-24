@@ -1,5 +1,6 @@
 <script setup>
 import NavigationBarItem from './NavigationBarItem.vue'
+import Logo from './Logo.vue'
 import { faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'vue-router'
@@ -33,8 +34,9 @@ const handleSignOut = () => {
             </button>
         </div>
         <div class="navbar__items">
-            <NavigationBarItem name="Dashboard" route="/dashboard" />
-            <NavigationBarItem name="Library" route="/lib" />
+            <Logo />
+            <NavigationBarItem name="Library" route="/library" />
+            <NavigationBarItem name="Notebooks" route="/notebooks" />
             <NavigationBarItem name="Profile" route="/profile" /> 
             <NavigationBarItem name="Sign Out" :action=handleSignOut route="/" />
         </div>
