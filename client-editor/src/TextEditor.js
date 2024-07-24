@@ -19,7 +19,7 @@ const nb = searchParams.get('nb');
 const docRef = doc(db, "users", user, "notebooks", nb);
 
 //gemini setup
-const apiKey = "";
+const apiKey = "AIzaSyCe_BbZtt5kRABtVlaQJcuNdernoECCv3o";
 const genAI = new GoogleGenerativeAI(apiKey);
 
 
@@ -160,10 +160,9 @@ export default function TextEditor() {
                                 + "with their writing. You do not comment on every sentence though, instead keeping your "
                                 + "comments to about 1 comment for every 250 words, and make sure there is atleast a 20 "
                                 + "word buffer between your comments. you also adress grammatical mistakes, but they are not your "
-                                + "priority. Try and keey your comments under 75 words.  \n\n\nDo this using this JSON "
-                                + "schema:\n{{\n'Range': [(index of the word you want to start your comment on, "
-                                + "index of the word you want to end your comment on)],\n'Text': str (replance all quotation "
-                                + "marks with * in this part of the response)}\nReturn: array(Comment)"
+                                + "priority. Try and keep your comments under 75 words.  \n\n\nDo this by emulating this Json Schema: "
+                                + "[{\"Location\": int (the distance in words between this and the previous comment), "
+                                + "\"Text\": \"str (your comment on how they can improve, do not use quotation marks inside your comment)\"]"
             });
             
             const generationConfig = {
@@ -179,10 +178,12 @@ export default function TextEditor() {
                 )
                 .then((response) => {
                     let text = response.response.candidates[0].content.parts[0].text
+                    console.log(text)
                     try{
-                        setComments(JSON.parse(text.substring(8, text.length - 3)))
-                    } catch {
-                        setComments({'Range': [0,1], 'Text': "Sorry about that, please try again"})
+                        setComments(JSON.parse(text))
+                    } catch(error) {
+                        setComments([{'Range': [0,1], 'Text': "Sorry about that, please try again"}])
+                        console.log(error)
                     }
                     setLoading(false)
                 })
@@ -237,16 +238,6 @@ export default function TextEditor() {
             })
         })
     }, [])
-
-    useEffect(() => {
-        try{
-            const text = comments[0].Text
-        } catch {
-             comments.forEach((comment) => {
-                comment = comment.Comment
-             })
-        }
-    },[comments])
     //view
     return (
         <div>
@@ -256,7 +247,7 @@ export default function TextEditor() {
                 <div className='comment-box'>
                     {comments.map((comment, idx) => 
                         <div key={idx}>
-                            {Array.from({length: (((comment.Range[0] + comment.Range[1]) / 2) / 17)}).map((_, id) => (
+                            {Array.from({length: (comment.Location / 17)}).map((_, id) => (
                                 <div className='spacer' key={id} />
                             ))}
                             <div className='comment'>{comment.Text}</div>
