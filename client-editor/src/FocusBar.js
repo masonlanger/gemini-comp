@@ -6,12 +6,16 @@ const searchParams = new URLSearchParams(window.location.search);
 const user = searchParams.get('u');
 const nb = searchParams.get('nb');
 const docRef = doc(db, "users", user)
-const querySnapshot = await getDocs(collection(db, "users", user, "inspos"));
 const inspos = []
-querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    inspos.push(doc.data())
-  });
+try {
+    const querySnapshot = await getDocs(collection(db, "users", user, "inspos"));
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        inspos.push(doc.data())
+    });
+} catch {
+    inspos.push(null)
+}
   
 
 
@@ -34,6 +38,7 @@ export default function FocusBar() {
                     } else {
                         // Document not found
                         console.log("No such document!");
+                        setFocuses([null])
                     }
                 })
                 .catch((error) => {
@@ -45,11 +50,22 @@ export default function FocusBar() {
                     if (docSnapshot.exists) {
                         const data = docSnapshot.data();
                         // Access document fields here
-                        setNotebookFocuses(data.focuses)
-                        setNotebookInspos(data.inspos)
+                        if( data.focuses == null){
+                            setNotebookFocuses(["undefined xzy"])
+                        } else {
+                            setNotebookFocuses(data.focuses)
+                        }
+                        if( data.inspos == null){
+                            setNotebookInspos([{'title': "undefined xzy"}])
+                        } else {
+                            setNotebookInspos(data.focuses)
+                        }
+                        
                     } else {
                         // Document not found
                         console.log("No such document!");
+                        setNotebookFocuses([null])
+                        setNotebookInspos([null])
                     }
                 })
                 .catch((error) => {
@@ -57,7 +73,7 @@ export default function FocusBar() {
             });
             setGetData(false)
         }
-    });
+    },[getData]);
 
     return(
         <div className='focus-list'>
