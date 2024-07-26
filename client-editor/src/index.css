@@ -128,7 +128,7 @@ body {
   z-index: 3;
   position: absolute;
   right: 125px;
-  top:110px;
+  top:132px;
 }
 .comment-button:hover {
   box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);

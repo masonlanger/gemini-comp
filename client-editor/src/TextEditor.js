@@ -78,9 +78,11 @@ export default function TextEditor() {
                     console.error("Error getting document:", error);
         });
         let sentence = ""
-        focuses.forEach((focus,idx) => {
-            sentence += focus + ", "
-        })
+        if( focuses != null){
+            focuses.forEach((focus,idx) => {
+                sentence += focus + ", "
+            })
+        }
         setFocusString(sentence)
 
         //text set
@@ -196,10 +198,12 @@ export default function TextEditor() {
                         console.error("Error getting document:", error);
                 });
             let sentence = ""
-            inspos.forEach((inspo,idx) => {
-                sentence += inspo.title +", by " + inspo.author + ", in the genre(s) " 
-                        + inspos.genre + ", containing the text " + inspos.text + ", "
-            })
+            if( inspos != null) {
+                inspos.forEach((inspo,idx) => {
+                    sentence += inspo.title +", by " + inspo.author + ", in the genre(s) " 
+                            + inspos.genre + ", containing the text " + inspos.text + ", "
+                })
+            }
             setInspoString(sentence)
 
             const model = genAI.getGenerativeModel({
@@ -229,9 +233,14 @@ export default function TextEditor() {
                 .then((response) => {
                     let text = response.response.candidates[0].content.parts[0].text
                     try{
-                        setComments(JSON.parse(text))
+                        if( text.slice(0,7) == "```json"){
+                            setComments(JSON.parse(text.substring(8, text.length - 3)))
+                        } else {
+                            setComments(JSON.parse(text))
+                        }
                     } catch(error) {
                         setComments([{'Range': [0,1], 'Text': "Sorry about that, please try again"}])
+                        console.log(text)
                         console.log(error)
                     }
                     setLoading(false)
