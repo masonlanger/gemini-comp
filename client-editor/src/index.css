@@ -165,38 +165,30 @@ body {
   padding-left: 10px;
 }
 
-.focus-item label {
-  float:left;
-}
-
-.focus-item label span {
+.focus-item {
   text-align:center;
-  padding:3px 0px;
-  display:block;
   border-radius: 16px;
   margin-right: 5px;
   padding: 6px;
   font-size: 13px;
   background-image: linear-gradient(to bottom right, rgb(169, 169, 173), rgb(210, 207, 214));
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 }
 
-.focus-item label input {
-  position:absolute;
-  top:-20px;
-}
-
-.focus-item input:checked + span {
-  background-image: linear-gradient(to bottom right, #9cbfff, #076eff);
-  color:#fff;
+.focus-item-on {
+  text-align:center;
   border-radius: 16px;
   margin-right: 5px;
   padding: 6px;
+  font-size: 13px;
+  background-image: linear-gradient(to bottom right, #9cbfff, #076eff);
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 }
 
 .divider {

@@ -55,9 +55,34 @@ export default function TextEditor() {
     const [readyForCom, setReadyForCom] =  useState(false);
     const [loading, setLoading] = useState(false);
     const [insert, setInsert] = useState(false);
+    const [focuses, SetFocuses] = useState([]);
+    const [focusString, setFocusString] = useState("");
+    const [inspos, setInspos] = useState([]);
+    const [inspoString, setInspoString] = useState("");
 
     //text generation
     useEffect(() => {
+        //get focuses
+        getDoc(doc(db, "users", user, "notebooks", nb))
+            .then((docSnapshot) => {
+                if (docSnapshot.exists) {
+                    const data = docSnapshot.data();
+                        // Access document fields here
+                        SetFocuses(data.focuses)
+                    } else {
+                        // Document not found
+                        console.log("No such document!");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error getting document:", error);
+        });
+        let sentence = ""
+        focuses.forEach((focus,idx) => {
+            sentence += focus + ", "
+        })
+        setFocusString(sentence)
+
         //text set
         if( userText == null || userText.length < 5 || userText.trim() == "" || userText.trim() == " "){
             setSuggestText("At your service!")
@@ -67,7 +92,7 @@ export default function TextEditor() {
                 
                 const model = genAI.getGenerativeModel({
                     model: "gemini-1.5-pro",
-                    systemInstruction: "You are skilled and highly creative post-modern author who is working on a new "
+                    systemInstruction: "You are skilled and highly creative " + focusString + "author who is working on a new "
                                 + "project. You want to add two to six sentences at a time to your current project. " 
                                 + "You take careful note of what has previously been input to inform your additions "
                                 + "to the story. You do not introduce new characters, but you do try to advance the "
@@ -88,14 +113,14 @@ export default function TextEditor() {
                 const safetySettings = [
                     {
                         category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-                        threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+                        threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
                     },
                     {
                         category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-                        threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+                        threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
                     },
                     {
-                        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                        category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
                         threshold: HarmBlockThreshold.BLOCK_NONE,
                     },
                     {
@@ -146,6 +171,8 @@ export default function TextEditor() {
 
     //generate comments
     function commentGeneration() {
+
+        //check document length and then generate comments
         if( !readyForCom ){
             setComments([{
                 'Range': [0,1],
@@ -153,6 +180,28 @@ export default function TextEditor() {
             }])
         } else {
             setLoading(true)
+            //get inspos
+            getDoc(doc(db, "users", user, "notebooks", nb))
+                .then((docSnapshot) => {
+                    if (docSnapshot.exists) {
+                        const data = docSnapshot.data();
+                            // Access document fields here
+                            setInspos(data.inspos)
+                        } else {
+                            // Document not found
+                            console.log("No such document!");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error getting document:", error);
+                });
+            let sentence = ""
+            inspos.forEach((inspo,idx) => {
+                sentence += inspo.title +", by " + inspo.author + ", in the genre(s) " 
+                        + inspos.genre + ", containing the text " + inspos.text + ", "
+            })
+            setInspoString(sentence)
+
             const model = genAI.getGenerativeModel({
                 model: "gemini-1.5-pro",
                 systemInstruction: "You are a literary professor providing feedback through comments on students' essays. " 
@@ -160,7 +209,8 @@ export default function TextEditor() {
                                 + "with their writing. You do not comment on every sentence though, instead keeping your "
                                 + "comments to about 1 comment for every 250 words, and make sure there is atleast a 20 "
                                 + "word buffer between your comments. you also adress grammatical mistakes, but they are not your "
-                                + "priority. Try and keep your comments under 75 words.  \n\n\nDo this by emulating this Json Schema: "
+                                + "priority. I am inspired by: " + inspoString + " and would like your help moving my writing in "
+                                + "this direction. Try and keep your comments under 75 words.  \n\n\nDo this by emulating this Json Schema: "
                                 + "[{\"Location\": int (the distance in words between this and the previous comment), "
                                 + "\"Text\": \"str (your comment on how they can improve, do not use quotation marks inside your comment)\"]"
             });
@@ -178,7 +228,6 @@ export default function TextEditor() {
                 )
                 .then((response) => {
                     let text = response.response.candidates[0].content.parts[0].text
-                    console.log(text)
                     try{
                         setComments(JSON.parse(text))
                     } catch(error) {
