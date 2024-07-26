@@ -58,7 +58,7 @@ export default function FocusBar() {
                         if( data.inspos == null){
                             setNotebookInspos([{'title': "undefined xzy"}])
                         } else {
-                            setNotebookInspos(data.focuses)
+                            setNotebookInspos(data.inspos)
                         }
                         
                     } else {
