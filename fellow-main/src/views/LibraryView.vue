@@ -3,13 +3,35 @@
     import NotebookContainer from '../components/NotebookContainer.vue'
     import InspirationContainer from '../components/InspirationContainer.vue'
     import SubtitleIconWidget from '@/components/SubtitleIconWidget.vue';
+    import { ref } from 'vue';
+
+
+    const calloutView = ref('Notebooks');
+    function toggleCallout(callout) {
+        calloutView.value = callout;
+    }
 </script>
 
 <template>
     <div class="home">
-        <TitleWidget title="Library" />
-        <SubtitleIconWidget subtitle="Notebooks" />
-        <div class="row mb-2">
+        <TitleWidget title="Notebooks" />
+        <div class="row space-x-4 w-full justify-left">
+                <div @click="toggleCallout('Notebooks')" v-if="calloutView == 'Notebooks'" class="border-bottom p-2 hoverable tpw--subtitle spectral-medium">
+                    <span>Notebooks</span>
+                </div>
+                <div @click="toggleCallout('Notebooks')" v-else class="p-2 hoverable tpw--subtitle spectral-medium">
+                    <span>Notebooks</span>
+                </div>
+
+                <div @click="toggleCallout('Inspirations')" v-if="calloutView == 'Inspirations'" class="border-bottom p-2 hoverable tpw--subtitle spectral-medium">
+                    <span>Inspirations</span>
+                </div>
+                <div @click="toggleCallout('Inspirations')" v-else class="p-2 hoverable tpw--subtitle spectral-medium">
+                    <span>Inspirations</span>
+                </div>
+            </div>
+        <br />
+        <div class="row mb-2" v-if="calloutView === 'Notebooks'">
             <!-- <NotebookThumbnail v-for="notebook in notebooks" :notebook="notebook" :key="notebook.id" /> -->
             <Suspense>
                 <NotebookContainer />
@@ -20,8 +42,7 @@
                 </template>
             </Suspense>
         </div>
-        <SubtitleIconWidget subtitle="Inspirations" />
-        <div class="row mb-2">
+        <div class="row mb-2" v-if="calloutView === 'Inspirations'">
             <Suspense>
                 <InspirationContainer/>
                 <template #fallback>

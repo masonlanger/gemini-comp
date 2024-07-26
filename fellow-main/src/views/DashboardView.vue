@@ -19,5 +19,5 @@
 </script>
 
 <template>
-    <TitleWidget title="Welcome to the Dashboard" />
+    <TitleWidget title="Library" />
 </template>
