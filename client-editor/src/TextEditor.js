@@ -354,7 +354,7 @@ export default function TextEditor() {
         
         const delayDebounceFn = setTimeout(() => {
             setGetData(true)
-        }, 250)
+        }, 300)
     }
 
     //unpublish notebook
