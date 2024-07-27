@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState, componentDidMount } from "react"
 import Quill from "quill"
 import "quill/dist/quill.snow.css"
 import { db } from './firebaseConfig';
-import { doc, getDoc, updateDoc, addDoc, collection } from 'firebase/firestore'
+import { doc, getDoc, updateDoc, addDoc, collection, serverTimestamp, Timestamp, deleteDoc } from 'firebase/firestore'
 import axios from 'axios'
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
 import $ from 'jquery'; 
@@ -17,6 +17,26 @@ const searchParams = new URLSearchParams(window.location.search);
 const user = searchParams.get('u');
 const nb = searchParams.get('nb');
 const docRef = doc(db, "users", user, "notebooks", nb);
+const userRef = doc(db, "users", user);
+let name = "anonymous"
+let pubID = null
+try {
+    const docSnap = await getDoc(userRef);
+    if (docSnap.exists()) {
+        const data = docSnap.data();
+        if( data.username != ""){
+            name = data.username;
+        }
+        if( data.publishedID != null){
+            pubID = data.publishedID;
+        }
+      } else {
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!");
+      }
+} catch {
+    name = "anonymous"
+}
 
 //gemini setup
 const apiKey = "";
@@ -60,8 +80,10 @@ export default function TextEditor() {
     const [inspoString, setInspoString] = useState("");
     const [published, setPublished] = useState(false);
     const [getData, setGetData] = useState(true);
+    const [pCode, setPCode] = useState("pubID")
 
 
+    //get publishing status
     useEffect(() => {
         if(getData == true){
             //get focuses
@@ -71,6 +93,7 @@ export default function TextEditor() {
                         const data = docSnapshot.data();
                         // Access document fields here
                         setPublished(data.published)
+
                     } else {
                         // Document not found
                         console.log("No such document!");
@@ -187,6 +210,7 @@ export default function TextEditor() {
         }
     }, [userText])
 
+    //get suggestion text into clipboard
     useEffect(() => {
         if(insert) {
             try{
@@ -198,6 +222,7 @@ export default function TextEditor() {
         }
     }, [insert])
 
+    //check for comment readiness
     useEffect(() => {
         if(userText.length >= 100 ){
             setReadyForCom(true)
@@ -297,61 +322,49 @@ export default function TextEditor() {
         }
     }
 
+    //publish notebook
     function publishNotebook() { 
-        updateDoc(docRef, {
-            published: true
-        })
-
         getDoc(docRef)
-            .then((docSnapshot) => {
-                if (docSnapshot.exists) {
-                    const data = docSnapshot.data();
-                    
-                    // Access document fields here
-                } else {
-                    // Document not found
-                    console.log("No such document!");
-                }
-            })
-            .catch((error) => {
-                console.error("Error getting document:", error);
-        });
+                .then((docSnapshot) => {
+                    if (docSnapshot.exists) {
+                        const data = docSnapshot.data();
+                        // Access document fields here
+                        addDoc(collection(db, "published"), {
+                            title: data.name,
+                            text: data.text,
+                            timestamp: serverTimestamp(),
+                            author: name 
+                        })
+                        .then((doc) => {
+                            updateDoc(docRef, {
+                                published: true,
+                                publishedID: doc._key.path.segments[1]
+                            })
+                            setPCode(doc._key.path.segments[1])
+                        })
 
-        const publishRef = addDoc(collection(db, "published"), {
-            name: "Tokyo",
-            country: "Japan"
-        })
-
-
+                    } else {
+                        // Document not found
+                        console.log("No such document!");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error getting document:", error);
+            });
+        
         const delayDebounceFn = setTimeout(() => {
             setGetData(true)
         }, 250)
     }
 
+    //unpublish notebook
     function unPublishNotebook() { 
+        deleteDoc(doc(db, "published", pCode))
+
         updateDoc(docRef, {
-            published: false
+            published: false,
+            publishedID: null
         })
-
-        getDoc(docRef)
-            .then((docSnapshot) => {
-                if (docSnapshot.exists) {
-                    const data = docSnapshot.data();
-                    // Access document fields here
-                } else {
-                    // Document not found
-                    console.log("No such document!");
-                }
-            })
-            .catch((error) => {
-                console.error("Error getting document:", error);
-        });
-
-        const publishRef = addDoc(collection(db, "published"), {
-            name: "Tokyo",
-            country: "Japan"
-        })
-
 
         const delayDebounceFn = setTimeout(() => {
             setGetData(true)
