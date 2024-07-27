@@ -65,6 +65,7 @@ function toggleShowDropdown(){
             <div class="inspo-thumbnail--flex mt-4">
                 <h2 class="notebook-thumbnail--title">{{ inspo.title }}</h2>
                 <h2 class="inspo-thumbnail--name">{{ inspo.author }}</h2>
+                <div v-if="inspo.genre" class="inspo-thumbnail--name">{{ inspo.genre[0].toUpperCase() + inspo.genre.slice(1) }}</div>
             </div>
         </div>
     </div>
