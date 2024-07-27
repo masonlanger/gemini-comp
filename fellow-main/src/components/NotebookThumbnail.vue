@@ -17,7 +17,6 @@ const props = defineProps({
     }
 })
 const router = useRouter();
-console.log(props.edittable);
 function deleteNotebook() {
     deleteDoc(doc(db, "users", currUid, "notebooks", props.notebook.id));
 }
@@ -33,8 +32,8 @@ function onThumbnailClick() {
     <div class="notebook-thumbnail">
         <font-awesome-icon v-if=props.edittable class="fa-1x trash-icon hover-appear" :icon="['fas', 'trash']" @click="deleteNotebook"/>
         <div class="notebook-thumbnail--flex" @click="onThumbnailClick">
-            <div class="flex items-center space-x-1 text-gray-700">
-                <font-awesome-icon class="fa-1x" :icon="['fas', 'book-open']" />
+            <div class="items-center space-x-1 text-gray-700">
+                <font-awesome-icon class="fa-8x" :icon="['fas', 'book-open']" />
                 <br/>
                 <h2 class="notebook-thumbnail--title">{{ notebook.name }}</h2>
             </div>

@@ -7,7 +7,7 @@
 /* NAV BAR */
 @media screen and (min-width: 780px) {
     .btn {
-        @apply block text-center object-scale-down p-2 bg-white text-gray-800 my-2 w-32 rounded;
+        @apply block text-center object-scale-down p-2 text-gray-800 my-2 w-32 rounded;
         transition: box-shadow opacity 0.3s ease;
     }
     .btn:hover {
@@ -15,6 +15,14 @@
         box-shadow: 0 0.05rem 0.05rem rgba(0, 0, 0, 0.2);
         opacity: 90%;
     }
+    .inactive {
+      @apply bg-white;
+    }
+
+    .active {
+      @apply bg-blue-100;
+    }
+
     .navbar {
         @apply bg-white text-gray-800 p-2 w-dvw h-fit shadow-sm text-end;
         transition: transform 300ms ease-in;
@@ -138,11 +146,16 @@ three-col.svg {@apply text-gray-800;}
 
 .ann-block {
     @apply bg-gray-100 p-4 flex;
-    width: 14rem;
-    height:14rem;
+    width: 5rem;
+    height:5rem;
     justify-content: center;
     align-items: center;
     transition: box-shadow opacity 0.3s ease;
+    border-radius: 50%;
+    -webkit-user-select: none; /* Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
 }
 
 .ann-block > h1 {
@@ -160,16 +173,26 @@ three-col.svg {@apply text-gray-800;}
 
 .notebook-thumbnail {
     @apply bg-gray-100 p-4;
-    width: 14rem;
+    width: 12rem;
     aspect-ratio: 1/1;
     transition: box-shadow opacity 0.3s ease;
+    border-radius: 16px;
+    -webkit-user-select: none; /* Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
 }
 
 .inspo-thumbnail {
   @apply bg-gray-100 p-4;
-  width: 16rem;
-  aspect-ratio: 8/11;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 16px;
   transition: box-shadow opacity 0.3s ease;
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 }
 
 .inspo-thumbnail:hover {
@@ -188,6 +211,7 @@ three-col.svg {@apply text-gray-800;}
     align-items: center;
     height: 90%;
 }
+
 .inspo-thumbnail--flex {
   @apply flex flex-col;
   justify-content: end;
@@ -199,6 +223,12 @@ three-col.svg {@apply text-gray-800;}
     @apply text-gray-700 text-center;
     font-size: 14pt;
     font-weight: 500;
+}
+
+.inspo-thumbnail--name {
+  @apply text-gray-700 text-center;
+  font-size: 12pt;
+  font-weight: 500;
 }
 
 .notebook-thumbnail:hover {

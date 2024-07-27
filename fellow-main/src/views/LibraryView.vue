@@ -2,7 +2,6 @@
     import TitleWidget from '../components/TitleWidget.vue'
     import NotebookContainer from '../components/NotebookContainer.vue'
     import InspirationContainer from '../components/InspirationContainer.vue'
-    import SubtitleIconWidget from '@/components/SubtitleIconWidget.vue';
     import { ref } from 'vue';
 
 
@@ -14,7 +13,6 @@
 
 <template>
     <div class="home">
-        <TitleWidget title="Notebooks" />
         <div class="row space-x-4 w-full justify-left">
                 <div @click="toggleCallout('Notebooks')" v-if="calloutView == 'Notebooks'" class="border-bottom p-2 hoverable tpw--subtitle spectral-medium">
                     <span>Notebooks</span>

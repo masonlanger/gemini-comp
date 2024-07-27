@@ -1,6 +1,5 @@
 <template>
     <div class="home"> 
-        <TitleWidget title="Profile" />
         <div class="row w-full items-center">
             <input type="file" ref="file" style="display: none" accept="image/jpeg, image/png" @change="uploadUserImg" @input="userImg = $event.target.value"/>
             <div v-if="img" @click="$refs.file.click()">
