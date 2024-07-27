@@ -3,25 +3,27 @@
     import NotebookThumbnail from '../components/NotebookThumbnail.vue'
     import { useCollection } from 'vuefire'
     import { db } from '@/firebaseConfig';
-    import { collection } from 'firebase/firestore';
+    import { collection, orderBy } from 'firebase/firestore';
     import { getAuth } from 'firebase/auth';
+    import { query } from 'firebase/firestore';
     
+    const numNotebooksRow = 4;
     const currUid = getAuth().currentUser.uid;
-    const notebooks = useCollection(collection(db, "users", currUid, "notebooks" ));
+    const notebooks = useCollection(query(collection(db, "users", currUid, "notebooks" ), orderBy("timestamp", "desc")));
     // const notebookRows = Math.ceil(notebooks.length/5);
     // console.log(notebookRows)
 </script>
 
 <template>
     <div class="row space-x-2">
-            <AddNewNotebook />
+            <AddNewNotebook class="mr-6"/>
             <div v-if="notebooks.length > 0">
-                <div v-for="n in Math.ceil(notebooks.length/6)" :key="n">
-                    <div v-if="n == 1" class="row space-x-2"> 
-                        <NotebookThumbnail :edittable=true v-for="notebook in notebooks.slice(n-1, 6)" :notebook="notebook" :key="notebook.id"/>
+                <div v-for="n in Math.ceil(notebooks.length/numNotebooksRow)" :key="n">
+                    <div v-if="n == 1" class="row space-x-4"> 
+                        <NotebookThumbnail :edittable=true v-for="notebook in notebooks.slice(n-1, numNotebooksRow)" :zIndex="notebooks.length-notebooks.indexOf(notebook)+2" :notebook="notebook" :key="notebook.id"/>
                     </div>
-                    <div v-else class="row mt-1 space-x-2">
-                        <NotebookThumbnail :edittable=true v-for="notebook in notebooks.slice(6*(n-1), notebooks.length-(6*(n-1)) > 0 ? 6*(n-1)+6 : notebooks.length)" :notebook="notebook" :key="notebook.id"/>
+                    <div v-else class="row mt-1 space-x-4">
+                        <NotebookThumbnail :edittable=true v-for="notebook in notebooks.slice(numNotebooksRow*(n-1), notebooks.length-(numNotebooksRow*(n-1)) > 0 ? numNotebooksRow*(n-1)+numNotebooksRow : notebooks.length)" :zIndex="notebooks.length-notebooks.indexOf(notebook)+2" :notebook="notebook" :key="notebook.id"/>
                     </div>
                 </div>
             </div>

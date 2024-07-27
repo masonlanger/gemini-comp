@@ -75,11 +75,32 @@
 .hoverable {transition: opacity 0.3s ease;}
 .hoverable:hover {cursor: pointer; opacity: 70%;}
 .column {@apply text-center text-wrap;}
-.modal {@apply fixed inset-0 w-full h-screen flex items-start justify-start py-8 text-gray-200; background-color: rgba(0, 0, 0, 0.75); margin-left: 0!important; margin-right: 0!important;}
+.modal {@apply fixed inset-0 w-full h-screen flex items-start justify-start py-8 text-gray-200; background-color: rgba(0, 0, 0, 0.75); margin-left: 0!important; margin-right: 0!important; z-index: 999;}
 .modal-content {@apply mt-14;}
 .close-modal {font-size: 18pt; font-weight: 600; transition: opacity 0.3s ease; padding-left: 4rem;}
 .close-modal:hover {cursor: pointer; opacity: 75%;}
 .border-bottom {@apply border-b border-gray-600;}
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: block;
+  position: absolute;
+  top: 2.25rem;
+  right: -8.5rem;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 990;
+}
+
+.dropdown-option:hover {
+  opacity: 90%;
+  cursor: pointer;
+}
+
 .save-btn {
   @apply w-fit p-2 bg-gray-800 text-white rounded; transition: box-shadow opacity 0.3s ease;
   .saved {
@@ -97,10 +118,9 @@
 .title {font-size: 36pt; font-weight: bold; @apply mb-0;}
 .subtitle {font-size: 32pt; font-weight: 400; @apply mb-0;}
 .trash-icon {
-    position: relative;
-    top: 0;
-    right: 0;
-    opacity: 0%;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
 }
 .trash-icon:hover {
     opacity: 70%;
@@ -145,13 +165,11 @@
 three-col.svg {@apply text-gray-800;}
 
 .ann-block {
-    @apply bg-gray-100 p-4 flex;
-    width: 5rem;
-    height:5rem;
+    @apply bg-gray-100 px-6 py-4 flex space-x-2 rounded-full;
+    height: fit-content;
     justify-content: center;
     align-items: center;
     transition: box-shadow opacity 0.3s ease;
-    border-radius: 50%;
     -webkit-user-select: none; /* Safari */        
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
@@ -173,10 +191,11 @@ three-col.svg {@apply text-gray-800;}
 
 .notebook-thumbnail {
     @apply bg-gray-100 p-4;
-    width: 12rem;
+    position: relative;
+    width: 15rem;
     aspect-ratio: 1/1;
     transition: box-shadow opacity 0.3s ease;
-    border-radius: 16px;
+    overflow: visible;
     -webkit-user-select: none; /* Safari */        
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
@@ -185,9 +204,9 @@ three-col.svg {@apply text-gray-800;}
 
 .inspo-thumbnail {
   @apply bg-gray-100 p-4;
-  width: 12rem;
-  height: 12rem;
-  border-radius: 16px;
+  width: 14rem;
+  height: 14rem;
+  position: relative;
   transition: box-shadow opacity 0.3s ease;
   -webkit-user-select: none; /* Safari */        
   -moz-user-select: none; /* Firefox */
@@ -200,9 +219,6 @@ three-col.svg {@apply text-gray-800;}
   opacity: 80%;
   box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  .trash-icon {
-      opacity: 100%;
-  }
 }
 
 .notebook-thumbnail--flex {
@@ -236,9 +252,6 @@ three-col.svg {@apply text-gray-800;}
     opacity: 80%;
     box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    .trash-icon {
-        opacity: 100%;
-    }
 }
 
 .notebook-logo {display: flex; flex-direction: column; align-items: start; text-align: center; width:min-content; @apply mx-2}

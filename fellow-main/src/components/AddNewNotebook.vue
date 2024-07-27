@@ -52,6 +52,7 @@ function postNewNotebook() {
 
 <template>
     <div class="ann-block" @click=postNewNotebook>
-        <font-awesome-icon class="fa-2x" :icon="['fas', 'pencil']" />
+        <font-awesome-icon class="fa-1x" :icon="['fas', 'plus']" />
+        <h2 class="font-bold">New</h2>
     </div>
 </template>

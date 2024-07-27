@@ -3,6 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { db } from '@/firebaseConfig';
 import { deleteDoc, collection, doc } from 'firebase/firestore';
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 
 const currUid = getAuth().currentUser.uid;
 const props = defineProps({
@@ -14,11 +15,22 @@ const props = defineProps({
         type: Boolean,
         default: false,
         required: true
+    },
+    zIndex: {
+        type: Number,
+        default: 1,
+        required: true
+    
     }
 })
 const router = useRouter();
+const showDropdown = ref(false);
+function toggleShowDropdown(){
+    showDropdown.value = !showDropdown.value;
+}
 function deleteNotebook() {
     deleteDoc(doc(db, "users", currUid, "notebooks", props.notebook.id));
+    showDropdown.value = false;
 }
 
 function onThumbnailClick() {
@@ -29,11 +41,27 @@ function onThumbnailClick() {
 </script>
 
 <template>
-    <div class="notebook-thumbnail">
-        <font-awesome-icon v-if=props.edittable class="fa-1x trash-icon hover-appear" :icon="['fas', 'trash']" @click="deleteNotebook"/>
+    <div class="notebook-thumbnail rounded" :style="{ 'z-index': zIndex }">
+        <div class="dropdown relative">
+            <font-awesome-icon v-if=props.edittable class="fa-1x trash-icon px-1" :icon="['fas', 'ellipsis-vertical']" @click="toggleShowDropdown"/>
+            <div v-if="showDropdown" class="dropdown-content flex flex-col space-y-2 rounded">
+                <div class="flex flex-row items-center dropdown-option" @click="deleteNotebook">
+                    <font-awesome-icon class="fa-1x mr-2" :icon="['fas', 'trash']"/>
+                    <p>Delete Notebook</p>
+                </div>
+                <div class="flex flex-row items-center dropdown-option">
+                    <font-awesome-icon class="fa-1x mr-2" :icon="['fas', 'user-group']"/>
+                    <p>Share</p>
+                </div>
+                <div class="flex flex-row items-center dropdown-option">
+                    <font-awesome-icon class="fa-1x mr-2" :icon="['fas', 'paper-plane']"/>
+                    <p>Publish</p>
+                </div>
+            </div>
+        </div>
         <div class="notebook-thumbnail--flex" @click="onThumbnailClick">
             <div class="items-center space-x-1 text-gray-700">
-                <font-awesome-icon class="fa-8x" :icon="['fas', 'book-open']" />
+                <!-- <font-awesome-icon class="fa-8x" :icon="['fas', 'book-open']" /> -->
                 <br/>
                 <h2 class="notebook-thumbnail--title">{{ notebook.name }}</h2>
             </div>

@@ -5,16 +5,16 @@
     import CardModal from '../components/CardModal.vue'
     import { useCollection } from 'vuefire'
     import { db } from '@/firebaseConfig';
-    import { collection } from 'firebase/firestore';
+    import { collection, query, orderBy } from 'firebase/firestore';
     import { getAuth } from 'firebase/auth';
     import { ref } from 'vue'
 
     const currUid = getAuth().currentUser.uid;
-    const inspos = useCollection(collection(db, "users", currUid, "inspos" ));
+    const inspos = useCollection(query(collection(db, "users", currUid, "inspos" ), orderBy("timestamp", "desc")));
     
     const modalVisible = ref(false);
     const inspoData = ref(null);
-
+    const numInsposRow = 5;
     function changeModal(inspo){
         modalVisible.value = true;
         inspoData.value = inspo.inspo;
@@ -28,14 +28,14 @@
 <template>
     <div class="flex-col">
         <div class="row space-x-2">
-            <AddNewInspiration />
+            <AddNewInspiration class="mr-6"/>
                 <div v-if="inspos.length > 0">
-                    <div v-for="n in Math.ceil(inspos.length/5)" :key="n">
+                    <div v-for="n in Math.ceil(inspos.length/numInsposRow)" :key="n">
                         <div v-if="n == 1" class="row space-x-2"> 
-                            <InspirationThumbnail @close="closeModal" @click="changeModal" :edittable=true v-for="inspo in inspos.slice(n-1, 6)" :inspo="inspo" :key="inspo.id"/>
+                            <InspirationThumbnail @close="closeModal" @click="changeModal" :zIndex="inspos.length-inspos.indexOf(inspo)+2" :edittable=true v-for="inspo in inspos.slice(n-1, numInsposRow)" :inspo="inspo" :key="inspo.id"/>
                         </div>
-                        <div v-else class="row mt-1 space-x-2">
-                            <InspirationThumbnail @close="closeModal" @click="changeModal" :edittable=true v-for="inspo in inspos.slice(6*(n-1), inspos.length-(6*(n-1)) > 0 ? 6*(n-1)+6 : inspos.length)" :inspo="inspo" :key="inspo.id"/>
+                        <div v-else class="row mt-2 space-x-2">
+                            <InspirationThumbnail @close="closeModal" @click="changeModal" :zIndex="inspos.length-inspos.indexOf(inspo)+2" :edittable=true v-for="inspo in inspos.slice(numInsposRow*(n-1), inspos.length-(numInsposRow*(n-1)) > 0 ? numInsposRow*(n-1)+numInsposRow : inspos.length)" :inspo="inspo" :key="inspo.id"/>
                         </div>
                     </div>
                 </div>

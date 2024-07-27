@@ -28,6 +28,7 @@ function postNewInspo() {
 
 <template>
     <div class="ann-block" @click=postNewInspo>
-        <font-awesome-icon class="fa-2x" :icon="['fas', 'lightbulb']" />
+        <font-awesome-icon class="fa-1x" :icon="['fas', 'plus']" />
+        <h2 class="font-bold">New</h2>
     </div>
 </template>

@@ -42,7 +42,7 @@
         </div>
         <div class="row mb-2" v-if="calloutView === 'Inspirations'">
             <Suspense>
-                <InspirationContainer/>
+                <InspirationContainer />
                 <template #fallback>
                     <!--Code for skeleton rendering goes here-->
                     <!-- Dummy notebook thumbnail -->
