@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState, componentDidMount } from "react"
 import Quill from "quill"
 import "quill/dist/quill.snow.css"
 import { db } from './firebaseConfig';
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, updateDoc, addDoc, collection } from 'firebase/firestore'
 import axios from 'axios'
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
 import $ from 'jquery'; 
@@ -47,7 +47,6 @@ const TOOLBAR = [
 
 //authors view - writing (quill) + suggestion effect
 export default function TextEditor() {
-    
     //constants
     const [suggest, setSuggestText] = useState(null);
     const [userText, setUserText] = useState("");
@@ -59,6 +58,30 @@ export default function TextEditor() {
     const [focusString, setFocusString] = useState("");
     const [inspos, setInspos] = useState([]);
     const [inspoString, setInspoString] = useState("");
+    const [published, setPublished] = useState(false);
+    const [getData, setGetData] = useState(true);
+
+
+    useEffect(() => {
+        if(getData == true){
+            //get focuses
+            getDoc(docRef)
+                .then((docSnapshot) => {
+                    if (docSnapshot.exists) {
+                        const data = docSnapshot.data();
+                        // Access document fields here
+                        setPublished(data.published)
+                    } else {
+                        // Document not found
+                        console.log("No such document!");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error getting document:", error);
+            });
+        }
+        setGetData(false);
+    },[getData])
 
     //text generation
     useEffect(() => {
@@ -106,7 +129,8 @@ export default function TextEditor() {
                 const model = genAI.getGenerativeModel({
                     model: "gemini-1.5-pro",
                     systemInstruction: "You are skilled and highly creative " + focusString + "author who is working on a new "
-                                + "project. You am inspired by " + inspoString + "You want to add two to six sentences at a time to your current project. " 
+                                + "project, and writes in those styles. You are inspired by " + inspoString + "You "
+                                + "want to add two to six sentences at a time to your current project. " 
                                 + "You take careful note of what has previously been input to inform your additions "
                                 + "to the story. You do not introduce new characters, but you do try to advance the "
                                 + "plot. You only use what has already been provided as input to determine the "
@@ -273,6 +297,67 @@ export default function TextEditor() {
         }
     }
 
+    function publishNotebook() { 
+        updateDoc(docRef, {
+            published: true
+        })
+
+        getDoc(docRef)
+            .then((docSnapshot) => {
+                if (docSnapshot.exists) {
+                    const data = docSnapshot.data();
+                    
+                    // Access document fields here
+                } else {
+                    // Document not found
+                    console.log("No such document!");
+                }
+            })
+            .catch((error) => {
+                console.error("Error getting document:", error);
+        });
+
+        const publishRef = addDoc(collection(db, "published"), {
+            name: "Tokyo",
+            country: "Japan"
+        })
+
+
+        const delayDebounceFn = setTimeout(() => {
+            setGetData(true)
+        }, 250)
+    }
+
+    function unPublishNotebook() { 
+        updateDoc(docRef, {
+            published: false
+        })
+
+        getDoc(docRef)
+            .then((docSnapshot) => {
+                if (docSnapshot.exists) {
+                    const data = docSnapshot.data();
+                    // Access document fields here
+                } else {
+                    // Document not found
+                    console.log("No such document!");
+                }
+            })
+            .catch((error) => {
+                console.error("Error getting document:", error);
+        });
+
+        const publishRef = addDoc(collection(db, "published"), {
+            name: "Tokyo",
+            country: "Japan"
+        })
+
+
+        const delayDebounceFn = setTimeout(() => {
+            setGetData(true)
+        }, 250)
+    }
+
     //quill editor mount
     const wrapperRef = useCallback((wrapper) => {
         if (wrapper == null) return
@@ -344,8 +429,12 @@ export default function TextEditor() {
                 </div>
             }
             <div className='sug-input' >cmd-v to add to text</div>
+            {published == false ? 
+                <div className='publish' onClick={publishNotebook}>Publish</div>
+            :
+                <div className='publish' onClick={unPublishNotebook}>Unpublish</div>
+            }
             <div className="container" ref={wrapperRef}></div>
         </div>
-
     );
 }
