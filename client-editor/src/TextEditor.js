@@ -69,6 +69,7 @@ export default function TextEditor() {
                     const data = docSnapshot.data();
                         // Access document fields here
                         SetFocuses(data.focuses)
+                        setInspos(data.inspos)
                     } else {
                         // Document not found
                         console.log("No such document!");
@@ -85,6 +86,16 @@ export default function TextEditor() {
         }
         setFocusString(sentence)
 
+        let sent = ""
+        if( inspos != null) {
+            inspos.forEach((inspo,idx) => {
+                sent += inspo.title +", by " + inspo.author + ", in the genre(s) " 
+                        + inspos.genre + ", containing the text " + inspos.text + ", "
+            })
+        }
+        setInspoString(sent)
+
+
         //text set
         if( userText == null || userText.length < 5 || userText.trim() == "" || userText.trim() == " "){
             setSuggestText("At your service!")
@@ -95,7 +106,7 @@ export default function TextEditor() {
                 const model = genAI.getGenerativeModel({
                     model: "gemini-1.5-pro",
                     systemInstruction: "You are skilled and highly creative " + focusString + "author who is working on a new "
-                                + "project. You want to add two to six sentences at a time to your current project. " 
+                                + "project. You am inspired by " + inspoString + "You want to add two to six sentences at a time to your current project. " 
                                 + "You take careful note of what has previously been input to inform your additions "
                                 + "to the story. You do not introduce new characters, but you do try to advance the "
                                 + "plot. You only use what has already been provided as input to determine the "
@@ -189,6 +200,7 @@ export default function TextEditor() {
                         const data = docSnapshot.data();
                             // Access document fields here
                             setInspos(data.inspos)
+                            SetFocuses(data.focuses)
                         } else {
                             // Document not found
                             console.log("No such document!");
@@ -206,9 +218,18 @@ export default function TextEditor() {
             }
             setInspoString(sentence)
 
+            let sent = ""
+            if( focuses != null){
+                focuses.forEach((focus,idx) => {
+                    sent += focus + ", "
+                })
+            }
+            setFocusString(sent)
+
             const model = genAI.getGenerativeModel({
                 model: "gemini-1.5-pro",
-                systemInstruction: "You are a literary professor providing feedback through comments on students' essays. " 
+                systemInstruction: "You are a literary professor providing feedback through comments on students' essays. The "
+                                + "student wants to focus on " + focusString
                                 + "You provide robust and thorough comments and a concluding statement to help them continue "
                                 + "with their writing. You do not comment on every sentence though, instead keeping your "
                                 + "comments to about 1 comment for every 250 words, and make sure there is atleast a 20 "
