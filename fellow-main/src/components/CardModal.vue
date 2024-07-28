@@ -1,6 +1,5 @@
 <script setup>
 import BasicModal from '@/components/BasicModal.vue'
-import { icon } from '@fortawesome/fontawesome-svg-core';
 import {defineProps} from 'vue'
 defineProps({
     modalVisible: {
@@ -21,6 +20,7 @@ defineProps({
         required: false
     }
 })
+
 
 </script>
 

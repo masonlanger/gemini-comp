@@ -1,11 +1,11 @@
 <template>
-    <div v-if="isVisible" class="modal">
+    <div v-if="isVisible" class="modal overflow-y-auto">
         <button @click="closeModal" class="close-modal">Close</button>
         <div class="modal-content w-3/4">
             <div class="modal-header">
                 <h2 v-if=title class="title">{{ title }}</h2>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="modalBody">
                 <slot name="body">
                 </slot>
             </div>
@@ -18,7 +18,6 @@
 </template>
 
 <script setup>
-import TitleWidget from './TitleWidget.vue';
 import { defineEmits, defineProps } from 'vue'
 
 const emit = defineEmits(['close']);

@@ -1,17 +1,19 @@
 <script setup>
     import AddNewNotebook from '../components/AddNewNotebook.vue'
     import NotebookThumbnail from '../components/NotebookThumbnail.vue'
+    import { ref } from 'vue'
     import { useCollection } from 'vuefire'
     import { db } from '@/firebaseConfig';
     import { collection, orderBy } from 'firebase/firestore';
     import { getAuth } from 'firebase/auth';
     import { query } from 'firebase/firestore';
     
-    const numNotebooksRow = 4;
+    const numNotebooksRow = ref(Math.max(Math.floor((window.innerWidth-256)/(15*16)), 1));
     const currUid = getAuth().currentUser.uid;
     const notebooks = useCollection(query(collection(db, "users", currUid, "notebooks" ), orderBy("timestamp", "desc")));
-    // const notebookRows = Math.ceil(notebooks.length/5);
-    // console.log(notebookRows)
+    window.addEventListener('resize', () => {
+        numNotebooksRow.value = Math.max(Math.floor((window.innerWidth-256)/(15*16)), 1);
+    });
 </script>
 
 <template>
