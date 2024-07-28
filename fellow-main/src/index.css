@@ -73,7 +73,7 @@
     main {display: flex; flex-direction: row;}
 } */
 
-.form {display: flex; flex-direction: column; align-items: start; text-align: center; width:min-content; @apply mx-2}
+.form {display: flex; flex-direction: column; align-items: start; text-align: center; @apply mx-2}
 .pill {@apply bg-gray-100 text-gray-600 rounded px-2 py-1; font-weight: 600; transition: font-weight background-color ease 0.3s;}
 .pill:hover {cursor: pointer; @apply bg-gray-200}
 .row {@apply flex flex-row; width: 100%;}
@@ -168,6 +168,14 @@
 .login--btn-container {@apply mt-4 w-full; display: flex; flex-direction: row; justify-content: start; align-content: center}
 .login--btn {@apply bg-gray-800 text-white p-1 w-64 rounded; font-size: 12pt; transition: box-shadow opacity 0.4s ease;}
 .login--btn:hover {@apply bg-gray-800; box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2); opacity: 90%;}
+.user-choice {
+  @apply px-4 py-2 bg-gray-100 text-gray-800 rounded;
+}
+
+.hidden-radio {
+  display: none;
+}
+
 three-col.svg {@apply text-gray-800;}
 
 .ann-block {
@@ -388,15 +396,15 @@ three-col.svg {@apply text-gray-800;}
 
   .prof-username {font-size: 18pt;}
   .prof-tagline { font-size: 14pt;}
-  .prof-focus-removable {@apply bg-gray-100 text-gray-600 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
+  .prof-focus-removable {@apply w-fit bg-gray-100 text-gray-600 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
   .prof-focus-removable:hover {font-weight: 400; cursor: pointer; @apply bg-rose-100}
-  .prof-focus-add {@apply bg-gray-100 text-gray-600 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
+  .prof-focus-add {@apply w-fit text-wrap bg-gray-100 text-gray-600 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
   .prof-focus-add:hover {font-weight: 400; cursor: pointer; @apply bg-blue-100}
-  .prof-focus-included {@apply bg-blue-950 text-gray-100 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
+  .prof-focus-included {@apply w-fit bg-blue-950 text-gray-100 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
   .prof-focus-included:hover {font-weight: 400; cursor: pointer; @apply bg-gray-700} 
   .prof-add {@apply bg-gray-600 text-gray-100 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
   .prof-add:hover {font-weight: 400; cursor: pointer; @apply bg-gray-700} 
-  .prof-img {@apply bg-gray-200 rounded; width: 14rem; aspect-ratio: 1/1;}
+  .prof-img {@apply bg-gray-200 rounded-full; width: 14rem; aspect-ratio: 1/1;}
   .prof-img:hover {@apply bg-gray-300; opacity: 80%; box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2); cursor: pointer;}
 
   .inspo-input {@apply rounded bg-gray-200;}

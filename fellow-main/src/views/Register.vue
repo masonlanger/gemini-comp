@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper-center login-view">
-    <div class="form">
+    <div class="form w-min">
       <div class="wrapper-start">
         <h3 class="login-view--title">Think it. Write it.</h3>
         <h3 class="login-view--subtitle">Join the Fellow community</h3>
@@ -26,6 +26,11 @@
         <input class="login--input" type="text" name="email" placeholder="Email" v-model="email">
         <label class="login--label" for="password">Password</label>
         <input class="login--input" type="password" name="password" placeholder="Password" v-model="password">
+        <div class="text-sm font-light text-start mt-1">
+          <p>Please create a password at least 8 characters long, with at least one letter and one digit, no commas, colons, semicolons, apostrophes, or quotation marks.</p>
+        </div>
+        <label class="login--label" for="conpassword">Confirm Password</label>
+        <input class="login--input" type="password" name="conpassword" placeholder="Confirm password" v-model="conpassword">
         <div v-if="errMsg">{{ errMsg }}</div>
         <div class="login--btn-container">
             <button class="login--btn" @click="register">Continue</button>
@@ -38,16 +43,45 @@
 import { ref } from 'vue'
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { useRouter } from 'vue-router' // import router
-import { doc, setDoc, collection } from "firebase/firestore"; 
+import { doc, setDoc } from "firebase/firestore"; 
 import { db } from '../firebaseConfig'
 
-const email = ref('')
-const password = ref('')
+const email = ref('');
+const password = ref('');
+const conpassword = ref('');
+const errMsg = ref(null);
+
+function validatePassword(password){
+  if (password.value.length < 6) {
+    console.log("too short");
+    return false;
+  }
+  if (/[\\;\\:\\'\\"\\,]/.test(password.value)) {
+    console.log("special characters");
+    return false;
+  }
+  if(!/[0-9]/.test(password.value)) {
+    console.log("no numbers");
+    return false;
+  }
+  if(!/[a-zA-Z]/.test(password.value)) {
+    console.log("no letters");
+    return false;
+  }
+  if (password.value !== conpassword.value) {
+    console.log("passwords don't match");
+    return false;
+  }
+  return true;
+}
 
 const router = useRouter() // get a reference to our vue router
 const register = () => {
+    if(!validatePassword(password)){
+      return;
+    }
     createUserWithEmailAndPassword(getAuth(),email.value, password.value) // need .value because ref()
-    .then((data) => {
+    .then(() => {
       const docRef = doc(db, "users", getAuth().currentUser.uid);
       setDoc(docRef, {
         username: "",
@@ -63,8 +97,7 @@ const register = () => {
         lastLogin: new Date(),
       });
       
-      console.log('Successfully registered!');
-      router.push('/lib') // redirect to the feed
+      router.push('/register/complete-register')
     })
     .catch(error => {
       console.log(error.code)
@@ -75,7 +108,7 @@ const register = () => {
 const regGoogle = () => {
   const provider = new GoogleAuthProvider();
   signInWithPopup(getAuth(), provider)
-    .then((result) => {
+    .then(() => {
       const docRef = doc(db, "users", getAuth().currentUser.uid);
       setDoc(docRef, {
         username: "",
@@ -92,7 +125,7 @@ const regGoogle = () => {
       });
 
       console.log('Successfully registered!');
-      router.push('/lib') // redirect to the feed
+      router.push('/register/complete-register') // redirect to the feed
     })
     .catch((error) => {
       console.log(error.code)

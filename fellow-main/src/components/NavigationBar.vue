@@ -33,7 +33,7 @@ const handleSignOut = () => {
                 <font-awesome-icon :icon="faAnglesLeft" />
             </button>
         </div>
-        <div class="left-align"><Logo /></div>
+        <div class="left-align"><a href="/"><Logo /></a></div>
         <div class="navbar__items">
             <NavigationBarItem name="Library" route="/library" />
             <NavigationBarItem name="Notebooks" route="/notebooks" />
@@ -47,7 +47,7 @@ const handleSignOut = () => {
                 <font-awesome-icon :icon="faAnglesLeft" />
             </button>
         </div>
-        <div class="left-align"><Logo /></div>
+        <div class="left-align"><a href="/"><Logo /></a></div>
         <div class="navbar__items">
             <NavigationBarItem name="Log In" route="login" />
             <NavigationBarItem name="Sign Up" route="register" />

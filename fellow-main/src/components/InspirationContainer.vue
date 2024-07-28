@@ -2,7 +2,6 @@
     import AddNewInspiration from '../components/AddNewInspiration.vue'
     import InspirationThumbnail from '../components/InspirationThumbnail.vue'
     import InspirationModal from '../components/InspirationModal.vue'
-    import CardModal from '../components/CardModal.vue'
     import { useCollection } from 'vuefire'
     import { db } from '@/firebaseConfig';
     import { collection, query, orderBy } from 'firebase/firestore';
@@ -14,7 +13,10 @@
     
     const modalVisible = ref(false);
     const inspoData = ref(null);
-    const numInsposRow = 5;
+    const numInsposRow = ref(Math.max(Math.floor((window.innerWidth-256)/(15*16)), 1));
+    window.addEventListener('resize', () => {
+        numInsposRow.value = Math.max(Math.floor((window.innerWidth-256)/(14*16)), 1);
+    });
     function changeModal(inspo){
         modalVisible.value = true;
         inspoData.value = inspo.inspo;
