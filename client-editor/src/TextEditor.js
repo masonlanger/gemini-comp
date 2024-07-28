@@ -1,6 +1,6 @@
 //imports
 import react, { useRef } from 'react';
-import { useCallback, useEffect, useState, componentDidMount } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Quill from "quill"
 import "quill/dist/quill.snow.css"
 import { db } from './firebaseConfig';
@@ -354,7 +354,7 @@ export default function TextEditor() {
         
         const delayDebounceFn = setTimeout(() => {
             setGetData(true)
-        }, 300)
+        }, [500])
     }
 
     //unpublish notebook
@@ -365,6 +365,10 @@ export default function TextEditor() {
                         const data = docSnapshot.data();
                         // Access document fields here
                         deleteDoc(doc(db, "published", data.publishedID))
+                        updateDoc(docRef, {
+                            published: false,
+                            publishedID: null
+                        })                
                     } else {
                         // Document not found
                         console.log("No such document!");
@@ -373,12 +377,6 @@ export default function TextEditor() {
                 .catch((error) => {
                     console.error("Error getting document:", error);
             });
-
-        updateDoc(docRef, {
-            published: false,
-            publishedID: null
-        })
-
         const delayDebounceFn = setTimeout(() => {
             setGetData(true)
         }, 250)
