@@ -80,7 +80,7 @@ export default function TextEditor() {
     const [inspoString, setInspoString] = useState("");
     const [published, setPublished] = useState(false);
     const [getData, setGetData] = useState(true);
-    const [pCode, setPCode] = useState("pubID")
+    const [pCode, setPCode] = useState(pubID)
 
 
     //get publishing status
@@ -332,7 +332,7 @@ export default function TextEditor() {
                         addDoc(collection(db, "published"), {
                             title: data.name,
                             text: data.text,
-                            timestamp: serverTimestamp(),
+                            published: serverTimestamp(),
                             author: name 
                         })
                         .then((doc) => {
@@ -359,7 +359,20 @@ export default function TextEditor() {
 
     //unpublish notebook
     function unPublishNotebook() { 
-        deleteDoc(doc(db, "published", pCode))
+        getDoc(docRef)
+                .then((docSnapshot) => {
+                    if (docSnapshot.exists) {
+                        const data = docSnapshot.data();
+                        // Access document fields here
+                        deleteDoc(doc(db, "published", data.publishedID))
+                    } else {
+                        // Document not found
+                        console.log("No such document!");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error getting document:", error);
+            });
 
         updateDoc(docRef, {
             published: false,
@@ -369,6 +382,28 @@ export default function TextEditor() {
         const delayDebounceFn = setTimeout(() => {
             setGetData(true)
         }, 250)
+    }
+
+    function updateNotebook() {
+        getDoc(docRef)
+                .then((docSnapshot) => {
+                    if (docSnapshot.exists) {
+                        const data = docSnapshot.data();
+                        // Access document fields here
+                        console.log(pCode)
+                        updateDoc(doc(db, "published", data.publishedID), {
+                            title: data.name,
+                            text: data.text,
+                            updated: serverTimestamp(),
+                        });
+                    } else {
+                        // Document not found
+                        console.log("No such document!");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error getting document:", error);
+            });
     }
 
     //quill editor mount
@@ -445,7 +480,10 @@ export default function TextEditor() {
             {published == false ? 
                 <div className='publish' onClick={publishNotebook}>Publish</div>
             :
-                <div className='publish' onClick={unPublishNotebook}>Unpublish</div>
+                <div>
+                    <div className='publish' onClick={unPublishNotebook}>Unpublish</div>
+                    <div className='update' onClick={updateNotebook}>Update</div>
+                </div>
             }
             <div className="container" ref={wrapperRef}></div>
         </div>

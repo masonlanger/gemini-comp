@@ -236,6 +236,34 @@ body {
   box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.5);
 }
 
+.update {
+  z-index: 5;
+  position: absolute;
+  right: 160px;
+  top:10px;
+  background-image: linear-gradient(to bottom right, #9cbfff, #076eff);
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  border-radius: 20px;
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
+.update:hover {
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.update:active {
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.5);
+}
+
 @keyframes ldio-x2uulkbinbj {
   0% { transform: rotate(0) }
   100% { transform: rotate(360deg) }
