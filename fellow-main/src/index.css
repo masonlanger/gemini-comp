@@ -36,7 +36,13 @@
     }
     .collapse {display: none; height: 0;}
     main {display: block;}
-    .home {@apply px-16 py-8 flex flex-col;}
+    .home {
+      @apply px-16 py-8 flex flex-col;
+      -webkit-user-select: none; /* Safari */        
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* IE10+/Edge */
+      user-select: none; /* Standard */
+    }
 }
 
 /* @media screen and (max-width: 779px) {
