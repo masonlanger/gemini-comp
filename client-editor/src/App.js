@@ -5,6 +5,17 @@ import React from 'react';
 
 document.title = "Notebook";
 
+let lastActionTaken = new Date().getTime();
+function checkLastAction() {
+  let now = new Date().getTime();
+  if (now - lastActionTaken > 180000) window.location.reload();
+  else lastActionTaken = now;
+}
+
+window.addEventListener("mousemove", checkLastAction);
+window.addEventListener("touchstart", checkLastAction);
+window.addEventListener("keydown", checkLastAction);
+
 function App() {
   return (
   <div>

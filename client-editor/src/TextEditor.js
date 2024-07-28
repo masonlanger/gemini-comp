@@ -382,6 +382,7 @@ export default function TextEditor() {
         }, 250)
     }
 
+    //update notebook
     function updateNotebook() {
         getDoc(docRef)
                 .then((docSnapshot) => {
