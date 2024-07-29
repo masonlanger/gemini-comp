@@ -333,7 +333,8 @@ export default function TextEditor() {
                             title: data.name,
                             text: data.text,
                             published: serverTimestamp(),
-                            author: name 
+                            author: name,
+                            updated: serverTimestamp()
                         })
                         .then((doc) => {
                             updateDoc(docRef, {
