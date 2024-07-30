@@ -123,7 +123,7 @@ const regGoogle = () => {
       const docRef = doc(db, "users", getAuth().currentUser.uid);
       setDoc(docRef, {
         username: "",
-        userType: "free",
+        userType: "",
         email: getAuth().currentUser.email,
         userSettings: {
           theme: "",
