@@ -506,3 +506,14 @@ three-col.svg {@apply text-gray-800;}
   .story-container {
     margin: 50px;
   }
+
+  .last-updated {
+    font-size: 8px;
+    margin-left: 0px;
+    margin-top: 0px;
+  }
+
+  .author {
+    @apply text-gray-700 text-center;
+    font-size: 10px;
+  }

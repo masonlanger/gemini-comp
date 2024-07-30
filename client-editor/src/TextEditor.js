@@ -106,7 +106,7 @@ export default function TextEditor() {
         setGetData(false);
     },[getData])
 
-    //text generation
+    //suggestion generation
     useEffect(() => {
         //get focuses
         getDoc(doc(db, "users", user, "notebooks", nb))
@@ -328,6 +328,52 @@ export default function TextEditor() {
                 .then((docSnapshot) => {
                     if (docSnapshot.exists) {
                         const data = docSnapshot.data();
+
+                        const model = genAI.getGenerativeModel({
+                            model: "gemini-1.5-pro",
+                            systemInstruction: "Provide a genre classification based on the content provided in "
+                            + "input. Try and provide 1 to 2 main genres, and up to 5 sub genres. Score the text "
+                            + "based on its creativity, grammatical correctness, coherency, novelty, and structure. "
+                            + "Distribute scores around a mean of 50% with standard deviations higher or lower, harder to achieve"
+                            + "\nDon't use \\\" anywhere.\nDo this using this JSON schema:\n{\"Genre(s)\": "
+                            + "str,\n\"Sub genres\": str,\n\"Academic Level\": str ( choose from Secondary, post-secondary, "
+                            + "graduate, professional),\n\"Creativity\": {\"Score\": int (out of 20),\"Explanation\": str}\n"
+                            + "\"Grammar\": {\"Score\": int (out of 20),\"Explanation\": str}\n\"Coherency\": {\"Score\": int (out of "
+                            + "20),\"Explanation\": str}\n\"Novelty\": {\"Score\": int (out of 20),\"Explanation\": str}\n"
+                            + "\"Structure\": {\"Score\": int (out of 20),\"Explanation\": str}\n\"Overall score\": {\"Score\": "
+                            + "int (out of 100),\"Explanation\": str}\n}\n\nMake sure Overall score's score category "
+                            + "is equal to the total of Creativity's score, Grammar's score, Coherency's score, "
+                            + "Novelty's score and Structure's score. Provide no additional output."
+                        });
+                        
+                        const generationConfig = {
+                            temperature: 1,
+                            topP: 0.95,
+                            topK: 64,
+                            maxOutputTokens: 8192,
+                            responseMimeType: "text/plain",
+                        };
+            
+                        const result = model.generateContent(userText,
+                            generationConfig,
+                        )
+                        .then((response) => {
+                            let text = response.response.candidates[0].content.parts[0].text
+                            try{
+                                if( text.slice(0,7) == "```json"){
+                                    console.log(JSON.parse(text.substring(8, text.length - 3)))
+                                } else {
+                                    console.log(JSON.parse(text))
+                                }
+                            } catch(error) {
+                                console.log(text)
+                                console.log(error)
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+
                         // Access document fields here
                         addDoc(collection(db, "published"), {
                             title: data.name,
