@@ -502,3 +502,7 @@ three-col.svg {@apply text-gray-800;}
     @apply justify-start;
     margin-left: 10px;
   }
+
+  .story-container {
+    margin: 50px;
+  }
