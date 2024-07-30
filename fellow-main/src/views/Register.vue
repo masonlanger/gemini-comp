@@ -43,7 +43,7 @@
 import { ref } from 'vue'
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { useRouter } from 'vue-router' // import router
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc, getDoc } from "firebase/firestore"; 
 import { db } from '../firebaseConfig'
 
 const email = ref('');
@@ -76,6 +76,17 @@ function validatePassword(password){
 }
 
 const router = useRouter() // get a reference to our vue router
+
+  const user = await new Promise((resolve, reject) =>
+    getAuth().onAuthStateChanged((user) =>
+    resolve(user), (e) => reject(e)));
+  if(user){
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    if(userDoc.data().completedRegistration){
+      router.push('/notebooks');
+    }
+  }
+
 const register = () => {
     if(!validatePassword(password)){
       return;
@@ -85,7 +96,7 @@ const register = () => {
       const docRef = doc(db, "users", getAuth().currentUser.uid);
       setDoc(docRef, {
         username: "",
-        userType: "free",
+        userType: "",
         email: getAuth().currentUser.email,
         userSettings: {
           theme: "",

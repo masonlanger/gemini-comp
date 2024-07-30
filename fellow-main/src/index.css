@@ -152,7 +152,7 @@
 .three-col > .column {width: 33.33%;}
 .three-col--callout {font-size: 24pt; @apply text-start mt-1 text-gray-700; font-weight: 500;}
 .three-col--desc {font-size: 16pt; @apply text-start mt-1 text-gray-700; font-weight: 400;}
-.login-view {@apply flex flex-col items-center justify-center mt-32;}
+.login-view {@apply flex flex-col items-center justify-center mt-16;}
 .login-view--title {
     font-size: 14pt; 
     @apply text-gray-800; 
