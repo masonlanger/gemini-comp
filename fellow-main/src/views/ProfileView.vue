@@ -36,13 +36,13 @@
                     <h4>Activity: Joined in {{ userData.registeredDate.toDate().toLocaleString('default', { month: 'long', year: 'numeric' }) }}, last seen {{userData.lastLogin.toDate().toLocaleString('default', { month: 'long', day: 'numeric', year: 'numeric' })}}</h4>
                 </div>
                 <div class="mt-2 row space-x-2">
-                    <a v-if="userData.links.linkedin" :href="userData.links.linkedin" target="_blank">
+                    <a v-if="userData && userData.links && userData.links.linkedin" :href="userData.links.linkedin" target="_blank">
                         <img :src="linkedinIcon" alt="LinkedIn" class="linkedin-icon hoverable" />
                     </a>
-                    <a v-if="userData.links.wattpad" :href="userData.links.wattpad" target="_blank">
+                    <a v-if="userData && userData.links && userData.links.wattpad" :href="userData.links.wattpad" target="_blank">
                         <img :src="wattpadIcon" alt="Wattpad" class="link-icon hoverable" />
                     </a>
-                    <a v-if="userData.links.substack" :href="userData.links.substack" target="_blank">
+                    <a v-if="userData && userData.links && userData.links.substack" :href="userData.links.substack" target="_blank">
                         <img :src="substackIcon" alt="Substack" class="link-icon hoverable" />
                     </a>
                 </div>
