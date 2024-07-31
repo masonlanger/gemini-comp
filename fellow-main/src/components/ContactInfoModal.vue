@@ -2,6 +2,7 @@
     import CardModal from './CardModal.vue';
     import {defineProps} from 'vue'
     const props = defineProps({modalVisible: {type: Boolean, required: true}, firstName: {type: String, required: true}, lastName: {type: String, required: true}, userData: {type: Object, required: true}});
+    console.log(props.userData);
     const title = props.firstName+" "+props.lastName;
     const phone = props.userData.phone ? props.userData.phone.slice(0, 3)+"-"+props.userData.phone.slice(3, 6)+"-"+props.userData.phone.slice(6) : null;
 </script>

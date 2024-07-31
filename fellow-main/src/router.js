@@ -13,9 +13,9 @@ const routes = [
     { path: '/notebooks', component: LibraryView, meta: {requiresAuth: true, title: "Notebooks - Fellow"} },
     { path: '/login', component: LoginView, meta: {title: "Login - Fellow"} },
     { path: '/register', component: Register, meta: {title: "Register - Fellow"} },
-    { path: '/register/complete-register', component: CompleteRegister, meta: {title: "Complete Register - Fellow"} },
+    { path: '/register/complete-register', component: CompleteRegister, meta: {title: "Complete Registration - Fellow"} },
     { path: '/profile', component: ProfileView, meta: {requiresAuth: true, title: "Profile - Fellow"} },
-    { path: '/writers/:username', component: PublicProfileView, meta: {requiresAuth: true, title: "Profile - Fellow"} },
+    { path: '/writers/:username', component: PublicProfileView, meta: {requiresAuth: true} },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: HomeView },
 ]
 export default routes;

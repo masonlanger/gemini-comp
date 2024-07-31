@@ -2,16 +2,38 @@
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { searchPublicUser } from '@/publicUserSearch';
+import { getAuth } from 'firebase/auth';
+import { getDoc, doc, updateDoc } from 'firebase/firestore';
 import { ref as storageRef, getDownloadURL } from 'firebase/storage';
-import { storage } from '@/firebaseConfig';
+import { db, storage } from '@/firebaseConfig';
+import ContactInfoModal from '@/components/ContactInfoModal.vue';
 
 const route = useRoute()
+document.title = route.params.username + " - Fellow"
 const userInfo = ref(null);
+const img = ref(null);
 const user = getClickedAuthor(route.params.username).then((users) => {
         users.forEach((user) => { 
             userInfo.value = user.data();
+            const imageRef = storageRef(storage, `users/${user.id}/profile.jpg`);
+            getDownloadURL(imageRef).then((url) => {
+                img.value = url;
+                return url;
+            });
             return user.data()
         });
+});
+
+const following = ref(false);
+const currUserInfo = ref(null);
+const currUid = getAuth().currentUser.uid;
+const docRef = doc(db, "users", currUid);
+const currUser = await getDoc(docRef).then(doc => {
+    currUserInfo.value = doc.data()
+    console.log(currUserInfo.value);
+    if(currUserInfo.value.following){
+        following.value = currUserInfo.value.following.includes(userInfo.value.username);
+    }
 });
 
 // watch(
@@ -29,6 +51,12 @@ async function getClickedAuthor(author){
     }
 }
 
+function getUserImg(uid) {
+    const imageRef = storageRef(storage, `users/${uid}/profile.jpg`);
+    return getDownloadURL(imageRef).then((url) => {
+        return url;
+    });
+}
 const linkedinIcon = await getDownloadURL(storageRef(storage, 'media-library/icons/linkedin.png')).then((url) => {
     return url;
 });
@@ -46,12 +74,25 @@ function openContactInfoModal(){
     contactInfoModalVisible.value = true;
 }
 
+
+function follow(){
+    if(currUserInfo.value.following == null){
+        currUserInfo.value.following = [];
+    }
+    currUserInfo.value.following.push(userInfo.value.username);
+    const docRef = doc(db, "users", currUid);
+    updateDoc(docRef, {
+        following: currUserInfo.value.following
+    });
+    following.value = true;
+}
+
 </script>
 <template>
     <div class="home"> 
         <div class="row w-full items-center bg-gray-50 py-4 px-6 rounded shadow">
-            <div v-if="userInfo.userImg">
-                <img :src="userInfo.userImg" class="prof-img" />
+            <div v-if="img">
+                <img :src="img" class="prof-img" />
             </div>
             <div v-else class="prof-img flex justify-center items-center">
                 <font-awesome-icon :icon="['fas', 'user']" class="fa-3x text-gray-500" />
@@ -69,10 +110,8 @@ function openContactInfoModal(){
                     </div>
                 </div>
                 <div class="w-full flex flex-row mt-1">
-                    <div v-if="userFocusesLength > 0" class="flex flex-row">
-                        <div v-for="focus in userInfo.userFocuses" :key="focus" class="prof-focus-add mr-1">
-                            {{ focus[0].toUpperCase() + focus.slice(1)}}
-                        </div>
+                    <div v-for="focus in userInfo.userFocuses" :key="focus" class="prof-focus-add mr-1">
+                        {{ focus[0].toUpperCase() + focus.slice(1)}}
                     </div>
                 </div>
                 <!--Contact information-->
@@ -93,6 +132,8 @@ function openContactInfoModal(){
                         <img :src="substackIcon" alt="Substack" class="link-icon hoverable" />
                     </a>
                 </div>
+                <div v-if="currUserInfo.username != userInfo.username && !following" class="follow-btn bg-sky-600 hoverable" @click="follow">Follow</div>
+                <div v-else-if="currUserInfo.username != userInfo.username" class="follow-btn bg-gray-400 text-gray-800 hoverable">Following</div>
             </div>
         </div>
         <div class="mt-3 w-full">
