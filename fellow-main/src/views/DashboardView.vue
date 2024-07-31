@@ -5,7 +5,6 @@
     import { collection, orderBy } from 'firebase/firestore';
     import { query } from 'firebase/firestore';
     import PublishedThumbnail from '../components/PublishedThumbnail.vue'
-    
     const publishedRow = ref(Math.max(Math.floor((window.innerWidth-256)/(15*16)), 1));
     const stories = useCollection(query(collection(db, "published"), orderBy("updated", "desc")));
     window.addEventListener('resize', () => {

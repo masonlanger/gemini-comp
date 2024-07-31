@@ -30,7 +30,7 @@
                 </div>
                 <!--Contact information-->
                 <div v-if="userData.showContact" class="my-1 w-fit">
-                    <h3 class="font-bold text-sky-700 hoverable">Contact info</h3>
+                    <h3 class="font-bold text-sky-700 hoverable" @click="openContactInfoModal">Contact info</h3>
                 </div>
                 <div v-if="userData.showActivity">
                     <h4>Activity: Joined in {{ userData.registeredDate.toDate().toLocaleString('default', { month: 'long', year: 'numeric' }) }}, last seen {{userData.lastLogin.toDate().toLocaleString('default', { month: 'long', day: 'numeric', year: 'numeric' })}}</h4>
@@ -54,12 +54,14 @@
         </div>
     </div>
     <EditHeaderModal :modalVisible=modalVisible :initial=userData @close="modalVisible = false"/>
+    <ContactInfoModal v-if="userData.showContact" :modalVisible=contactInfoModalVisible :firstName=userData.firstName :lastName=userData.lastName @close="contactInfoModalVisible = false" :userData=userInfo />
 </template>
 
 <script setup>
 import SubtitleIconWidget from '@/components/SubtitleIconWidget.vue';
 import FeaturedWorks from '@/components/FeaturedWorks.vue';
 import EditHeaderModal from '@/components/EditHeaderModal.vue';
+import ContactInfoModal from '@/components/ContactInfoModal.vue';
 import { getAuth } from 'firebase/auth';
 import { db, storage } from '@/firebaseConfig';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -94,6 +96,7 @@ const taglineEmpty = tagline.value.length == 0;
 const userFocusesLength = userData.userFocuses.length;
 const focusOptions = await getDoc(doc(db, "assets", "focus-options")).then(doc => doc.data().options);
 const modalVisible = ref(false);
+const contactInfoModalVisible = ref(false);
 
 watch(() => userData, (newVal) => {
     userInfo.value = newVal;
@@ -143,6 +146,10 @@ const uploadUserImg = (event) => {
 
 function openHeaderModal(){
     modalVisible.value = true;
+}
+
+function openContactInfoModal(){
+    contactInfoModalVisible.value = true;
 }
 
 

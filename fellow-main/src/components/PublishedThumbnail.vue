@@ -1,4 +1,6 @@
 <script setup>
+import { searchPublicUser } from '@/publicUserSearch';
+import { useRouter } from 'vue-router';
 const props = defineProps({
     notebook: {
         type: Object,
@@ -11,6 +13,18 @@ const props = defineProps({
     
     }
 })
+const router = useRouter();
+
+async function getClickedAuthor(author){
+    return await searchPublicUser(author);
+}
+
+function onProfileClick(){
+    getClickedAuthor(props.notebook.author).then((users) => {
+        users.forEach((user) => { console.log(user.data()); return user.data()});
+    });
+    router.push('/writers/'+props.notebook.author);
+}
 
 function onThumbnailClick() {
     window.open('http://localhost:3030/?' + props.notebook.id, "_blank");
