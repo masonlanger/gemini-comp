@@ -518,3 +518,8 @@ three-col.svg {@apply text-gray-800;}
     @apply text-gray-700 text-center;
     font-size: 10px;
   }
+
+  .sort-select {
+    margin-left: 50px;
+    margin-top: 10px;
+  }
