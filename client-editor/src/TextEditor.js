@@ -81,6 +81,7 @@ export default function TextEditor() {
     const [published, setPublished] = useState(false);
     const [getData, setGetData] = useState(true);
     const [pCode, setPCode] = useState(pubID)
+    const [pubLoading, setPubLoading] = useState(false)
 
 
     //get publishing status
@@ -204,6 +205,7 @@ export default function TextEditor() {
                 })
                 .catch((error) => {
                     setSuggestText("hmm... lets try that again")
+                    console.log(error)
                 })
             }, 1000);
             return () => clearTimeout(delayDebounceFn);
@@ -214,7 +216,9 @@ export default function TextEditor() {
     useEffect(() => {
         if(insert) {
             try{
-                navigator.clipboard.writeText(suggest)
+                const delayDebounceFn = setTimeout(() => {
+                    navigator.clipboard.writeText(suggest)
+                },0)
             } catch {
                 setSuggestText("Hmm... lets try that again")
             }
@@ -284,9 +288,9 @@ export default function TextEditor() {
                                 + "comments to about 1 comment for every 250 words, and make sure there is atleast a 20 "
                                 + "word buffer between your comments. you also adress grammatical mistakes, but they are not your "
                                 + "priority. I am inspired by: " + inspoString + " and would like your help moving my writing in "
-                                + "this direction. Try and keep your comments under 75 words.  \n\n\nDo this by emulating this Json Schema: "
+                                + "this direction. Try and keep your comments under 60 words and never exceed 75.  \n\n\nDo this by emulating this Json Schema: "
                                 + "[{\"Location\": int (the distance in words between this and the previous comment), "
-                                + "\"Text\": \"str (your comment on how they can improve, do not use quotation marks inside your comment)\"]"
+                                + "\"Text\": \"str (75 words or less, your comment on how they can improve, do not use quotation marks inside your comment)\"]"
             });
             
             const generationConfig = {
@@ -323,7 +327,8 @@ export default function TextEditor() {
     }
 
     //publish notebook
-    function publishNotebook() { 
+    function publishNotebook() {
+        setPubLoading(true)
         getDoc(docRef)
                 .then((docSnapshot) => {
                     if (docSnapshot.exists) {
@@ -334,13 +339,13 @@ export default function TextEditor() {
                             systemInstruction: "Provide a genre classification based on the content provided in "
                             + "input. Try and provide 1 to 2 main genres, and up to 5 sub genres. Score the text "
                             + "based on its creativity, grammatical correctness, coherency, novelty, and structure. "
-                            + "Distribute scores around a mean of 50% with standard deviations higher or lower, harder to achieve"
-                            + "\nDon't use \\\" anywhere.\nDo this using this JSON schema:\n{\"Genre(s)\": "
-                            + "str,\n\"Sub genres\": str,\n\"Academic Level\": str ( choose from Secondary, post-secondary, "
+                            + "Most overall scores you give should be bellow a 70."
+                            + "\nDon't use \\\" anywhere.\nDo this using this JSON schema:\n{\"Genre\": "
+                            + "str,\n\"Subgenres\": str,\n\"Level\": str ( choose from Secondary, post-secondary, "
                             + "graduate, professional),\n\"Creativity\": {\"Score\": int (out of 20),\"Explanation\": str}\n"
                             + "\"Grammar\": {\"Score\": int (out of 20),\"Explanation\": str}\n\"Coherency\": {\"Score\": int (out of "
                             + "20),\"Explanation\": str}\n\"Novelty\": {\"Score\": int (out of 20),\"Explanation\": str}\n"
-                            + "\"Structure\": {\"Score\": int (out of 20),\"Explanation\": str}\n\"Overall score\": {\"Score\": "
+                            + "\"Structure\": {\"Score\": int (out of 20),\"Explanation\": str}\n\"Overall\": {\"Score\": "
                             + "int (out of 100),\"Explanation\": str}\n}\n\nMake sure Overall score's score category "
                             + "is equal to the total of Creativity's score, Grammar's score, Coherency's score, "
                             + "Novelty's score and Structure's score. Provide no additional output."
@@ -359,12 +364,102 @@ export default function TextEditor() {
                         )
                         .then((response) => {
                             let text = response.response.candidates[0].content.parts[0].text
+                            let score = {
+                                "Genre": "undefined",
+                                "Subgenres": "undefined",
+                                "Level": "Secondary",
+                                "Creativity": {
+                                    "Score": 10,
+                                    "Explanation": "Hmm... we had some trouble rating this"
+                                },
+                                "Grammar": {
+                                    "Score": 10,
+                                    "Explanation": "Hmm... we had some trouble rating this"
+                                },
+                                "Coherency": {
+                                    "Score": 10,
+                                    "Explanation": "Hmm... we had some trouble rating this"
+                                },
+                                "Novelty": {
+                                    "Score": 10,
+                                    "Explanation": "Hmm... we had some trouble rating this"
+                                },
+                                "Structure": {
+                                    "Score": 10,
+                                    "Explanation": "Hmm... we had some trouble rating this"
+                                },
+                                "Overall": {
+                                    "Score": 50,
+                                    "Explanation": "Hmm... we had some trouble rating this"
+                                }
+                            }   
                             try{
                                 if( text.slice(0,7) == "```json"){
-                                    console.log(JSON.parse(text.substring(8, text.length - 3)))
+                                    score = JSON.parse(text.substring(8, text.length - 3))
                                 } else {
-                                    console.log(JSON.parse(text))
+                                    score = JSON.parse(text)
+                                    // Access document fields here
                                 }
+                                console.log(score)
+                                // Access document fields here
+                                addDoc(collection(db, "published"), {
+                                    title: data.name,
+                                    text: data.text,
+                                    published: serverTimestamp(),
+                                    author: name,
+                                    updated: serverTimestamp(),
+                                    genres: score.Genre,
+                                    subgenres: score.Subgenres,
+                                    level: score.Level,
+                                    scores: {
+                                        overall: {
+                                            score: score.Overall.Score,
+                                            summary: score.Overall.Explanation,
+                                        },
+                                        creativity: {
+                                            score: score.Creativity.Score,
+                                            summary: score.Creativity.Explanation,
+                                        },
+                                        grammar: {
+                                            score: score.Grammar.Score,
+                                            summary: score.Grammar.Explanation,
+                                        },
+                                        coherency: {
+                                            score: score.Coherency.Score,
+                                            summary: score.Coherency.Explanation,
+                                        },
+                                        novelty: {
+                                            score: score.Novelty.Score,
+                                            summary: score.Novelty.Explanation,
+                                        },
+                                        structure: {
+                                            score: score.Structure.Score,
+                                            summary: score.Structure.Explanation,
+                                        },
+                                    }
+                                })
+                                .then((doc) => {
+                                    updateDoc(docRef, {
+                                        published: true,
+                                        publishedID: doc._key.path.segments[1]
+                                    })
+                                    setPubLoading(false)
+                                    getDoc(docRef)
+                                        .then((docSnapshot) => {
+                                            if (docSnapshot.exists) {
+                                                const data = docSnapshot.data();
+                                                // Access document fields here
+                                                setPublished(data.published)
+
+                                            } else {
+                                                // Document not found
+                                                console.log("No such document!");
+                                            }
+                                        })
+                                        .catch((error) => {
+                                            console.error("Error getting document:", error);
+                                    });
+                                })
                             } catch(error) {
                                 console.log(text)
                                 console.log(error)
@@ -372,22 +467,6 @@ export default function TextEditor() {
                         })
                         .catch((error) => {
                             console.log(error)
-                        })
-
-                        // Access document fields here
-                        addDoc(collection(db, "published"), {
-                            title: data.name,
-                            text: data.text,
-                            published: serverTimestamp(),
-                            author: name,
-                            updated: serverTimestamp()
-                        })
-                        .then((doc) => {
-                            updateDoc(docRef, {
-                                published: true,
-                                publishedID: doc._key.path.segments[1]
-                            })
-                            setPCode(doc._key.path.segments[1])
                         })
 
                     } else {
@@ -398,10 +477,6 @@ export default function TextEditor() {
                 .catch((error) => {
                     console.error("Error getting document:", error);
             });
-        
-        const delayDebounceFn = setTimeout(() => {
-            setGetData(true)
-        }, [500])
     }
 
     //unpublish notebook
@@ -415,7 +490,22 @@ export default function TextEditor() {
                         updateDoc(docRef, {
                             published: false,
                             publishedID: null
-                        })                
+                        })
+                        getDoc(docRef)
+                            .then((docSnapshot) => {
+                                if (docSnapshot.exists) {
+                                    const data = docSnapshot.data();
+                                    // Access document fields here
+                                    setPublished(data.published)
+
+                                } else {
+                                    // Document not found
+                                    console.log("No such document!");
+                                }
+                            })
+                            .catch((error) => {
+                                console.error("Error getting document:", error);
+                        });               
                     } else {
                         // Document not found
                         console.log("No such document!");
@@ -424,9 +514,6 @@ export default function TextEditor() {
                 .catch((error) => {
                     console.error("Error getting document:", error);
             });
-        const delayDebounceFn = setTimeout(() => {
-            setGetData(true)
-        }, 250)
     }
 
     //update notebook
@@ -523,9 +610,19 @@ export default function TextEditor() {
                 </div>
             }
             <div className='sug-input' >cmd-v to add to text</div>
-            {published == false ? 
+            {(published == false && pubLoading == false) &&
                 <div className='publish' onClick={publishNotebook}>Publish</div>
-            :
+            }
+            {(published == false && pubLoading == true) &&
+                <div className='publish'>Publishing</div>
+            }
+            {(published == true && pubLoading == false) &&
+                <div>
+                    <div className='publish' onClick={unPublishNotebook}>Unpublish</div>
+                    <div className='update' onClick={updateNotebook}>Update</div>
+                </div>
+            }
+            {(published == true && pubLoading == true) &&
                 <div>
                     <div className='publish' onClick={unPublishNotebook}>Unpublish</div>
                     <div className='update' onClick={updateNotebook}>Update</div>

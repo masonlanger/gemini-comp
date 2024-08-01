@@ -43,7 +43,7 @@ function onProfileClick(){
 }
 
 function onThumbnailClick() {
-    window.open('http://localhost:3030/?' + props.notebook.id, "_blank");
+    window.open('http://localhost:3030/?p=' + props.notebook.id, "_blank");
 }
 
 </script>

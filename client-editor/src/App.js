@@ -8,7 +8,7 @@ document.title = "Notebook";
 let lastActionTaken = new Date().getTime();
 function checkLastAction() {
   let now = new Date().getTime();
-  if (now - lastActionTaken > 180000) window.location.reload();
+  if (now - lastActionTaken > 600000) window.location.reload();
   else lastActionTaken = now;
 }
 
