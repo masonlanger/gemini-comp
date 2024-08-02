@@ -41,7 +41,7 @@ function onThumbnailClick() {
 </script>
 
 <template>
-    <div class="notebook-thumbnail rounded" :style="{ 'z-index': zIndex }">
+    <div class="notebook-thumbnail rounded-lg" :style="{ 'z-index': zIndex }">
         <div class="dropdown relative">
             <font-awesome-icon v-if=props.edittable class="fa-1x trash-icon px-1" :icon="['fas', 'ellipsis-vertical']" @click="toggleShowDropdown"/>
             <div v-if="showDropdown" class="dropdown-content flex flex-col space-y-2 rounded">

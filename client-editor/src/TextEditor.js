@@ -80,7 +80,6 @@ export default function TextEditor() {
     const [inspoString, setInspoString] = useState("");
     const [published, setPublished] = useState(false);
     const [getData, setGetData] = useState(true);
-    const [pCode, setPCode] = useState(pubID)
     const [pubLoading, setPubLoading] = useState(false)
 
 
@@ -343,6 +342,7 @@ export default function TextEditor() {
                             + "Anything generic and under 200 words should be around a 25/100. Anything generic and under 500 "
                             + "words should be around a 40/100. Anything generic and under 1000 words should be around a 55/100. "
                             + "Score across all categories as if you are an extremely harsh grader, who considers a 70 a super good score. "
+                            + "If you believe it was written with mostly AI or plagiarism give it a 15/100 at most. "
                             + "\nDon't use \\\" anywhere.\nDo this using this JSON schema:\n{\"Genre\": "
                             + "str,\n\"Subgenres\": str,\n\"Level\": str ( choose from Secondary, post-secondary, "
                             + "graduate, professional),\n\"Creativity\": {\"Score\": int (out of 20),\"Explanation\": str}\n"
@@ -425,16 +425,17 @@ export default function TextEditor() {
                                                 const data = docSnapshot.data();
                                                 // Access document fields here
                                                 setPublished(data.published)
+                                                setPubLoading(false)
 
                                             } else {
                                                 // Document not found
                                                 console.log("No such document!");
+                                                setPubLoading(false)
                                             }
                                         })
                                         .catch((error) => {
                                             console.error("Error getting document:", error);
                                     });
-                                    setPubLoading(false)
                                 })
                             } catch(error) {
                                 console.log(text)
