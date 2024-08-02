@@ -57,13 +57,15 @@ const TOOLBAR = [
     ["clean"],
   ]
 
-  document.onkeydown = (KeyboardEvent) => {
-    if( KeyboardEvent.key == "ArrowRight"){
-
+  let toSuggest = ""
+  document.addEventListener('keydown', (event) => { 
+    if(event.key === "ArrowRight"){
+        if (event.repeat) return;
+        const doc = document.getElementsByClassName("ql-editor")[1]
+        doc.innerHTML = doc.innerHTML.trimEnd()
+        doc.lastElementChild.append(toSuggest)
     }
-  }
-
-
+   });
 
 //authors view - writing (quill) + suggestion effect
 export default function TextEditor() {
@@ -81,7 +83,6 @@ export default function TextEditor() {
     const [published, setPublished] = useState(false);
     const [getData, setGetData] = useState(true);
     const [pubLoading, setPubLoading] = useState(false)
-
 
     //get publishing status
     useEffect(() => {
@@ -215,9 +216,7 @@ export default function TextEditor() {
     useEffect(() => {
         if(insert) {
             try{
-                const delayDebounceFn = setTimeout(() => {
-                    navigator.clipboard.writeText(suggest)
-                },0)
+                toSuggest = suggest
             } catch {
                 setSuggestText("Hmm... lets try that again")
             }
@@ -338,18 +337,17 @@ export default function TextEditor() {
                             systemInstruction: "Provide a genre classification based on the content provided in "
                             + "input. Try and provide 1 to 2 main genres, and up to 5 sub genres. Score the text "
                             + "based on its creativity, grammatical correctness, coherency, novelty, and structure. "
-                            + "The shorter a story is the harsher you should grade it. Most stories should be around a 50/100. "
-                            + "Anything generic and under 200 words should be around a 25/100. Anything generic and under 500 "
-                            + "words should be around a 40/100. Anything generic and under 1000 words should be around a 55/100. "
-                            + "Score across all categories as if you are an extremely harsh grader, who considers a 70 a super good score. "
-                            + "If you believe it was written with mostly AI or plagiarism give it a 15/100 at most. "
+                            + "Give all scores at an equal frequency."
                             + "\nDon't use \\\" anywhere.\nDo this using this JSON schema:\n{\"Genre\": "
                             + "str,\n\"Subgenres\": str,\n\"Level\": str ( choose from Secondary, post-secondary, "
-                            + "graduate, professional),\n\"Creativity\": {\"Score\": int (out of 20),\"Explanation\": str}\n"
-                            + "\"Grammar\": {\"Score\": int (out of 20),\"Explanation\": str}\n\"Coherency\": {\"Score\": int (out of "
-                            + "20),\"Explanation\": str}\n\"Novelty\": {\"Score\": int (out of 20),\"Explanation\": str}\n"
-                            + "\"Structure\": {\"Score\": int (out of 20),\"Explanation\": str}\n\"Overall\": {\"Score\": "
-                            + "int (out of 100),\"Explanation\": str}\n}\n\nMake sure Overall score's score category "
+                            + "graduate, professional),\n\"Creativity\": {\"Score\": int (out of 20, most stories "
+                            + "should get below a 14),\"Explanation\": str}\n\"Grammar\": {\"Score\": int (out of "
+                            + "20, most stories should get below a 14),\"Explanation\": str}\n\"Coherency\": {\"Score\": "
+                            + "int (out of 20, most stories should get below a 14),\"Explanation\": str}\n\"Novelty\": "
+                            + "{\"Score\": int (out of 20, most stories should get below a 14),\"Explanation\": str}\n"
+                            + "\"Structure\": {\"Score\": int (out of 20, most stories should get below a 14),\"Explanation\": "
+                            + "str}\n\"Overall\": {\"Score\": int (out of 100, most stories should below a 70),\""
+                            + "Explanation\": str}\n}\n\nMake sure Overall score's score category "
                             + "is equal to the total of Creativity's score, Grammar's score, Coherency's score, "
                             + "Novelty's score and Structure's score. Provide no additional output."
                         });
@@ -433,8 +431,27 @@ export default function TextEditor() {
                                                 console.log("No such document!");
                                                 setPubLoading(false)
                                             }
+                                            getDoc(docRef)
+                                                .then((docSnapshot) => {
+                                                    if (docSnapshot.exists) {
+                                                        const data = docSnapshot.data();
+                                                        // Access document fields here
+                                                        setPublished(data.published)
+                                                        setPubLoading(false)
+
+                                                    } else {
+                                                        // Document not found
+                                                        console.log("No such document!");
+                                                        setPubLoading(false)
+                                                    }
                                         })
                                         .catch((error) => {
+                                            setPubLoading(false)
+                                            console.error("Error getting document:", error);
+                                    });
+                                        })
+                                        .catch((error) => {
+                                            setPubLoading(false)
                                             console.error("Error getting document:", error);
                                     });
                                 })
@@ -506,17 +523,17 @@ export default function TextEditor() {
                             systemInstruction: "Provide a genre classification based on the content provided in "
                             + "input. Try and provide 1 to 2 main genres, and up to 5 sub genres. Score the text "
                             + "based on its creativity, grammatical correctness, coherency, novelty, and structure. "
-                            + "The shorter a story is the harsher you should grade it. Most stories should be around a 50/100. "
-                            + "Anything generic and under 200 words should be around a 25/100. Anything generic and under 500 "
-                            + "words should be around a 40/100. Anything generic and under 1000 words should be around a 55/100. "
-                            + "Score across all categories as if you are an extremely harsh grader, who considers a 70 a super good score. "
+                            + "Give all scores at an equal frequency."
                             + "\nDon't use \\\" anywhere.\nDo this using this JSON schema:\n{\"Genre\": "
                             + "str,\n\"Subgenres\": str,\n\"Level\": str ( choose from Secondary, post-secondary, "
-                            + "graduate, professional),\n\"Creativity\": {\"Score\": int (out of 20),\"Explanation\": str}\n"
-                            + "\"Grammar\": {\"Score\": int (out of 20),\"Explanation\": str}\n\"Coherency\": {\"Score\": int (out of "
-                            + "20),\"Explanation\": str}\n\"Novelty\": {\"Score\": int (out of 20),\"Explanation\": str}\n"
-                            + "\"Structure\": {\"Score\": int (out of 20),\"Explanation\": str}\n\"Overall\": {\"Score\": "
-                            + "int (out of 100),\"Explanation\": str}\n}\n\nMake sure Overall score's score category "
+                            + "graduate, professional),\n\"Creativity\": {\"Score\": int (out of 20, most stories "
+                            + "should get below a 14),\"Explanation\": str}\n\"Grammar\": {\"Score\": int (out of "
+                            + "20, most stories should get below a 14),\"Explanation\": str}\n\"Coherency\": {\"Score\": "
+                            + "int (out of 20, most stories should get below a 14),\"Explanation\": str}\n\"Novelty\": "
+                            + "{\"Score\": int (out of 20, most stories should get below a 14),\"Explanation\": str}\n"
+                            + "\"Structure\": {\"Score\": int (out of 20, most stories should get below a 14),\"Explanation\": "
+                            + "str}\n\"Overall\": {\"Score\": int (out of 100, most stories should below a 70),\""
+                            + "Explanation\": str}\n}\n\nMake sure Overall score's score category "
                             + "is equal to the total of Creativity's score, Grammar's score, Coherency's score, "
                             + "Novelty's score and Structure's score. Provide no additional output."
                         });
@@ -676,19 +693,19 @@ export default function TextEditor() {
                 </div>
             }
             <div className='sug-input' >cmd-v to add to text</div>
-            {(published == false && pubLoading == false) &&
+            {(published === false && pubLoading === false) &&
                 <div className='publish' onClick={publishNotebook}>Publish</div>
             }
-            {(published == false && pubLoading == true) &&
+            {(published === false && pubLoading === true) &&
                 <div className='publish'>Publishing</div>
             }
-            {(published == true && pubLoading == false) &&
+            {(published === true && pubLoading === false) &&
                 <div>
                     <div className='publish' onClick={unPublishNotebook}>Unpublish</div>
                     <div className='update' onClick={updateNotebook}>Update</div>
                 </div>
             }
-            {(published == true && pubLoading == true) &&
+            {(published === true && pubLoading === true) &&
                 <div>
                     <div className='publish' onClick={unPublishNotebook}>Unpublish</div>
                     <div className='update' onClick={updateNotebook}>Update</div>

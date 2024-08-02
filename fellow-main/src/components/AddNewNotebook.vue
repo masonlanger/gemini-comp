@@ -16,7 +16,8 @@ function postNewNotebook() {
         publishedID: null,
         genres: "undefined",
         subgenres: "undefined",
-        preview: ""
+        preview: "",
+        counter: 0
     });
 
     const router = useRouter();
