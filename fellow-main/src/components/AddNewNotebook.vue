@@ -8,40 +8,15 @@ const currUid = getAuth().currentUser.uid;
 
 
 function postNewNotebook() {
-    const doc = addDoc(collection(db, "users", currUid, "notebooks"), {
+    addDoc(collection(db, "users", currUid, "notebooks"), {
         name: "Untitled",
         text: "",
         timestamp: serverTimestamp(),
-        published: 0,
+        published: false,
+        publishedID: null,
         genres: "undefined",
         subgenres: "undefined",
-        level: "",
-        scores: {
-            overall: {
-                score: 0,
-                summary: "",
-            },
-            creativity: {
-                score: 0,
-                summary: "",
-            },
-            grammar: {
-                score: 0,
-                summary: "",
-            },
-            coherency: {
-                score: 0,
-                summary: "",
-            },
-            novelty: {
-                score: 0,
-                summary: "",
-            },
-            structure: {
-                score: 0,
-                summary: "",
-            },
-        },
+        preview: ""
     });
 
     const router = useRouter();

@@ -9,6 +9,10 @@
     .btn {
         @apply block text-center object-scale-down p-2 text-gray-800 my-2 w-32 rounded;
         transition: box-shadow opacity 0.3s ease;
+        -webkit-user-select: none; /* Safari */        
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+/Edge */
+        user-select: none; /* Standard */
     }
     .btn:hover {
         @apply bg-gray-100;
@@ -253,6 +257,7 @@ three-col.svg {@apply text-gray-800;}
     @apply text-gray-700 text-center;
     font-size: 14pt;
     font-weight: 500;
+    margin-bottom: -5px;
 }
 
 .inspo-thumbnail--name {
@@ -522,4 +527,14 @@ three-col.svg {@apply text-gray-800;}
   .sort-select {
     margin-left: 50px;
     margin-top: 10px;
+  }
+
+  .story-preview {
+    background-color: white;
+    font-size: 7px;
+    padding: 3px;
+    border-radius: 3px;
+    margin: 3px;
+    height: 115px;
+    width: 215px
   }

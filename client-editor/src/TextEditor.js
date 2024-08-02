@@ -399,6 +399,7 @@ export default function TextEditor() {
                                     author: name,
                                     updated: serverTimestamp(),
                                     genres: score.Genre,
+                                    preview: userText,
                                     subgenres: score.Subgenres,
                                     level: score.Level,
                                     overall_score: score.Overall.Score,
@@ -565,6 +566,7 @@ export default function TextEditor() {
                                     updated: serverTimestamp(),
                                     genres: score.Genre,
                                     subgenres: score.Subgenres,
+                                    preview: userText,
                                     level: score.Level,
                                     overall_score: score.Overall.Score,
                                     overall_summary: score.Overall.Explanation,
@@ -642,7 +644,8 @@ export default function TextEditor() {
         q.on("text-change", () => {
             setUserText(q.getText())
             updateDoc(docRef, {
-                text: q.getContents().ops
+                text: q.getContents().ops,
+                preview: q.getText()
             })
         })
     }, [])

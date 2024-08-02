@@ -89,7 +89,7 @@ const substackIcon = await getDownloadURL(storageRef(storage, 'media-library/ico
 const currUid = getAuth().currentUser.uid;
 const docRef = doc(db, "users", currUid);
 const userData = await getDoc(docRef).then(doc => doc.data());
-const userInfo = ref(userData);
+let userInfo = ref(userData);
 const img = userData.userImg != null && userData.userImg.length > 0 ? await getUserImg() : null;
 const tagline = userData.tagline != null && userData.tagline.length > 0 ? ref(userData.tagline) : ref('');
 const taglineEmpty = tagline.value.length == 0;
@@ -120,6 +120,7 @@ const addFocus = (focus) => {
     updateDoc(docRef, {
         userFocuses: userData.userFocuses
     });
+    userInfo = ref(userData);
 }
 
 const removeFocus = (focus) => {
@@ -129,6 +130,7 @@ const removeFocus = (focus) => {
     updateDoc(docRef, {
         userFocuses: userData.userFocuses.filter(f => f != focus)
     });
+    userInfo = ref(userData);
 }
 
 const uploadUserImg = (event) => {

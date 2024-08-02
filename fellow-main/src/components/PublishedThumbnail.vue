@@ -38,6 +38,11 @@ getClickedAuthor(props.notebook.author).then((users) => {
     });
 });
 
+let preview =  props.notebook.preview
+if(preview.length > 500){
+    preview = preview.substring(0,540)
+}
+
 
 function onProfileClick(){
     getClickedAuthor(props.notebook.author).then((users) => {
@@ -70,8 +75,7 @@ function onThumbnailClick() {
         </div>
         <div class="notebook-thumbnail--flex mt-2" @click="onThumbnailClick">
             <div class="items-center justify-center text-gray-700">
-                <font-awesome-icon class="fa-8x justify-center align-center" :icon="['fas', 'book-open']" />
-                <br/>
+                <div class="story-preview">{{ preview }}</div>
                 <h2 class="notebook-thumbnail--title">{{ notebook.title }}</h2>
                 <h3 class="text-gray-400 text-center text-sm">{{ notebook.subgenres }}</h3>
             </div>

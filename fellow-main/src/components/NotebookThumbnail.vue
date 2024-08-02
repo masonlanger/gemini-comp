@@ -23,6 +23,12 @@ const props = defineProps({
     
     }
 })
+
+let preview =  props.notebook.preview
+if(preview.length > 500){
+    preview = preview.substring(0,540)
+}
+
 const router = useRouter();
 const showDropdown = ref(false);
 function toggleShowDropdown(){
@@ -61,8 +67,7 @@ function onThumbnailClick() {
         </div>
         <div class="notebook-thumbnail--flex" @click="onThumbnailClick">
             <div class="items-center space-x-1 text-gray-700">
-                <!-- <font-awesome-icon class="fa-8x" :icon="['fas', 'book-open']" /> -->
-                <br/>
+                <div class="story-preview">{{ preview }}</div>
                 <h2 class="notebook-thumbnail--title">{{ notebook.name }}</h2>
             </div>
         </div>
