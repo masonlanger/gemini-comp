@@ -77,40 +77,50 @@ export default function FocusBar() {
 
     return(
         <div className='focus-list'>
+            <div className='add-focus'>+</div>
             {focuses.map((focus, idx) =>
                 notebookFocuses.includes(focus) ?
                     <div className='focus-item-on' key={idx} onClick={() => {
-                            setGetData(true)
                             updateDoc(doc(db, "users", user, "notebooks", nb), {
                                 focuses: arrayRemove(focus)
-                            });
+                            })
+                            setTimeout(() => {
+                                setGetData(true)
+                            },100)
                         }}>{focus}
                     </div>
                 :
                     <div className='focus-item' key={idx} onClick={() => {
-                            setGetData(true)
                             updateDoc(doc(db, "users", user, "notebooks", nb), {
                                 focuses: arrayUnion(focus)
-                            });
+                            })
+                            setTimeout(() => {
+                                setGetData(true)
+                            },100)
                         }}>{focus}
                     </div>    
             )}
             <div className='divider' />
+            <div className='add-focus'>+</div>
             {inspos.map((inspo, idx) => 
                 notebookInspos.some(e => e.title === inspo.title) ?
                     <div className='focus-item-on' key={idx} onClick={() => {
-                            setGetData(true)
                             updateDoc(doc(db, "users", user, "notebooks", nb), {
                                 inspos: arrayRemove(inspo)
-                            });
+                            })
+                            setTimeout(() => {
+                                setGetData(true)
+                            },100)
                         }}>{inspo.title}
                     </div>
                 :
                     <div className='focus-item' key={idx} onClick={() => {
-                            setGetData(true)
                             updateDoc(doc(db, "users", user, "notebooks", nb), {
                                 inspos: arrayUnion(inspo)
-                            });
+                            })
+                            setTimeout(() => {
+                                setGetData(true)
+                            },100)
                         }}>{inspo.title}
                     </div>
 

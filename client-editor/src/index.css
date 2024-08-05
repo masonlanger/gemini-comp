@@ -81,13 +81,16 @@ body {
   right: 20px;
   width: 3.2in;
   min-height: 1in;
-  background-image: linear-gradient(to bottom right, #9cbfff, #076eff);
-  border: rgb(84, 66, 175);
+  background-color: #9cbfff;
+  border: #076eff;
+  border-width: 2px;
   border-radius: 10px;
   inline-size: 3.1in;
   padding: 10px;
   overflow-wrap: break-word;
   font-size: 15px;
+  box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.1);
+  
 }
 
 .sug-input {
@@ -114,15 +117,15 @@ body {
   position: absolute;
   right: 165px;
   top:130px;
-  background-image: linear-gradient(to bottom right, #9cbfff, #076eff);
-  border: none;
-  color: black;
+  background-color: #9cbfff;
+  border: #076eff;
+  border-width: 2px;
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   margin: 4px 2px;
-  border-radius: 16px;
+  border-radius: 20px;
   -webkit-user-select: none; /* Safari */        
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
@@ -144,12 +147,13 @@ body {
 }
 
 .comment {
-  background-image: linear-gradient(to bottom right, rgb(169, 169, 173), rgb(210, 207, 214));
+  background-color: rgb(210, 207, 214);
+  border: rgb(169, 169, 173);
+  border-width: 2px;
   border-radius: 16px;
   min-width: 3.2in;
   padding: 15px;
   margin-top: 10px;
-  border: none;
   text-align: left;
   font-size: 15px;
 }
@@ -176,7 +180,10 @@ body {
   margin-right: 5px;
   padding: 6px;
   font-size: 13px;
-  background-image: linear-gradient(to bottom right, rgb(169, 169, 173), rgb(210, 207, 214));
+  background-color: rgb(210, 207, 214);
+  border: rgb(169, 169, 173);
+  border-width: 2px;
+  border-radius: 16px;
   -webkit-user-select: none; /* Safari */        
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
@@ -189,7 +196,10 @@ body {
   margin-right: 5px;
   padding: 6px;
   font-size: 13px;
-  background-image: linear-gradient(to bottom right, #9cbfff, #076eff);
+  background-color: #9cbfff;
+  border: rgb(169, 169, 173);
+  border-width: 2px;
+  border-radius: 16px;
   -webkit-user-select: none; /* Safari */        
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
@@ -213,7 +223,9 @@ body {
   position: absolute;
   right: 40px;
   top:10px;
-  background-image: linear-gradient(to bottom right, #9cbfff, #076eff);
+  background-color: #9cbfff;
+  border: #076eff;
+  border-width: 2px;
   border: none;
   color: black;
   padding: 10px 20px;
@@ -241,7 +253,9 @@ body {
   position: absolute;
   right: 160px;
   top:10px;
-  background-image: linear-gradient(to bottom right, #9cbfff, #076eff);
+  background-color: #9cbfff;
+  border: #076eff;
+  border-width: 2px;
   border: none;
   color: black;
   padding: 10px 20px;
@@ -356,3 +370,21 @@ body {
   transform-origin: 0 0; /* see note above */
 }
 .ldio-x2uulkbinbj div { box-sizing: content-box; }
+
+.add-focus {
+  text-align:center;
+  border-radius: 50%;
+  margin-right: 5px;
+  font-size: 21px;
+  color: rgb(105, 105, 110);
+  text-align: center;
+  width: 28px;
+  background-color: rgb(210, 207, 214);
+  border: rgb(169, 169, 173);
+  border-width: 2px;
+  border-radius: 16px;
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
