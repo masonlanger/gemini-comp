@@ -82,7 +82,8 @@ export default function TextEditor() {
     const [inspoString, setInspoString] = useState("");
     const [published, setPublished] = useState(false);
     const [getData, setGetData] = useState(true);
-    const [pubLoading, setPubLoading] = useState(false)
+    const [pubLoading, setPubLoading] = useState(false);
+    const [suggestOn, setSuggestOn] = useState(false);
 
     //get publishing status
     useEffect(() => {
@@ -109,108 +110,110 @@ export default function TextEditor() {
 
     //suggestion generation
     useEffect(() => {
-        //get focuses
-        getDoc(doc(db, "users", user, "notebooks", nb))
-            .then((docSnapshot) => {
-                if (docSnapshot.exists) {
-                    const data = docSnapshot.data();
-                        // Access document fields here
-                        SetFocuses(data.focuses)
-                        setInspos(data.inspos)
-                    } else {
-                        // Document not found
-                        console.log("No such document!");
-                    }
+        if(suggestOn){
+            //get focuses
+            getDoc(doc(db, "users", user, "notebooks", nb))
+                .then((docSnapshot) => {
+                    if (docSnapshot.exists) {
+                        const data = docSnapshot.data();
+                            // Access document fields here
+                            SetFocuses(data.focuses)
+                            setInspos(data.inspos)
+                        } else {
+                            // Document not found
+                            console.log("No such document!");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error getting document:", error);
+            });
+            let sentence = ""
+            if( focuses != null){
+                focuses.forEach((focus,idx) => {
+                    sentence += focus + ", "
                 })
-                .catch((error) => {
-                    console.error("Error getting document:", error);
-        });
-        let sentence = ""
-        if( focuses != null){
-            focuses.forEach((focus,idx) => {
-                sentence += focus + ", "
-            })
-        }
-        setFocusString(sentence)
+            }
+            setFocusString(sentence)
 
-        let sent = ""
-        if( inspos != null) {
-            inspos.forEach((inspo,idx) => {
-                sent += inspo.title +", by " + inspo.author + ", in the genre(s) " 
-                        + inspos.genre + ", containing the text " + inspos.text + ", "
-            })
-        }
-        setInspoString(sent)
-
-
-        //text set
-        if( userText == null || userText.length < 5 || userText.trim() == "" || userText.trim() == " "){
-            setSuggestText("At your service!")
-        } else {
-            //call and display proompt result
-            const delayDebounceFn = setTimeout(() => {
-                
-                const model = genAI.getGenerativeModel({
-                    model: "gemini-1.5-pro",
-                    systemInstruction: "You are skilled and highly creative " + focusString + "author who is working on a new "
-                                + "project, and writes in those styles. You are inspired by " + inspoString + "You "
-                                + "want to add two to six sentences at a time to your current project. Never suggest more than 100 words." 
-                                + "You take careful note of what has previously been input to inform your additions "
-                                + "to the story. You do not introduce new characters, but you do try to advance the "
-                                + "plot. You only use what has already been provided as input to determine the "
-                                + "characters, but you can introduce new settings. You suggest new additions to "
-                                + "the story as if they were direct continuations of input without retyping what " 
-                                + "you've already wrote. Do not add any newlines after your output",
-                  });
-                  
-                const generationConfig = {
-                    temperature: 1,
-                    topP: 0.95,
-                    topK: 64,
-                    maxOutputTokens: 8192,
-                    responseMimeType: "text/plain",
-                };
-                
-                const safetySettings = [
-                    {
-                        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-                        threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
-                    },
-                    {
-                        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-                        threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
-                    },
-                    {
-                        category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-                        threshold: HarmBlockThreshold.BLOCK_NONE,
-                    },
-                    {
-                        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-                        threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
-                    },
-                ];
-
-                //gemini config
-                const result = model.generateContent(userText,
-                    generationConfig,
-                    safetySettings
-                )
-                .then((response) => {
-                    try{
-                        setSuggestText(response.response.candidates[0].content.parts[0].text)
-                    } catch {
-                        console.log(response)
-                    }
-                    setInsert(true)
+            let sent = ""
+            if( inspos != null) {
+                inspos.forEach((inspo,idx) => {
+                    sent += inspo.title +", by " + inspo.author + ", in the genre(s) " 
+                            + inspos.genre + ", containing the text " + inspos.text + ", "
                 })
-                .catch((error) => {
-                    setSuggestText("hmm... lets try that again")
-                    console.log(error)
-                })
-            }, 1000);
-            return () => clearTimeout(delayDebounceFn);
+            }
+            setInspoString(sent)
+
+
+            //text set
+            if( userText == null || userText.length < 5 || userText.trim() == "" || userText.trim() == " "){
+                setSuggestText("At your service!")
+            } else {
+                //call and display proompt result
+                const delayDebounceFn = setTimeout(() => {
+                    
+                    const model = genAI.getGenerativeModel({
+                        model: "gemini-1.5-pro",
+                        systemInstruction: "You are skilled and highly creative " + focusString + "author who is working on a new "
+                                    + "project, and writes in those styles. You are inspired by " + inspoString + "You "
+                                    + "want to add two to six sentences at a time to your current project. Never suggest more than 100 words." 
+                                    + "You take careful note of what has previously been input to inform your additions "
+                                    + "to the story. You do not introduce new characters, but you do try to advance the "
+                                    + "plot. You only use what has already been provided as input to determine the "
+                                    + "characters, but you can introduce new settings. You suggest new additions to "
+                                    + "the story as if they were direct continuations of input without retyping what " 
+                                    + "you've already wrote. Do not add any newlines after your output",
+                    });
+                    
+                    const generationConfig = {
+                        temperature: 1,
+                        topP: 0.95,
+                        topK: 64,
+                        maxOutputTokens: 8192,
+                        responseMimeType: "text/plain",
+                    };
+                    
+                    const safetySettings = [
+                        {
+                            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+                            threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+                        },
+                        {
+                            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                            threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+                        },
+                        {
+                            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                            threshold: HarmBlockThreshold.BLOCK_NONE,
+                        },
+                        {
+                            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                            threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+                        },
+                    ];
+
+                    //gemini config
+                    const result = model.generateContent(userText,
+                        generationConfig,
+                        safetySettings
+                    )
+                    .then((response) => {
+                        try{
+                            setSuggestText(response.response.candidates[0].content.parts[0].text)
+                        } catch {
+                            console.log(response)
+                        }
+                        setInsert(true)
+                    })
+                    .catch((error) => {
+                        setSuggestText("hmm... lets try that again")
+                        console.log(error)
+                    })
+                }, 1000);
+                return () => clearTimeout(delayDebounceFn);
+            }
         }
-    }, [userText])
+    }, [userText, suggestOn])
 
     //get suggestion text into clipboard
     useEffect(() => {
@@ -668,7 +671,19 @@ export default function TextEditor() {
     //view
     return (
         <div>
-            <div className="suggestion">{suggest}</div>
+            {suggestOn &&
+                <div>
+                    <div className="suggestion">{suggest}</div>
+                    <div className='sug-input' >{<>&#8594;</>} to add to text</div>
+                    <div className='close-suggest' onClick={() => {setSuggestOn(false)}}>Close Suggestions</div>
+                </div>
+            }  
+            {!suggestOn &&
+                <div className='suggest-button' onClick={() => {
+                    setSuggestOn(true)
+                    setUserText(userText + "")
+                }}>Activate Suggestions</div>
+            } 
             <button className='comment-button' onClick={commentGeneration}>Generate Comments</button>
             {(comments.length > 0 && loading == false) &&
                 <div className='comment-box'>
@@ -691,7 +706,6 @@ export default function TextEditor() {
                     </div></div>
                 </div>
             }
-            <div className='sug-input' >{<>&#8594;</>} to add to text</div>
             {(published === false && pubLoading === false) &&
                 <div className='publish' onClick={publishNotebook}>Publish</div>
             }

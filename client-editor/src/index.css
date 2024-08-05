@@ -80,17 +80,66 @@ body {
   bottom: 30px;
   right: 20px;
   width: 3.2in;
-  min-height: 1in;
+  min-height: 35px;
   background-color: #9cbfff;
   border: #076eff;
   border-width: 2px;
-  border-radius: 10px;
+  border-radius: 16px;
   inline-size: 3.1in;
   padding: 10px;
   overflow-wrap: break-word;
   font-size: 15px;
   box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.1);
   
+}
+
+.suggest-button {
+  z-index: 2;
+  position: fixed;
+  right: 150px;
+  bottom: 25px;
+  background-color: #9cbfff;
+  border: #076eff;
+  border-width: 2px;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  border-radius: 20px;
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
+.suggest-button:hover {
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.suggest-button:active {
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.5);
+}
+
+.close-suggest {
+  position: fixed;
+  z-index: 2;
+  right: 30px;
+  bottom: 15px;
+  border-radius: 3px;
+  font-size: 12px;
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
+.close-suggest:hover {
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.close-suggest:active {
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.5);
 }
 
 .sug-input {
@@ -101,6 +150,10 @@ body {
   border-radius: 25%;
   height: 30px;
   font-size: 12px;
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 }
 
 .comment-box {
