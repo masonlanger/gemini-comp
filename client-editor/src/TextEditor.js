@@ -154,7 +154,7 @@ export default function TextEditor() {
                     model: "gemini-1.5-pro",
                     systemInstruction: "You are skilled and highly creative " + focusString + "author who is working on a new "
                                 + "project, and writes in those styles. You are inspired by " + inspoString + "You "
-                                + "want to add two to six sentences at a time to your current project. " 
+                                + "want to add two to six sentences at a time to your current project. Never suggest more than 100 words." 
                                 + "You take careful note of what has previously been input to inform your additions "
                                 + "to the story. You do not introduce new characters, but you do try to advance the "
                                 + "plot. You only use what has already been provided as input to determine the "
@@ -280,9 +280,8 @@ export default function TextEditor() {
             const model = genAI.getGenerativeModel({
                 model: "gemini-1.5-pro",
                 systemInstruction: "You are a literary professor providing feedback through comments on students' essays. The "
-                                + "student wants to focus on " + focusString
-                                + "You provide robust and thorough comments and a concluding statement to help them continue "
-                                + "with their writing. You do not comment on every sentence though, instead keeping your "
+                                + "student wants to focus on " + focusString + "You provide robust and thorough comments "
+                                + "distributed evenly throughout their work. You do not comment on every sentence though, instead keeping your "
                                 + "comments to about 1 comment for every 250 words, and make sure there is atleast a 20 "
                                 + "word buffer between your comments. you also adress grammatical mistakes, but they are not your "
                                 + "priority. I am inspired by: " + inspoString + " and would like your help moving my writing in "
@@ -692,7 +691,7 @@ export default function TextEditor() {
                     </div></div>
                 </div>
             }
-            <div className='sug-input' >cmd-v to add to text</div>
+            <div className='sug-input' >{<>&#8594;</>} to add to text</div>
             {(published === false && pubLoading === false) &&
                 <div className='publish' onClick={publishNotebook}>Publish</div>
             }

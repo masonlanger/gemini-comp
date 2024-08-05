@@ -39,8 +39,8 @@
                 </div>
             </div>
             <div v-else class="row mt-1 space-x-4">
-                <div v-for="story in stories.slice(publishedRow*(n-1), stories.length-(publishedRow*(n-1)) > 0 ? publishedRow*(n-1)+publishedRow : stories.length)" :zIndex="stories.length-stories.indexOf(story)+2" :notebook="notebook" :key="story.id">
-                    <PublishedThumbnail :notebook="story" :zIndex=1 />
+                <div v-for="story in stories.slice(publishedRow*(n-1), stories.length-(publishedRow*(n-1)) > 0 ? publishedRow*(n-1)+publishedRow : stories.length)" :zIndex="stories.length-stories.indexOf(story)+2" :notebook="story" :key="story.id">
+                    <PublishedThumbnail :notebook="story" :zIndex=1 :score="sort"/>
                 </div>
             </div>
         </div>

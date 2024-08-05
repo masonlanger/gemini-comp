@@ -76,7 +76,8 @@ function onThumbnailClick() {
         <div class="notebook-thumbnail--flex mt-2" @click="onThumbnailClick">
             <div class="items-center justify-center text-gray-700">
                 <div class="story-preview">{{ preview }}</div>
-                <h2 class="notebook-thumbnail--title">{{ notebook.title }}</h2>
+                <h2 v-if="notebook.title.length < 25" class="notebook-thumbnail--title">{{ notebook.title }}</h2>
+                <h2 v-else class="notebook-thumbnail--title">{{ notebook.title.substring(0,22) }}...</h2>
                 <h3 class="text-gray-400 text-center text-sm">{{ notebook.subgenres }}</h3>
             </div>
         </div>
