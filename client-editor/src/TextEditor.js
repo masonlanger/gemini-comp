@@ -707,21 +707,21 @@ export default function TextEditor() {
                 </div>
             }
             {(published === false && pubLoading === false) &&
-                <div className='publish' onClick={publishNotebook}>Publish</div>
+                <div className='publish hoverable' onClick={publishNotebook}>Publish</div>
             }
             {(published === false && pubLoading === true) &&
                 <div className='publish'>Publishing</div>
             }
             {(published === true && pubLoading === false) &&
                 <div>
-                    <div className='publish' onClick={unPublishNotebook}>Unpublish</div>
-                    <div className='update' onClick={updateNotebook}>Update</div>
+                    <div className='publish hoverable' onClick={unPublishNotebook}>Unpublish</div>
+                    <div className='update hoverable' onClick={updateNotebook}>Update</div>
                 </div>
             }
             {(published === true && pubLoading === true) &&
                 <div>
-                    <div className='publish' onClick={unPublishNotebook}>Unpublish</div>
-                    <div className='update' onClick={updateNotebook}>Update</div>
+                    <div className='publish hoverable' onClick={unPublishNotebook}>Unpublish</div>
+                    <div className='update hoverable' onClick={updateNotebook}>Update</div>
                 </div>
             }
             <div className="container" ref={wrapperRef}></div>

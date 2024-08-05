@@ -18,6 +18,11 @@ const props = defineProps({
         default: 1,
         required: true
     
+    },
+    showProfile: {
+        type: Boolean,
+        default: true,
+        required: false
     }
 })
 const router = useRouter();
@@ -81,14 +86,14 @@ function onThumbnailClick() {
                 <h3 class="text-gray-400 text-center text-sm">{{ notebook.subgenres }}</h3>
             </div>
         </div>
-        <div v-if="notebook.author != 'anonymous'" class="row pt-2 space-x-1 justify-center items-center" @click="onProfileClick">
+        <div v-if="notebook.author != 'anonymous' && showProfile" class="row pt-2 space-x-1 justify-center items-center" @click="onProfileClick">
             <img v-if="img" :src="img" :style="{width: '2.5rem', aspectRatio: '1/1'}" class="rounded-full"/>
             <div v-else class="flex justify-center rounded-full bg-gray-200" :style="{width: '2.5rem', aspectRatio: '1/1'}">
                 <font-awesome-icon :icon="['fas', 'user']" class="fa-1x text-gray-500" />
             </div>
             <h3 class="text-gray-700 text-center text-sm">{{ notebook.author }}</h3>
         </div>
-        <div v-else class="row pt-2 space-x-1 justify-center items-center">
+        <div v-else-if="showProfile" class="row pt-2 space-x-1 justify-center items-center">
             <div class="flex justify-center items-center rounded-full bg-gray-200" :style="{width: '2.5rem', aspectRatio: '1/1'}">
                 <font-awesome-icon :icon="['fas', 'user']" class="fa-1x text-gray-500" />
             </div>
