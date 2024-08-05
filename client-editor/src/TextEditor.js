@@ -669,7 +669,7 @@ export default function TextEditor() {
     return (
         <div>
             <div className="suggestion">{suggest}</div>
-            <button className='comment-button' onClick={commentGeneration}>Generate Comments</button>
+            <button className='comment-button hoverable' onClick={commentGeneration}>Generate Comments</button>
             {(comments.length > 0 && loading == false) &&
                 <div className='comment-box'>
                     {comments.map((comment, idx) => 
@@ -693,21 +693,21 @@ export default function TextEditor() {
             }
             <div className='sug-input' >{<>&#8594;</>} to add to text</div>
             {(published === false && pubLoading === false) &&
-                <div className='publish' onClick={publishNotebook}>Publish</div>
+                <div className='publish hoverable' onClick={publishNotebook}>Publish</div>
             }
             {(published === false && pubLoading === true) &&
                 <div className='publish'>Publishing</div>
             }
             {(published === true && pubLoading === false) &&
                 <div>
-                    <div className='publish' onClick={unPublishNotebook}>Unpublish</div>
-                    <div className='update' onClick={updateNotebook}>Update</div>
+                    <div className='publish hoverable' onClick={unPublishNotebook}>Unpublish</div>
+                    <div className='update hoverable' onClick={updateNotebook}>Update</div>
                 </div>
             }
             {(published === true && pubLoading === true) &&
                 <div>
-                    <div className='publish' onClick={unPublishNotebook}>Unpublish</div>
-                    <div className='update' onClick={updateNotebook}>Update</div>
+                    <div className='publish hoverable' onClick={unPublishNotebook}>Unpublish</div>
+                    <div className='update hoverable' onClick={updateNotebook}>Update</div>
                 </div>
             }
             <div className="container" ref={wrapperRef}></div>

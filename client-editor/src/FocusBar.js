@@ -80,7 +80,7 @@ export default function FocusBar() {
             <div className='add-focus'>+</div>
             {focuses.map((focus, idx) =>
                 notebookFocuses.includes(focus) ?
-                    <div className='focus-item-on' key={idx} onClick={() => {
+                    <div className='focus-item-on hoverable' key={idx} onClick={() => {
                             updateDoc(doc(db, "users", user, "notebooks", nb), {
                                 focuses: arrayRemove(focus)
                             })
@@ -90,7 +90,7 @@ export default function FocusBar() {
                         }}>{focus}
                     </div>
                 :
-                    <div className='focus-item' key={idx} onClick={() => {
+                    <div className='focus-item hoverable' key={idx} onClick={() => {
                             updateDoc(doc(db, "users", user, "notebooks", nb), {
                                 focuses: arrayUnion(focus)
                             })
@@ -104,7 +104,7 @@ export default function FocusBar() {
             <div className='add-focus'>+</div>
             {inspos.map((inspo, idx) => 
                 notebookInspos.some(e => e.title === inspo.title) ?
-                    <div className='focus-item-on' key={idx} onClick={() => {
+                    <div className='focus-item-on hoverable' key={idx} onClick={() => {
                             updateDoc(doc(db, "users", user, "notebooks", nb), {
                                 inspos: arrayRemove(inspo)
                             })
@@ -114,7 +114,7 @@ export default function FocusBar() {
                         }}>{inspo.title}
                     </div>
                 :
-                    <div className='focus-item' key={idx} onClick={() => {
+                    <div className='focus-item hoverable' key={idx} onClick={() => {
                             updateDoc(doc(db, "users", user, "notebooks", nb), {
                                 inspos: arrayUnion(inspo)
                             })
