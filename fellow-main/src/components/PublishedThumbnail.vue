@@ -19,6 +19,11 @@ const props = defineProps({
         required: true
     
     },
+    hideScore: {
+        type: Boolean,
+        default: false,
+        required: false
+    },
     showProfile: {
         type: Boolean,
         default: true,
@@ -70,13 +75,15 @@ function onThumbnailClick() {
     <div class="notebook-thumbnail rounded-lg items-center" :style="{ 'z-index': zIndex }">
         <div class="row justify-between">
             <h3 class="last-updated text-xs">{{ notebook.updated.toDate().toString().substring(0,15) }}</h3>
-            <h3 v-if="score == 'updated'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.overall_score }}/100</h3>
-            <h3 v-if="score == 'overall_score'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.overall_score }}/100</h3>
-            <h3 v-if="score == 'creativity_score'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.creativity_score }}/20</h3>
-            <h3 v-if="score == 'grammar_score'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.grammar_score }}/20</h3>
-            <h3 v-if="score == 'coherency_score'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.coherency_score }}/20</h3>
-            <h3 v-if="score == 'structure_score'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.structure_score }}/20</h3>
-            <h3 v-if="score == 'novelty_score'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.novelty_score }}/20</h3>
+            <div v-if="!hideScore">
+                <h3 v-if="score == 'updated'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.overall_score }}/100</h3>
+                <h3 v-if="score == 'overall_score'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.overall_score }}/100</h3>
+                <h3 v-if="score == 'creativity_score'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.creativity_score }}/20</h3>
+                <h3 v-if="score == 'grammar_score'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.grammar_score }}/20</h3>
+                <h3 v-if="score == 'coherency_score'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.coherency_score }}/20</h3>
+                <h3 v-if="score == 'structure_score'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.structure_score }}/20</h3>
+                <h3 v-if="score == 'novelty_score'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.novelty_score }}/20</h3>
+            </div>
         </div>
         <div class="notebook-thumbnail--flex mt-2" @click="onThumbnailClick">
             <div class="items-center justify-center text-gray-700">

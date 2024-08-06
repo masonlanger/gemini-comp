@@ -6,7 +6,9 @@ import { getAuth } from 'firebase/auth';
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
 import { ref as storageRef, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/firebaseConfig';
+import SubtitleIconWidget from '@/components/SubtitleIconWidget.vue';
 import ContactInfoModal from '@/components/ContactInfoModal.vue';
+import PublishedStoryContainer from '@/components/PublishedStoryContainer.vue';
 
 const route = useRoute()
 document.title = route.params.username + " - Fellow"
@@ -135,6 +137,10 @@ function follow(){
                 <div v-if="currUserInfo.username != userInfo.username && !following" class="follow-btn bg-sky-600 hoverable" @click="follow">Follow</div>
                 <div v-else-if="currUserInfo.username != userInfo.username" class="follow-btn bg-gray-400 text-gray-800 hoverable">Following</div>
             </div>
+        </div>
+        <div class="mt-3 w-full">
+            <SubtitleIconWidget subtitle="Published Notebooks" icon="book" />
+            <PublishedStoryContainer :sort="'updated'" :user=route.params.username />
         </div>
         <div class="mt-3 w-full">
             <SubtitleIconWidget subtitle="Featured Works" icon="thumbtack" />
