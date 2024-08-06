@@ -39,7 +39,7 @@ try {
 }
 
 //gemini setup
-const apiKey = "AIzaSyCBVNGQ4cxESNbC12ePWlTbysJV1tQIkbE";
+const apiKey = "";
 const genAI = new GoogleGenerativeAI(apiKey);
 
 
@@ -63,7 +63,13 @@ const TOOLBAR = [
         if (event.repeat) return;
         const doc = document.getElementsByClassName("ql-editor")[1]
         doc.innerHTML = doc.innerHTML.trimEnd()
-        doc.lastElementChild.append(toSuggest)
+        doc.append(toSuggest)
+        const range = document.createRange();
+        const selection = window.getSelection();
+        range.setStart(doc, doc.childNodes.length);
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
     }
    });
 
@@ -679,12 +685,12 @@ export default function TextEditor() {
                 </div>
             }  
             {!suggestOn &&
-                <div className='suggest-button' onClick={() => {
+                <div className='suggest-button hoverable' onClick={() => {
                     setSuggestOn(true)
                     setUserText(userText + "")
                 }}>Activate Suggestions</div>
             } 
-            <button className='comment-button' onClick={commentGeneration}>Generate Comments</button>
+            <button className='comment-button hoverable' onClick={commentGeneration}>Generate Comments</button>
             {(comments.length > 0 && loading == false) &&
                 <div className='comment-box'>
                     {comments.map((comment, idx) => 

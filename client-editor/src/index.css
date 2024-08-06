@@ -80,14 +80,14 @@ body {
   position: fixed;
   bottom: 30px;
   right: 20px;
-  width: 3.2in;
+  width: 300px;
   min-height: 35px;
   background-color: #9cbfff;
   border: #076eff;
   border-width: 2px;
   border-radius: 16px;
-  inline-size: 3.1in;
-  padding: 10px;
+  inline-size: 305px;
+  padding: 15px;
   overflow-wrap: break-word;
   font-size: 0.8rem;
   box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.1);
@@ -96,7 +96,7 @@ body {
 .suggest-button {
   z-index: 2;
   position: fixed;
-  right: 150px;
+  right: 145px;
   bottom: 25px;
   background-color: #9cbfff;
   border: #076eff;
@@ -107,14 +107,11 @@ body {
   display: inline-block;
   margin: 4px 2px;
   border-radius: 20px;
+  font-size: 15px;
   -webkit-user-select: none; /* Safari */        
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
-}
-
-.suggest-button:hover {
-  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
 .suggest-button:active {
@@ -135,11 +132,11 @@ body {
 }
 
 .close-suggest:hover {
-  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+  text-decoration: underline;
 }
 
 .close-suggest:active {
-  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.5);
+  text-decoration: underline;
 }
 
 .sug-input {
@@ -205,7 +202,7 @@ body {
   padding: 15px;
   margin-top: 10px;
   text-align: left;
-  font-size: 15px;
+  font-size: 0.8rem;
 }
 
 .comment:hover {
@@ -416,6 +413,7 @@ body {
 
 .add-focus {
   text-align:center;
+  align-content: center;
   border-radius: 50%;
   margin-right: 5px;
   font-size: 21px;
@@ -433,4 +431,4 @@ body {
 }
 
 .hoverable {transition: opacity 0.3s ease;}
-.hoverable:hover {cursor: pointer; opacity: 90%;}
+.hoverable:hover {cursor: pointer; opacity: 80%;}
