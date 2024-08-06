@@ -16,8 +16,8 @@ defineProps({
 </script>
 
 <template>
-        <div v-if="action" class="btn" @click=action>{{ name }}</div>
-        <RouterLink v-else class="btn" :to="route">
+        <div v-if="action" class="btn hoverable" @click=action>{{ name }}</div>
+        <RouterLink v-else class="btn hoverable" :to="route">
                 <h1>{{ name }}</h1>
         </RouterLink>
 </template>

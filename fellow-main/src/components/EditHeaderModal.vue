@@ -297,7 +297,7 @@ function submitUpdates(){
                                 <div v-for="n in Math.ceil(focusOptions.length/numFocusRow)" :key="n">
                                     <div v-if="n == 1" class="row space-x-4">
                                         <div v-for="focus in focusOptions.slice(n-1, numFocusRow)" :key="focus" class="prof-focus">
-                                            <div v-if="!initial.userFocuses.includes(focus)" @click="addFocus(focus)" class="prof-focus-add mr-1">
+                                            <div v-if="!userFocuses.includes(focus)" @click="addFocus(focus)" class="prof-focus-add mr-1">
                                                 {{ focus[0].toUpperCase() + focus.slice(1)}}
                                             </div>
                                             <div v-else class="prof-focus-included mr-1" @click="removeFocus(focus)">
@@ -307,7 +307,7 @@ function submitUpdates(){
                                     </div>
                                     <div v-else class="row mt-1 space-x-4">
                                         <div v-for="focus in focusOptions.slice(numFocusRow*(n-1), focusOptions.length-(numFocusRow*(n-1)) > 0 ? numFocusRow*(n-1)+numFocusRow : focusOptions.length)" :key="focus" class="prof-focus">
-                                            <div v-if="!initial.userFocuses.includes(focus)" class="prof-focus-add mr-1" @click="addFocus(focus)">
+                                            <div v-if="!userFocuses.includes(focus)" class="prof-focus-add mr-1" @click="addFocus(focus)">
                                                 {{ focus[0].toUpperCase() + focus.slice(1)}}
                                             </div>
                                             <div v-else class="prof-focus-included mr-1" @click="removeFocus(focus)">

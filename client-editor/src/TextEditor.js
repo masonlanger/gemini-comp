@@ -39,7 +39,7 @@ try {
 }
 
 //gemini setup
-const apiKey = "";
+const apiKey = "AIzaSyCBVNGQ4cxESNbC12ePWlTbysJV1tQIkbE";
 const genAI = new GoogleGenerativeAI(apiKey);
 
 

@@ -15,9 +15,7 @@
         user-select: none; /* Standard */
     }
     .btn:hover {
-        @apply bg-gray-100;
-        box-shadow: 0 0.05rem 0.05rem rgba(0, 0, 0, 0.2);
-        opacity: 90%;
+        opacity: 80%;
     }
     .inactive {
       @apply bg-white;

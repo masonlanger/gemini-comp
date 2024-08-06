@@ -87,7 +87,7 @@ export default function FocusBar() {
                             setTimeout(() => {
                                 setGetData(true)
                             },100)
-                        }}>{focus}
+                        }}>{focus[0].toUpperCase() + focus.slice(1)}
                     </div>
                 :
                     <div className='focus-item hoverable' key={idx} onClick={() => {
@@ -97,7 +97,7 @@ export default function FocusBar() {
                             setTimeout(() => {
                                 setGetData(true)
                             },100)
-                        }}>{focus}
+                        }}>{focus[0].toUpperCase() + focus.slice(1)}
                     </div>    
             )}
             <div className='divider' />
