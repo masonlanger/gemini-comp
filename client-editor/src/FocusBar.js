@@ -77,7 +77,7 @@ export default function FocusBar() {
 
     return(
         <div className='focus-list'>
-            <div className='add-focus'>+</div>
+            <div className='add-focus hoverable'>+</div>
             {focuses.map((focus, idx) =>
                 notebookFocuses.includes(focus) ?
                     <div className='focus-item-on hoverable' key={idx} onClick={() => {
@@ -101,7 +101,7 @@ export default function FocusBar() {
                     </div>    
             )}
             <div className='divider' />
-            <div className='add-focus'>+</div>
+            <div className='add-focus hoverable'>+</div>
             {inspos.map((inspo, idx) => 
                 notebookInspos.some(e => e.title === inspo.title) ?
                     <div className='focus-item-on hoverable' key={idx} onClick={() => {
