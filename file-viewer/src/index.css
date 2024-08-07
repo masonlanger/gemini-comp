@@ -156,3 +156,11 @@ body {
   font-weight: 800;
   font-style: italic;
 }
+
+.save {
+  z-index: 6;
+  right: 20px;
+  top: 20px;
+  position: absolute;
+  color: #076eff;
+}

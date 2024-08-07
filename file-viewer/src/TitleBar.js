@@ -1,8 +1,10 @@
 import { db } from './firebaseConfig';
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, updateDoc, increment } from 'firebase/firestore'
 import { useCallback, useEffect, useState } from "react"
 import Quill from "quill"
 import "quill/dist/quill.bubble.css"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBookmark } from '@fortawesome/free-solid-svg-icons'
 
 const searchParams = new URLSearchParams(window.location.search);
 const pub = searchParams.get('p');
@@ -33,9 +35,16 @@ export default function TitleBar() {
         });
     })
     return (
-        <div className="titlebar">
-            <div className='title'>{title}</div>
-            <div className='author'>By: {author}</div>
+        <div>
+            <FontAwesomeIcon className="save" icon={faBookmark} size="lg" onClick={() => {
+                updateDoc(docRef, {
+                    saves: increment(1)
+                });
+            }}/>
+            <div className="titlebar">
+                <div className='title'>{title}</div>
+                <div className='author'>By: {author}</div>
+            </div>
         </div>
     );
 }
