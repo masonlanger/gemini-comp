@@ -74,7 +74,13 @@ function onThumbnailClick() {
 <template>
     <div class="notebook-thumbnail rounded-lg items-center" :style="{ 'z-index': zIndex }">
         <div class="row justify-between">
-            <h3 class="last-updated text-xs">{{ notebook.updated.toDate().toString().substring(0,15) }}</h3>
+            <div class="flex-box">
+                <h3 class="last-updated text-xs">{{ notebook.updated.toDate().toString().substring(0,15) }}</h3>
+                <div class="flex items-center">
+                    <font-awesome-icon class="text-blue-500" :icon="['fas', 'user']" size="xs"/>
+                    <div class="text-xs ml-1 bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.views }}</div>
+                </div>
+            </div>
             <div v-if="!hideScore">
                 <h3 v-if="score == 'updated'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.overall_score }}/100</h3>
                 <h3 v-if="score == 'overall_score'" class="bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.overall_score }}/100</h3>
@@ -90,7 +96,8 @@ function onThumbnailClick() {
                 <div class="story-preview">{{ preview }}</div>
                 <h2 v-if="notebook.title.length < 25" class="notebook-thumbnail--title">{{ notebook.title }}</h2>
                 <h2 v-else class="notebook-thumbnail--title">{{ notebook.title.substring(0,22) }}...</h2>
-                <h3 class="text-gray-400 text-center text-sm">{{ notebook.subgenres }}</h3>
+                <h3 v-if="notebook.subgenres.length < 35" class="text-gray-400 text-center text-xs">{{ notebook.subgenres }}</h3>
+                <h3 v-else class="text-gray-400 text-center text-xs">{{ notebook.subgenres.substring(0,32) }}...</h3>
             </div>
         </div>
         <div v-if="notebook.author != 'anonymous' && showProfile" class="row pt-2 space-x-1 justify-center items-center" @click="onProfileClick">

@@ -241,7 +241,6 @@ three-col.svg {@apply text-gray-800;}
     @apply flex flex-col;
     justify-content: end;
     align-items: center;
-    height: 90%;
 }
 
 .inspo-thumbnail--flex {

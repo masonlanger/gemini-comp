@@ -4,13 +4,16 @@ import { useCallback } from "react"
 import Quill from "quill"
 import "quill/dist/quill.snow.css"
 import { db } from './firebaseConfig';
-import { doc, getDoc} from 'firebase/firestore'
+import { doc, getDoc, updateDoc, increment} from 'firebase/firestore'
 
 
 //get url params to access user and notebook data
 const searchParams = new URLSearchParams(window.location.search);
 const pub = searchParams.get('p');
 const docRef = doc(db, "published", pub);
+await updateDoc(docRef, {
+    views: increment(1)
+  });
 
 
 //view published piece
