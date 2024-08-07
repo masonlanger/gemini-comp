@@ -49,7 +49,10 @@ function onThumbnailClick() {
 <template>
     <div class="notebook-thumbnail rounded-lg" :style="{ 'z-index': zIndex }">
         <div class="dropdown relative">
-            <font-awesome-icon v-if=props.edittable class="fa-1x trash-icon px-1" :icon="['fas', 'ellipsis-vertical']" @click="toggleShowDropdown"/>
+            <div class="flow-root">
+                <font-awesome-icon v-if="notebook.published==true" class="float-left m-2 text-gray-700" :icon="['fas', 'earth-americas']" />
+                <font-awesome-icon v-if=props.edittable class="float-right m-2 trash-icon text-gray-700" :icon="['fas', 'ellipsis-vertical']" @click="toggleShowDropdown"/>
+            </div>
             <div v-if="showDropdown" class="dropdown-content flex flex-col space-y-2 rounded">
                 <div class="flex flex-row items-center dropdown-option" @click="deleteNotebook">
                     <font-awesome-icon class="fa-1x mr-2" :icon="['fas', 'trash']"/>

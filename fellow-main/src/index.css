@@ -125,11 +125,7 @@
 
 .title {font-size: 36pt; font-weight: bold; @apply mb-0;}
 .subtitle {font-size: 32pt; font-weight: 400; @apply mb-0;}
-.trash-icon {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-}
+
 .trash-icon:hover {
     opacity: 70%;
     cursor: pointer;

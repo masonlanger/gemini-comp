@@ -78,7 +78,8 @@ function onThumbnailClick() {
                 <h3 class="last-updated text-xs">{{ notebook.updated.toDate().toString().substring(0,15) }}</h3>
                 <div class="flex items-center">
                     <font-awesome-icon class="text-blue-500" :icon="['fas', 'user']" size="xs"/>
-                    <div class="text-xs ml-1 bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.views }}</div>
+                    <div class="text-xs ml-1 mr-1 bg-gradient-to-r from-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">{{ notebook.views }}</div>
+                    <font-awesome-icon class="text-blue-500" :icon="['fas', 'bookmark']" size="xs"/>
                 </div>
             </div>
             <div v-if="!hideScore">

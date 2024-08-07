@@ -408,6 +408,8 @@ export default function TextEditor() {
                                     preview: userText,
                                     subgenres: score.Subgenres,
                                     level: score.Level,
+                                    views: 0,
+                                    saves: 0,
                                     overall_score: score.Overall.Score,
                                     overall_summary: score.Overall.Explanation,
                                     creativity_score: score.Creativity.Score,
