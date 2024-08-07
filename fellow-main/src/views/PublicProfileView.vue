@@ -9,6 +9,7 @@ import { db, storage } from '@/firebaseConfig';
 import SubtitleIconWidget from '@/components/SubtitleIconWidget.vue';
 import ContactInfoModal from '@/components/ContactInfoModal.vue';
 import PublishedStoryContainer from '@/components/PublishedStoryContainer.vue';
+import FollowerFollowingModal from '@/components/FollowerFollowingModal.vue';
 
 const route = useRoute()
 document.title = route.params.username + " - Fellow"
@@ -16,7 +17,7 @@ const userInfo = ref(null);
 const img = ref(null);
 const user = getClickedAuthor(route.params.username).then((users) => {
         users.forEach((user) => { 
-            userInfo.value = user.data();
+            userInfo.value = user.data(); 
             const imageRef = storageRef(storage, `users/${user.id}/profile.jpg`);
             getDownloadURL(imageRef).then((url) => {
                 img.value = url;
@@ -32,18 +33,43 @@ const currUid = getAuth().currentUser.uid;
 const docRef = doc(db, "users", currUid);
 const currUser = await getDoc(docRef).then(doc => {
     currUserInfo.value = doc.data()
-    console.log(currUserInfo.value);
     if(currUserInfo.value.following){
         following.value = currUserInfo.value.following.includes(userInfo.value.username);
     }
+    return doc.data();
 });
 
-// watch(
-//   () => route.params.username,
-//   (new, old) => {
-//     console.log(new);
-//   }
-// )
+watch(
+  () => route.params.username,
+  () => {
+    // close all modals
+    contactInfoModalVisible.value = false;
+    followerFollowingModalVisible.value = false;
+
+    // change values depending on the new user
+    document.title = route.params.username + " - Fellow"
+    img.value = null;
+    getClickedAuthor(route.params.username).then((users) => {
+        users.forEach((user) => { 
+            userInfo.value = user.data();
+            const imageRef = storageRef(storage, `users/${user.id}/profile.jpg`);
+            getDownloadURL(imageRef).then((url) => {
+                img.value = url;
+                return url;
+            });
+            return user.data()
+        });
+    });
+
+    getDoc(docRef).then(doc => {
+    currUserInfo.value = doc.data()
+    if(currUserInfo.value.following){
+        following.value = currUserInfo.value.following.includes(userInfo.value.username);
+    }
+    return doc.data();
+});
+  }
+)
 
 async function getClickedAuthor(author){
     try {
@@ -76,17 +102,70 @@ function openContactInfoModal(){
     contactInfoModalVisible.value = true;
 }
 
+const followerFollowingModalVisible = ref(false);
+const follower = ref(true);
+function openFollowerFollowingModal(isFollower){
+    if(isFollower){
+        follower.value = true;
+    } else {
+        follower.value = false;
+    }
+    followerFollowingModalVisible.value = true;
+}
 
 function follow(){
     if(currUserInfo.value.following == null){
         currUserInfo.value.following = [];
     }
+    getClickedAuthor(route.params.username).then((users) => {
+        users.forEach((user) => { 
+            const authorRef = doc(db, "users", user.id);
+            let tempFollowers = [];
+            if(user.data().followers == null){
+                tempFollowers = [];
+            } else {
+                tempFollowers = user.data().followers;
+            }
+            tempFollowers.push(currUserInfo.value.username);
+            updateDoc(authorRef, {
+                followers: tempFollowers
+                });
+            })
+    });
     currUserInfo.value.following.push(userInfo.value.username);
     const docRef = doc(db, "users", currUid);
     updateDoc(docRef, {
         following: currUserInfo.value.following
     });
     following.value = true;
+}
+
+function unfollow(){
+    if(currUserInfo.value.following == null){
+        return;
+    }
+    // first, remove the current user from the author's followers list
+    getClickedAuthor(route.params.username).then((users) => {
+        users.forEach((user) => { 
+            const authorRef = doc(db, "users", user.id);
+            let tempFollowers = [];
+            if(user.data().followers == null){
+                return;
+            } else {
+                tempFollowers = user.data().followers;
+            }
+            tempFollowers = tempFollowers.filter((follower) => follower != currUserInfo.value.username);
+            updateDoc(authorRef, {
+                followers: tempFollowers
+                });
+            })
+    });
+    currUserInfo.value.following = currUserInfo.value.following.filter((user) => user != userInfo.value.username);
+    const docRef = doc(db, "users", currUid);
+    updateDoc(docRef, {
+        following: currUserInfo.value.following
+    });
+    following.value = false;
 }
 
 </script>
@@ -134,12 +213,19 @@ function follow(){
                         <img :src="substackIcon" alt="Substack" class="link-icon hoverable" />
                     </a>
                 </div>
-                <div v-if="currUserInfo.username != userInfo.username && !following" class="follow-btn bg-sky-600 hoverable" @click="follow">Follow</div>
-                <div v-else-if="currUserInfo.username != userInfo.username" class="follow-btn bg-gray-400 text-gray-800 hoverable">Following</div>
+                <div class="row space-x-6 items-center">
+                    <div v-if="currUserInfo.username != userInfo.username && !following" class="follow-btn bg-sky-600 hoverable" @click="follow">Follow</div>
+                    <div v-else-if="currUserInfo.username != userInfo.username" class="follow-btn bg-gray-400 text-gray-800 hoverable" @click="unfollow">Following</div>
+                    <div class="row space-x-5">
+                        <div v-if="userInfo.followers != null && userInfo.followers.length > 1" class="text-sky-700 hoverable font-semibold" @click="openFollowerFollowingModal(true)">{{ userInfo.followers.length }} followers</div>
+                        <div v-else-if="userInfo.followers != null && userInfo.followers.length == 1" class="text-sky-700 hoverable font-semibold" @click="openFollowerFollowingModal(true)">{{ userInfo.followers.length }} follower</div>
+
+                        <div v-if="userInfo.following != null && userInfo.following.length > 0" class="text-sky-700 hoverable font-semibold" @click="openFollowerFollowingModal(false)">{{ userInfo.following.length }} following</div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="mt-3 w-full">
-            <SubtitleIconWidget subtitle="Published Notebooks" icon="book" />
             <PublishedStoryContainer :sort="'updated'" :user=route.params.username />
         </div>
         <div class="mt-3 w-full">
@@ -148,4 +234,5 @@ function follow(){
         </div>
     </div>
     <ContactInfoModal v-if="userInfo.showContact" :modalVisible=contactInfoModalVisible :firstName=userInfo.firstName :lastName=userInfo.lastName @close="contactInfoModalVisible = false" :userData=userInfo />
+    <FollowerFollowingModal v-if="(userInfo.followers && userInfo.followers.length > 0) || (userInfo.following && userInfo.following.length > 0)" :modalVisible=followerFollowingModalVisible @close="followerFollowingModalVisible = false" :userData=userInfo :followers=follower />
 </template>

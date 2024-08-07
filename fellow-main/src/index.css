@@ -408,7 +408,6 @@ three-col.svg {@apply text-gray-800;}
   .prof-add {@apply bg-gray-600 text-gray-100 rounded px-2 py-1; transition: font-weight background-color ease 0.3s;}
   .prof-add:hover {font-weight: 400; cursor: pointer; @apply bg-gray-700} 
   .prof-img {@apply bg-gray-200 rounded-full; width: 14rem; aspect-ratio: 1/1;}
-  .prof-img:hover {@apply bg-gray-300; opacity: 80%; box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2); cursor: pointer;}
 
   .follow-btn {@apply block text-center object-scale-down p-2 text-gray-50 my-2 w-32 rounded; font-size: 12pt; transition: box-shadow opacity 0.4s ease;}
   .follow-btn:hover {box-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.2); opacity: 90%;}

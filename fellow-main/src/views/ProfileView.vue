@@ -3,9 +3,9 @@
         <div class="row w-full items-center bg-gray-50 py-4 px-6 rounded shadow">
             <input type="file" ref="file" style="display: none" accept="image/jpeg, image/png" @change="uploadUserImg" @input="userImg = $event.target.value"/>
             <div v-if="img" @click="$refs.file.click()">
-                <img :src="img" class="prof-img" />
+                <img :src="img" class="prof-img hoverable" />
             </div>
-            <div v-else @click="$refs.file.click()" class="prof-img flex justify-center items-center">
+            <div v-else @click="$refs.file.click()" class="prof-img hoverable flex justify-center items-center">
                 <font-awesome-icon :icon="['fas', 'user']" class="fa-3x text-gray-500" />
             </div>
             <div class="ml-6 w-full">
@@ -91,47 +91,13 @@ const docRef = doc(db, "users", currUid);
 const userData = await getDoc(docRef).then(doc => doc.data());
 let userInfo = ref(userData);
 const img = userData.userImg != null && userData.userImg.length > 0 ? await getUserImg() : null;
-const tagline = userData.tagline != null && userData.tagline.length > 0 ? ref(userData.tagline) : ref('');
-const taglineEmpty = tagline.value.length == 0;
 const userFocusesLength = userData.userFocuses.length;
-const focusOptions = await getDoc(doc(db, "assets", "focus-options")).then(doc => doc.data().options);
 const modalVisible = ref(false);
 const contactInfoModalVisible = ref(false);
 
 watch(() => userData, (newVal) => {
     userInfo.value = newVal;
 });
-const submitTagline = () => {
-    const docRef = doc(db, "users", currUid);
-    updateDoc(docRef, {
-        tagline: tagline.value
-    });
-}
-
-const showFocusOptions = ref(false);
-const toggleFocusOptions = () => {
-    showFocusOptions.value = !showFocusOptions.value;
-}
-
-const addFocus = (focus) => {
-    if (userData.userFocuses.includes(focus)) return;
-    userData.userFocuses.push(focus);
-    const docRef = doc(db, "users", currUid);
-    updateDoc(docRef, {
-        userFocuses: userData.userFocuses
-    });
-    userInfo = ref(userData);
-}
-
-const removeFocus = (focus) => {
-    if (!userData.userFocuses.includes(focus)) return;
-    userData.userFocuses = userData.userFocuses.filter(f => f != focus);
-    const docRef = doc(db, "users", currUid);
-    updateDoc(docRef, {
-        userFocuses: userData.userFocuses.filter(f => f != focus)
-    });
-    userInfo = ref(userData);
-}
 
 const uploadUserImg = (event) => {
     const userImg = ref('');
@@ -144,6 +110,7 @@ const uploadUserImg = (event) => {
             userImg: userImg.value
         });
     });
+    window.location.reload();
 }
 
 function openHeaderModal(){

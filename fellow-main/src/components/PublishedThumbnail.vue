@@ -56,7 +56,7 @@ if(preview.length > 500){
 
 function onProfileClick(){
     getClickedAuthor(props.notebook.author).then((users) => {
-        users.forEach((user) => { console.log(user.data()); return user.data()});
+        users.forEach((user) => { return user.data()});
     });
     router.push('/writers/'+props.notebook.author);
 }
