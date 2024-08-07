@@ -16,16 +16,14 @@ document.title = route.params.username + " - Fellow"
 const userInfo = ref(null);
 const img = ref(null);
 const user = getClickedAuthor(route.params.username).then((users) => {
-        users.forEach((user) => { 
-            userInfo.value = user.data(); 
-            const imageRef = storageRef(storage, `users/${user.id}/profile.jpg`);
+        userInfo.value = users.docs[0].data();
+        const imageRef = storageRef(storage, `users/${users.docs[0].id}/profile.jpg`);
             getDownloadURL(imageRef).then((url) => {
                 img.value = url;
                 return url;
             });
             return user.data()
-        });
-});
+    });
 
 const following = ref(false);
 const currUserInfo = ref(null);
@@ -50,24 +48,22 @@ watch(
     document.title = route.params.username + " - Fellow"
     img.value = null;
     getClickedAuthor(route.params.username).then((users) => {
-        users.forEach((user) => { 
-            userInfo.value = user.data();
-            const imageRef = storageRef(storage, `users/${user.id}/profile.jpg`);
+        userInfo.value = users.docs[0].data();
+        const imageRef = storageRef(storage, `users/${users.docs[0].id}/profile.jpg`);
             getDownloadURL(imageRef).then((url) => {
                 img.value = url;
                 return url;
             });
             return user.data()
-        });
     });
 
     getDoc(docRef).then(doc => {
-    currUserInfo.value = doc.data()
-    if(currUserInfo.value.following){
-        following.value = currUserInfo.value.following.includes(userInfo.value.username);
-    }
-    return doc.data();
-});
+        currUserInfo.value = doc.data()
+        if(currUserInfo.value.following){
+            following.value = currUserInfo.value.following.includes(userInfo.value.username);
+        }
+        return doc.data();
+    });
   }
 )
 
@@ -203,13 +199,13 @@ function unfollow(){
                     <h4>Activity: Joined in {{ userInfo.registeredDate.toDate().toLocaleString('default', { month: 'long', year: 'numeric' }) }}, last seen {{userInfo.lastLogin.toDate().toLocaleString('default', { month: 'long', day: 'numeric', year: 'numeric' })}}</h4>
                 </div>
                 <div class="mt-2 row space-x-2">
-                    <a v-if="userInfo && userInfo.links && userInfo.links.linkedin" :href="userInfo.links.linkedin" target="_blank">
+                    <a v-if="userInfo.links && userInfo.links.linkedin" :href="userInfo.links.linkedin" target="_blank">
                         <img :src="linkedinIcon" alt="LinkedIn" class="linkedin-icon hoverable" />
                     </a>
-                    <a v-if="userInfo && userInfo.links && userInfo.links.wattpad" :href="userInfo.links.wattpad" target="_blank">
+                    <a v-if="userInfo.links && userInfo.links.wattpad" :href="userInfo.links.wattpad" target="_blank">
                         <img :src="wattpadIcon" alt="Wattpad" class="link-icon hoverable" />
                     </a>
-                    <a v-if="userInfo && userInfo.links && userInfo.links.substack" :href="userInfo.links.substack" target="_blank">
+                    <a v-if="userInfo.links && userInfo.links.substack" :href="userInfo.links.substack" target="_blank">
                         <img :src="substackIcon" alt="Substack" class="link-icon hoverable" />
                     </a>
                 </div>
