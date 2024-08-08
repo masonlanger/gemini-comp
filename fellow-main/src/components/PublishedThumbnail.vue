@@ -4,6 +4,9 @@ import { ref as storageRef, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/firebaseConfig';
 import { searchPublicUser } from '@/publicUserSearch';
 import { useRouter } from 'vue-router';
+import { getAuth } from 'firebase/auth';
+
+const currUid = getAuth().currentUser.uid;
 const props = defineProps({
     notebook: {
         type: Object,
@@ -62,7 +65,7 @@ function onProfileClick(){
 }
 
 function onThumbnailClick() {
-    window.open('http://localhost:3030/?p=' + props.notebook.id, "_blank");
+    window.open('http://localhost:3030/?p=' + props.notebook.id + "&u=" + currUid,  "_blank");
 }
 
 </script>

@@ -10,6 +10,7 @@ import { doc, getDoc, updateDoc, increment} from 'firebase/firestore'
 //get url params to access user and notebook data
 const searchParams = new URLSearchParams(window.location.search);
 const pub = searchParams.get('p');
+const user = searchParams.get('u');
 const docRef = doc(db, "published", pub);
 await updateDoc(docRef, {
     views: increment(1)

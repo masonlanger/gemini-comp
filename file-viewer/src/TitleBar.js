@@ -8,6 +8,7 @@ import { faBookmark } from '@fortawesome/free-solid-svg-icons'
 
 const searchParams = new URLSearchParams(window.location.search);
 const pub = searchParams.get('p');
+const user = searchParams.get('u');
 const docRef = doc(db, "published", pub);
 
 
