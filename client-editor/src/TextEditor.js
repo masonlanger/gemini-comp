@@ -11,7 +11,6 @@ import $ from 'jquery';
 import { Children } from 'react';
 import { Delta } from 'quill';
 
-
 //get url params to access user and notebook data
 const searchParams = new URLSearchParams(window.location.search);
 const user = searchParams.get('u');

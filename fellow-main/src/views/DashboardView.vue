@@ -5,31 +5,49 @@
     import { collection, orderBy } from 'firebase/firestore';
     import { query } from 'firebase/firestore';
     import PublishedStoryContainer from '@/components/PublishedStoryContainer.vue';
+    import SavedContainer from '@/components/SavedContainer.vue'
     const sort = ref("updated")
-    const refresh = ref(0)
-    const publishedRow = ref(Math.max(Math.floor((window.innerWidth-256)/(15*16)), 1));
-    let stories = useCollection(query(collection(db, "published"), orderBy(sort.value, "desc")));
-    window.addEventListener('resize', () => {
-        publishedRow.value = Math.max(Math.floor((window.innerWidth-256)/(15*16)), 1);
-    });
 
-    function sortSelect(){
-        stories = useCollection(query(collection(db, "published"), orderBy(sort.value, "desc")));
-        refresh.value += 1;
+    const calloutView = ref('Library');
+    function toggleCallout(callout) {
+        calloutView.value = callout;
     }
 </script>
 
 <template>
-    <div class ="sort-select">
-        <select v-model="sort" @change="sortSelect()">
-            <option value="updated" selected>Most Recent</option>
-            <option value="overall_score">Overall</option>
-            <option value="creativity_score">Creativity</option>
-            <option value="coherency_score">Coherency</option>
-            <option value="grammar_score">Grammar</option>
-            <option value="novelty_score">Novelty</option>
-            <option value="structure_score">Structure</option>
-        </select>
+    <div class="home">
+        <div class="flex justify-between items-center">
+            <div class="row space-x-4 w-full justify-left">
+                <div @click="toggleCallout('Library')" v-if="calloutView == 'Library'" class="border-bottom p-2 hoverable tpw--subtitle spectral-medium">
+                    <span>Library</span>
+                </div>
+                <div @click="toggleCallout('Library')" v-else class="p-2 hoverable tpw--subtitle spectral-medium">
+                    <span>Library</span>
+                </div>
+                <div @click="toggleCallout('Saved')" v-if="calloutView == 'Saved'" class="border-bottom p-2 hoverable tpw--subtitle spectral-medium">
+                    <span>Saved</span>
+                </div>
+                <div @click="toggleCallout('Saved')" v-else class="p-2 hoverable tpw--subtitle spectral-medium">
+                    <span>Saved</span>
+                </div>
+            </div>
+            <div class ="sort-select">
+                <select v-model="sort" class="underline" >
+                    <option value="updated" selected>Most Recent</option>
+                    <option value="overall_score">Overall</option>
+                    <option value="creativity_score">Creativity</option>
+                    <option value="coherency_score">Coherency</option>
+                    <option value="grammar_score">Grammar</option>
+                    <option value="novelty_score">Novelty</option>
+                    <option value="structure_score">Structure</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-2" v-if="calloutView === 'Library'">
+            <PublishedStoryContainer :sort=sort :key="sort"/>
+        </div>
+        <div class="row mb-2" v-if="calloutView === 'Saved'">
+            <SavedContainer :sort=sort :key="sort"/>
+        </div>
     </div>
-    <PublishedStoryContainer :sort=sort />
 </template>
